@@ -20,17 +20,17 @@ Flutter f-52
 
 TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.
 
-TaskMallow ile görevlerinizi kolayca oluşturabilir, atayabilir ve takip edebilirsiniz. Görevlerin ilerleme durumunu yüzde üzerinden takip ederek proje ilerlemesini görsel olarak izleyebilirsiniz. Öncelik seviyelerini belirleyebilir ve takım üyelerine görev atayarak işbirliğini kolaylaştırabilirsiniz.
+TaskMallow ile görevlerinizi kolayca oluşturabilir, atayabilir ve takip edebilirsiniz. Atanan görevlerin tamamlanma durumuna göre projelerinizin ilerlemesini takip edebilirsiniz. Öncelik seviyelerini belirleyebilir ve takım üyelerine görev atayarak işbirliğini kolaylaştırabilirsiniz.
 
 İnovasyon Laboratuvarı özelliği sayesinde yaratıcı fikirlerinizi paylaşabilir ve geri bildirim alabilirsiniz. Beyin fırtınası oturumlarına katılarak topluluk üyeleriyle birlikte yaratıcı çözümler üretebilirsiniz. İnovasyon projelerinizi oluşturabilir, ilerlemelerini izleyebilir ve dosyalarınızı paylaşabilirsiniz.
 
-TaskMallow'ın eşleşme özelliği sayesinde, projeleriniz için en uygun görevleri hızla bulabilirsiniz. Yeteneklerinize, önceliklere ve takvimlere dayalı olarak, size en uygun görevleri, projeleri ve aranan kullanıcıları otomatik olarak eşleştirir. Böylece verimliliği artırırken kaynakları etkili bir şekilde kullanabilirsiniz.
+TaskMallow'ın eşleşme özelliği sayesinde, projeleriniz için en uygun ekip arkadaşlarını hızla bulabilirsiniz. Yeteneklere ve önceliklere dayalı olarak, size en uygun projeleri veya projenize en uygun kullanıcıları otomatik olarak eşleştirir. Böylece verimliliği artırırken kaynakları etkili bir şekilde kullanabilirsiniz.
 
 Gerçek zamanlı bildirimlerle size hızlı ve anlık güncellemeler sunar. Proje ilerlemesi ve görev atamalarıyla ilgili bildirimleri kaçırmazsınız. Ayrıca, projelerinizi raporlar ve analizlerle görselleştirerek detaylı bir şekilde değerlendirebilirsiniz.
 
 TaskMallow, işbirliğini teşvik ederken görev yönetimini kolaylaştıran bir platformdur. Ekip üyeleri arasında iletişimi güçlendirir ve yaratıcı çözümlerin ortaya çıkmasını sağlar. İnovasyonu, iş yönetimini ve eşleşme özelliğini bir arada sunan TaskMallow, çalışmalarınızı organize etmek, projelerinizi yönetmek ve inovasyonunuzu ilerletmek için ideal bir araçtır.
 
-Hemen TaskMallow'u deneyin ve iş yönetiminizdeki etkinliği artırın, yaratıcılığınızı ortaya çıkarın ve projelerinizi başarıyla tamamlayın.
+Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yaratıcılığınızı ortaya çıkarın ve projelerinizi başarıyla tamamlayın.
 
 ## Ürün Özellikleri
 
