@@ -10,7 +10,7 @@ Flutter f-52
 * Gülsüm Aktop: Scrum Master
 * Şevval Özdamar : Developer
 * Muhammed Salih Girgin : UI/UX Developer
-* İzzet Yumaev : Developer
+* İzzet Jumaev : Developer
 
 ## Ürün İsmi
 
