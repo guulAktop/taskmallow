@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/localization/language_localization.dart';
-import 'package:taskmallow/pages/login_page.dart';
+import 'package:taskmallow/pages/onboarding_pages/onboarding_page.dart';
 import 'package:taskmallow/routes/router.dart';
 
 void main() {
@@ -64,9 +65,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: "Poppins",
+        primarySwatch: primaryMaterialColor,
       ),
-      home: const LoginPage(),
+      home: const OnBoardingPage(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

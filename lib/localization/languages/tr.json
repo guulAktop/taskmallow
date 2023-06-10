@@ -1,5 +1,15 @@
 {
     "app_name": "Taskmallow",
     "email": "E-posta",
-    "home_page": "Ana Sayfa"
+    "home_page": "Ana Sayfa",
+    "next": "İleri",
+
+
+
+    "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
+    "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",
+    "onboarding_title3": "Zamanı Etkili Kullanın",
+    "onboarding_content1": "İnovasyon özelliği ile yaratıcı fikirlerinizi yakalayın, geliştirin, görselleştirin ve paylaşın. \n\nEşleştirme özelliği aracılığıyla benzer düşünen kişilerle bağlantı kurun ve ortak projeler üzerinde işbirliği yapın.",
+    "onboarding_content2": "Proje Takip özelliği ile projelerinizi zahmetsizce yönetin ve adım adım ilerlerken mucizevi bir dönüşüme tanık olun.",
+    "onboarding_content3": "Görevlerinizi Kontrol Altında Tutun: Görevler oluşturun, onlara öncelik verin ve ilerlemeyi takip edin.\nHadi başlayalım!"
 }
