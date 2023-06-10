@@ -59,48 +59,41 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 generateContainerList(3, currentPageIndex),
-                currentPageIndex == 2
-                    ? ElevatedButton(
-                        style: OutlinedButton.styleFrom(
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))),
-                          padding: const EdgeInsets.all(10),
-                          backgroundColor: primaryColor,
-                        ),
-                        onPressed: () {
-                          if (currentPageIndex < 2) {
-                            _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-                          } else {
-                            Navigator.pushNamed(context, loginPageRoute);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                          child: Text(getTranslated(context, AppKeys.next),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                      )
-                    : ElevatedButton(
-                        style: OutlinedButton.styleFrom(
-                          elevation: 0,
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(10),
-                          backgroundColor: primaryColor,
-                        ),
-                        onPressed: () {
-                          _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-                        },
-                        child: const IconComponent(
-                          iconData: CustomIconData.arrowRight,
-                          size: 30,
-                        ),
-                      ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shape: currentPageIndex == 2 ? const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(50))) : const CircleBorder(),
+                    padding: const EdgeInsets.all(10),
+                    backgroundColor: primaryColor,
+                  ),
+                  onPressed: () {
+                    if (currentPageIndex == 2) {
+                      Navigator.pushNamed(context, loginPageRoute);
+                    } else {
+                      _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+                    }
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: currentPageIndex == 2
+                        ? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                              child: Text(
+                                getTranslated(context, AppKeys.next),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                          )
+                        : const IconComponent(
+                            iconData: CustomIconData.arrowRight,
+                            size: 30,
+                          ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -118,7 +111,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             color: color,
             borderRadius: const BorderRadius.all(Radius.circular(50)),
           ),
-          width: UIHelper.getDeviceWidth(context) / 8,
+          width: UIHelper.getDeviceWidth(context) / 10,
           height: 10,
           margin: const EdgeInsets.all(3),
         );

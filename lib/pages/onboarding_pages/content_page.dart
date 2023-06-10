@@ -30,32 +30,35 @@ class ContentPage extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            child: Text(
-              title,
-              textAlign: TextAlign.start,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    content,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                      fontSize: 16,
+            child: Center(
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      content,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
