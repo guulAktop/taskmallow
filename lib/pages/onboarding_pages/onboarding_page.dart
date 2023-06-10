@@ -71,7 +71,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                   onPressed: () {
                     if (currentPageIndex == 2) {
-                      Navigator.pushNamed(context, loginPageRoute);
+                      Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
                     } else {
                       _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
                     }

@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:taskmallow/pages/authentication_pages/change_password_page.dart';
+import 'package:taskmallow/pages/authentication_pages/forgot_password_page.dart';
+import 'package:taskmallow/pages/authentication_pages/register_page.dart';
+import 'package:taskmallow/pages/authentication_pages/verification_code_page.dart';
 import 'package:taskmallow/pages/home_page.dart';
-import 'package:taskmallow/pages/login_page.dart';
+import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 
 class RouteGenerator {
@@ -45,6 +49,14 @@ class RouteGenerator {
     switch (settings.name) {
       case loginPageRoute:
         return createRoute(const LoginPage(), settings);
+      case registerPageRoute:
+        return createRoute(const RegisterPage(), settings);
+      case forgotPasswordPageRoute:
+        return createRoute(const ForgotPasswordPage(), settings);
+      case changePasswordPageRoute:
+        return createRoute(const ChangePasswordPage(), settings);
+      case verificationCodePageRoute:
+        return createRoute(const VerificationCodePage(), settings);
       case homePageRoute:
         return createRoute(const HomePage(), settings);
       default:
