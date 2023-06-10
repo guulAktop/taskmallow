@@ -1,5 +1,15 @@
 {
     "app_name": "Taskmallow",
     "email": "Email",
-    "home_page": "Home Page"
+    "home_page": "Home Page",
+    "next": "Next",
+
+
+
+    "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
+    "onboarding_title2": "Capture the Magic Moment of Progress",
+    "onboarding_title3": "Use Time Effectively",
+    "onboarding_content1": "Capture, develop, visualize, and share your creative ideas with the innovation feature. \n\nConnect with like-minded individuals through the matching feature and collaborate on joint projects.",
+    "onboarding_content2": "With the Project Tracking feature, effortlessly manage your projects and witness a miraculous transformation as you progress step by step.",
+    "onboarding_content3": "Keep Your Tasks Under Control: Create tasks, prioritize them, and track progress.\nLet's get started then!"
 }

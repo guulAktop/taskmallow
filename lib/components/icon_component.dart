@@ -47,6 +47,7 @@ enum CustomIconWeight {
 }
 
 enum CustomIconData {
+  taskmallow,
   a,
   abacus,
   accentGrave,
