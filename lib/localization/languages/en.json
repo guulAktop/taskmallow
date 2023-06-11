@@ -12,10 +12,17 @@
     "send_code": "Send Code",
     "change_password": "Change Password",
     "password_again": "Password (Again)",
-    "update": "Update",
-    
-    "change_password_content": "Please enter the password you want to\nupdate correctly in the fields below.",
-    "forgot_password_content": "Enter email for change\npassword of your account..",
+    "update": "Update",    
+    "lets_start": "Let's Start",
+    "sign_up_to_manage_your_projects_and_more": "Sign up to manage your projects and more...",
+    "verification_code": "Verification Code",
+    "enter_the_6_digit_code_sent_your_email": "Enter the 6 digit code sent to your email",
+    "check_spam_box": "If you can't see the e-mail in your inbox, check your spam box.",
+    "verify": "Verify",
+    "change_password_content": "Please enter the password you want to update correctly in the fields below.",
+    "forgot_password_content": "Enter email for change password of your account..",
+
+
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
     "onboarding_title3": "Use Time Effectively",

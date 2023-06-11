@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
+
+import '../../constants/string_constants.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -12,10 +15,14 @@ class RegisterPage extends StatefulWidget {
   State<StatefulWidget> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver {
-  final TextEditingController _emailTextEditingController = TextEditingController();
-  final TextEditingController _passwordTextEditingController = TextEditingController();
-  final TextEditingController _passwordAgainTextEditingController = TextEditingController();
+class _RegisterPageState extends State<RegisterPage>
+    with WidgetsBindingObserver {
+  final TextEditingController _emailTextEditingController =
+      TextEditingController();
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController();
+  final TextEditingController _passwordAgainTextEditingController =
+      TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
@@ -33,7 +40,8 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
   void didChangeMetrics() {
     super.didChangeMetrics();
     setState(() {
-      final keyboardVisible = WidgetsBinding.instance.window.viewInsets.bottom != 0.0;
+      final keyboardVisible =
+          WidgetsBinding.instance.window.viewInsets.bottom != 0.0;
       isKeyboardVisible = keyboardVisible;
     });
   }
@@ -53,19 +61,19 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(),
-                  const Text(
-                    "Lets start!",
+                  Text(
+                    getTranslated(context, AppKeys.letsStart),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 38,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text(
-                    "Sign up to manage your projects and more...",
+                  Text(
+                    getTranslated(context, AppKeys.signUpToManage),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: midTitleColor,
                       fontSize: 22,
                     ),
@@ -78,9 +86,10 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                     context: context,
                     textEditingController: _emailTextEditingController,
                     focusNode: _focusNode1,
-                    onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
+                    onSubmitted: (p0) =>
+                        FocusScope.of(context).requestFocus(_focusNode2),
                     textInputAction: TextInputAction.next,
-                    hintText: "Email",
+                    hintText: getTranslated(context, AppKeys.email),
                     keyboardType: TextInputType.emailAddress,
                     validator: (emailText) {
                       return null;
@@ -92,10 +101,11 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                     textEditingController: _passwordTextEditingController,
                     isPassword: true,
                     focusNode: _focusNode2,
-                    hintText: "Password",
+                    hintText: getTranslated(context, AppKeys.password),
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.next,
-                    onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode3),
+                    onSubmitted: (p0) =>
+                        FocusScope.of(context).requestFocus(_focusNode3),
                     validator: (passwordText) {
                       return null;
                     },
@@ -106,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                     textEditingController: _passwordAgainTextEditingController,
                     isPassword: true,
                     focusNode: _focusNode3,
-                    hintText: "Password (Again)",
+                    hintText: getTranslated(context, AppKeys.passwordAgain),
                     keyboardType: TextInputType.visiblePassword,
                     validator: (passwordText) {
                       return null;
@@ -114,13 +124,15 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                   ),
                   const SizedBox(height: 20),
                   ButtonComponent(
-                    text: "Sign Up",
+                    text: getTranslated(context, AppKeys.signUp),
                     isWide: true,
                     isLoading: _isLoading,
                     onPressed: _isLoading
                         ? null
                         : () {
-                            debugPrint(WidgetsBinding.instance.window.viewInsets.bottom.toString());
+                            debugPrint(WidgetsBinding
+                                .instance.window.viewInsets.bottom
+                                .toString());
                             _login();
                           },
                   ),
@@ -149,7 +161,8 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (_, __, ___) => const LoginPage(),
+                                        pageBuilder: (_, __, ___) =>
+                                            const LoginPage(),
                                         transitionDuration: Duration.zero,
                                       ),
                                       (route) => false);
@@ -158,12 +171,13 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                                   padding: const EdgeInsets.all(20),
                                   decoration: const BoxDecoration(
                                     color: Colors.transparent,
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
                                   ),
-                                  child: const Text(
-                                    "Sign In",
+                                  child: Text(
+                                    getTranslated(context, AppKeys.signIn),
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 20,
                                     ),
                                   ),
@@ -175,9 +189,14 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                                 padding: const EdgeInsets.all(20),
                                 decoration: const BoxDecoration(
                                   color: primaryColor,
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
                                 ),
-                                child: const Text("Sign Up", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white)),
+                                child: Text(
+                                    getTranslated(context, AppKeys.signUp),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 20, color: Colors.white)),
                               ),
                             ),
                           ],

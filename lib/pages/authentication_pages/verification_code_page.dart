@@ -9,6 +9,9 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
+import '../../constants/string_constants.dart';
+import '../../localization/app_localization.dart';
+
 class VerificationCodePage extends StatefulWidget {
   const VerificationCodePage({Key? key}) : super(key: key);
 
@@ -49,18 +52,19 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     return BaseScaffoldWidget(
       appBarBackgroundColor: Colors.transparent,
       popScopeFunction: _isLoading ? () async => false : () async => true,
-      title: "Verification Code",
+      title: getTranslated(context, AppKeys.verificationCode),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
+        icon: const IconComponent(
+            iconData: CustomIconData.chevronLeft, color: Colors.black),
         onPressed: () => _isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
         const Spacer(),
-        const Text(
-          "Enter the 6 digit code\nsent to your email",
+        Text(
+          getTranslated(context, AppKeys.enterThe6Digit),
           textAlign: TextAlign.center,
-          style: TextStyle(color: primaryColor, fontSize: 16),
+          style: const TextStyle(color: primaryColor, fontSize: 16),
         ),
         const SizedBox(height: 20),
         Form(
@@ -79,12 +83,14 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
         ),
         const SizedBox(height: 20),
         Container(
-          decoration: BoxDecoration(color: primaryColor.withOpacity(0.2), borderRadius: const BorderRadius.all(Radius.circular(10))),
+          decoration: BoxDecoration(
+              color: primaryColor.withOpacity(0.2),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: const [
-                Padding(
+              children: [
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: IconComponent(
                     iconData: CustomIconData.circleInfo,
@@ -93,9 +99,9 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
                 ),
                 Expanded(
                   child: Text(
-                    "checkSpambox",
+                    getTranslated(context, AppKeys.checkSpamBox),
                     textAlign: TextAlign.left,
-                    style: TextStyle(color: primaryColor),
+                    style: const TextStyle(color: primaryColor),
                   ),
                 ),
               ],
@@ -105,7 +111,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
         const SizedBox(height: 20),
         ButtonComponent(
           isWide: true,
-          text: "Verify",
+          text: getTranslated(context, AppKeys.verify),
           isLoading: _isLoading,
           onPressed: () {
             Navigator.pushNamed(context, changePasswordPageRoute);
@@ -128,19 +134,22 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     debugPrint("code: $enteredCode");
   }
 
-  getDigitField(int index, TextEditingController textEditingController, FocusNode focusNode) {
+  getDigitField(int index, TextEditingController textEditingController,
+      FocusNode focusNode) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: SizedBox(
         width: UIHelper.getDeviceWidth(context) / 8,
         child: TextFormField(
-          toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
+          toolbarOptions: const ToolbarOptions(
+              copy: false, cut: false, paste: false, selectAll: false),
           enableInteractiveSelection: false,
           showCursor: false,
           focusNode: focusNode,
           controller: textEditingController,
           onTap: () {
-            textEditingController.selection = TextSelection.collapsed(offset: textEditingController.text.length);
+            textEditingController.selection = TextSelection.collapsed(
+                offset: textEditingController.text.length);
           },
           onChanged: (value) {
             if (textEditingController.text.isNotEmpty) {
@@ -179,13 +188,18 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
           },
           cursorColor: primaryColor,
           decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: primaryColor, width: 2)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: primaryColor, width: 2)),
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.all(0),
           ),
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: primaryColor),
+          style: const TextStyle(
+              fontSize: 30, fontWeight: FontWeight.bold, color: primaryColor),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           textAlign: TextAlign.center,
           keyboardType: const TextInputType.numberWithOptions(signed: true),

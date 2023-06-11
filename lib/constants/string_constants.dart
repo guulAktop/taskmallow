@@ -13,6 +13,12 @@ class AppKeys {
   static String changePassword = 'change_password';
   static String passwordAgain = 'password_again';
   static String update = 'update';
+  static String letsStart = 'lets_start';
+  static String signUpToManage = 'sign_up_to_manage_your_projects_and_more';
+  static String verificationCode = 'verification_code';
+  static String enterThe6Digit = 'enter_the_6_digit_code_sent_your_email';
+  static String checkSpamBox = 'check_spam_box';
+  static String verify = 'verify';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";
