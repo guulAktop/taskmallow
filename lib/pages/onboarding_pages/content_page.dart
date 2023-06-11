@@ -21,18 +21,17 @@ class ContentPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRect(
-            child: AspectRatio(
-              aspectRatio: UIHelper.getDeviceHeight(context) / 1.25 > UIHelper.getDeviceWidth(context) ? 1 : 2,
-              child: Image.asset(
-                fit: BoxFit.cover,
-                imageAsset,
-              ),
-            ),
+          Image.asset(
+            alignment: Alignment.bottomCenter,
+            height: UIHelper.getDeviceHeight(context) / 2,
+            width: UIHelper.getDeviceWidth(context),
+            fit: BoxFit.cover,
+            imageAsset,
           ),
           Expanded(
             child: Center(
               child: ListView(
+                physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(0),
                 children: [

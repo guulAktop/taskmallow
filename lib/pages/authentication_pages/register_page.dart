@@ -15,14 +15,10 @@ class RegisterPage extends StatefulWidget {
   State<StatefulWidget> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage>
-    with WidgetsBindingObserver {
-  final TextEditingController _emailTextEditingController =
-      TextEditingController();
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController();
-  final TextEditingController _passwordAgainTextEditingController =
-      TextEditingController();
+class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver {
+  final TextEditingController _emailTextEditingController = TextEditingController();
+  final TextEditingController _passwordTextEditingController = TextEditingController();
+  final TextEditingController _passwordAgainTextEditingController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
@@ -40,8 +36,7 @@ class _RegisterPageState extends State<RegisterPage>
   void didChangeMetrics() {
     super.didChangeMetrics();
     setState(() {
-      final keyboardVisible =
-          WidgetsBinding.instance.window.viewInsets.bottom != 0.0;
+      final keyboardVisible = WidgetsBinding.instance.window.viewInsets.bottom != 0.0;
       isKeyboardVisible = keyboardVisible;
     });
   }
@@ -86,8 +81,7 @@ class _RegisterPageState extends State<RegisterPage>
                     context: context,
                     textEditingController: _emailTextEditingController,
                     focusNode: _focusNode1,
-                    onSubmitted: (p0) =>
-                        FocusScope.of(context).requestFocus(_focusNode2),
+                    onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
                     textInputAction: TextInputAction.next,
                     hintText: getTranslated(context, AppKeys.email),
                     keyboardType: TextInputType.emailAddress,
@@ -104,8 +98,7 @@ class _RegisterPageState extends State<RegisterPage>
                     hintText: getTranslated(context, AppKeys.password),
                     keyboardType: TextInputType.visiblePassword,
                     textInputAction: TextInputAction.next,
-                    onSubmitted: (p0) =>
-                        FocusScope.of(context).requestFocus(_focusNode3),
+                    onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode3),
                     validator: (passwordText) {
                       return null;
                     },
@@ -130,15 +123,11 @@ class _RegisterPageState extends State<RegisterPage>
                     onPressed: _isLoading
                         ? null
                         : () {
-                            debugPrint(WidgetsBinding
-                                .instance.window.viewInsets.bottom
-                                .toString());
+                            debugPrint(WidgetsBinding.instance.window.viewInsets.bottom.toString());
                             _login();
                           },
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 20),
                   const Spacer(),
                   Visibility(
                     visible: !isKeyboardVisible,
@@ -161,8 +150,7 @@ class _RegisterPageState extends State<RegisterPage>
                                   Navigator.pushAndRemoveUntil(
                                       context,
                                       PageRouteBuilder(
-                                        pageBuilder: (_, __, ___) =>
-                                            const LoginPage(),
+                                        pageBuilder: (_, __, ___) => const LoginPage(),
                                         transitionDuration: Duration.zero,
                                       ),
                                       (route) => false);
@@ -171,14 +159,16 @@ class _RegisterPageState extends State<RegisterPage>
                                   padding: const EdgeInsets.all(20),
                                   decoration: const BoxDecoration(
                                     color: Colors.transparent,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
                                   ),
-                                  child: Text(
-                                    getTranslated(context, AppKeys.signIn),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      getTranslated(context, AppKeys.signIn),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -189,21 +179,26 @@ class _RegisterPageState extends State<RegisterPage>
                                 padding: const EdgeInsets.all(20),
                                 decoration: const BoxDecoration(
                                   color: primaryColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
-                                child: Text(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
                                     getTranslated(context, AppKeys.signUp),
-                                    textAlign: TextAlign.center,
+                                    softWrap: false,
                                     style: const TextStyle(
-                                        fontSize: 20, color: Colors.white)),
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

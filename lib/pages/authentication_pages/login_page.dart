@@ -127,9 +127,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                             _login();
                           },
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 20),
                   const Spacer(),
                   Visibility(
                     visible: !isKeyboardVisible,
@@ -151,12 +149,15 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                                   color: primaryColor,
                                   borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
-                                child: Text(
-                                  getTranslated(context, AppKeys.signIn),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    getTranslated(context, AppKeys.signIn),
+                                    softWrap: false,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -180,11 +181,14 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                                     color: Colors.transparent,
                                     borderRadius: BorderRadius.all(Radius.circular(20)),
                                   ),
-                                  child: Text(
-                                    getTranslated(context, AppKeys.signUp),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      getTranslated(context, AppKeys.signUp),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                 ),
