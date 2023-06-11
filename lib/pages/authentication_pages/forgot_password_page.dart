@@ -5,6 +5,8 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
@@ -16,7 +18,8 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController _emailTextEditingController = TextEditingController();
+  final TextEditingController _emailTextEditingController =
+      TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String emailArg = "";
@@ -27,7 +30,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     _isLoading = false;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.red, // StatusBar (durum çubuğu) rengi
-      statusBarIconBrightness: Brightness.light, // StatusBar (durum çubuğu) ikon rengi
+      statusBarIconBrightness:
+          Brightness.light, // StatusBar (durum çubuğu) ikon rengi
     ));
   }
 
@@ -42,10 +46,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return BaseScaffoldWidget(
         popScopeFunction: _isLoading ? () async => false : () async => true,
         appBarBackgroundColor: Colors.transparent,
-        title: "Forgot Password?",
+        title: getTranslated(context, AppKeys.forgotPassword),
         leadingWidget: IconButton(
           splashRadius: AppConstants.iconSplashRadius,
-          icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
+          icon: const IconComponent(
+              iconData: CustomIconData.chevronLeft, color: Colors.black),
           onPressed: () => _isLoading ? null : Navigator.pop(context),
         ),
         widgetList: [
@@ -58,16 +63,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    const Text(
-                      "Enter email for change\npassword of your account..",
+                    Text(
+                      getTranslated(context, AppKeys.forgotPasswordContent),
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: primaryColor, fontSize: 16),
+                      style: const TextStyle(color: primaryColor, fontSize: 16),
                     ),
                     const SizedBox(height: 20),
                     TextFormFieldComponent(
                       context: context,
                       textEditingController: _emailTextEditingController,
-                      hintText: "Email",
+                      hintText: getTranslated(context, AppKeys.email),
                       keyboardType: TextInputType.emailAddress,
                       validator: (emailText) {
                         return null;
@@ -77,13 +82,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       height: 20,
                     ),
                     ButtonComponent(
-                      text: "Send Code",
+                      text: getTranslated(context, AppKeys.sendCode),
                       isWide: true,
                       isLoading: _isLoading,
                       onPressed: _isLoading
                           ? null
                           : () async {
-                              Navigator.pushNamed(context, verificationCodePageRoute);
+                              Navigator.pushNamed(
+                                  context, verificationCodePageRoute);
                               if (_loginFormKey.currentState!.validate()) {}
                             },
                     ),

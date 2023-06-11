@@ -9,9 +9,13 @@
     "forgot_password": "Forgot Password",
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
-
-
-
+    "send_code": "Send Code",
+    "change_password": "Change Password",
+    "password_again": "Password (Again)",
+    "update": "Update",
+    
+    "change_password_content": "Please enter the password you want to\nupdate correctly in the fields below.",
+    "forgot_password_content": "Enter email for change\npassword of your account..",
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
     "onboarding_title3": "Use Time Effectively",

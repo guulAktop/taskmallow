@@ -4,6 +4,8 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
@@ -15,8 +17,10 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final TextEditingController _passwordTextEditingController = TextEditingController();
-  final TextEditingController _confirmPasswordTextEditingController = TextEditingController();
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController();
+  final TextEditingController _confirmPasswordTextEditingController =
+      TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
@@ -33,10 +37,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return BaseScaffoldWidget(
       appBarBackgroundColor: Colors.transparent,
       popScopeFunction: _isLoading ? () async => false : () async => true,
-      title: "Change Password",
+      title: getTranslated(context, AppKeys.changePassword),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
+        icon: const IconComponent(
+            iconData: CustomIconData.chevronLeft, color: Colors.black),
         onPressed: () => _isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
@@ -49,20 +54,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(),
-                  const Text(
-                    "Please enter the password you want to\nupdate correctly in the fields below.",
+                  Text(
+                    getTranslated(context, AppKeys.changePasswordContent),
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: primaryColor, fontSize: 16),
+                    style: const TextStyle(color: primaryColor, fontSize: 16),
                   ),
                   const SizedBox(height: 10),
                   TextFormFieldComponent(
                     context: context,
                     textEditingController: _passwordTextEditingController,
                     focusNode: _focusNode1,
-                    onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
+                    onSubmitted: (p0) =>
+                        FocusScope.of(context).requestFocus(_focusNode2),
                     textInputAction: TextInputAction.next,
                     isPassword: true,
-                    hintText: "Password",
+                    hintText: getTranslated(context, AppKeys.password),
                     keyboardType: TextInputType.visiblePassword,
                     validator: (passwordText) {
                       return null;
@@ -71,10 +77,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   const SizedBox(height: 10),
                   TextFormFieldComponent(
                     context: context,
-                    textEditingController: _confirmPasswordTextEditingController,
+                    textEditingController:
+                        _confirmPasswordTextEditingController,
                     focusNode: _focusNode2,
                     isPassword: true,
-                    hintText: "Password (Again)",
+                    hintText: getTranslated(context, AppKeys.passwordAgain),
                     keyboardType: TextInputType.visiblePassword,
                     validator: (passwordText) {
                       return null;
@@ -82,7 +89,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                   const SizedBox(height: 20),
                   ButtonComponent(
-                    text: "Update",
+                    text: getTranslated(context, AppKeys.update),
                     isWide: true,
                     isLoading: _isLoading,
                     onPressed: _isLoading
@@ -103,6 +110,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   _update() {
-    Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+        context, loginPageRoute, (route) => false);
   }
 }

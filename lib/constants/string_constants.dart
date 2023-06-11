@@ -9,7 +9,13 @@ class AppKeys {
   static String forgotPassword = 'forgot_password';
   static String signIn = 'sign_in';
   static String signUp = 'sign_up';
+  static String sendCode = 'send_code';
+  static String changePassword = 'change_password';
+  static String passwordAgain = 'password_again';
+  static String update = 'update';
 
+  static String changePasswordContent = 'change_password_content';
+  static String forgotPasswordContent = "forgot_password_content";
   static String onboardingTitle1 = 'onboarding_title1';
   static String onboardingTitle2 = 'onboarding_title2';
   static String onboardingTitle3 = 'onboarding_title3';
