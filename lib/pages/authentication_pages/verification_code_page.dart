@@ -55,8 +55,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
       title: getTranslated(context, AppKeys.verificationCode),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(
-            iconData: CustomIconData.chevronLeft, color: Colors.black),
+        icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
         onPressed: () => _isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
@@ -83,9 +82,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
         ),
         const SizedBox(height: 20),
         Container(
-          decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.2),
-              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          decoration: BoxDecoration(color: primaryColor.withOpacity(0.2), borderRadius: const BorderRadius.all(Radius.circular(10))),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -134,22 +131,19 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     debugPrint("code: $enteredCode");
   }
 
-  getDigitField(int index, TextEditingController textEditingController,
-      FocusNode focusNode) {
+  getDigitField(int index, TextEditingController textEditingController, FocusNode focusNode) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 5),
       child: SizedBox(
-        width: UIHelper.getDeviceWidth(context) / 8,
+        width: UIHelper.getDeviceWidth(context) / 9,
         child: TextFormField(
-          toolbarOptions: const ToolbarOptions(
-              copy: false, cut: false, paste: false, selectAll: false),
+          toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
           enableInteractiveSelection: false,
           showCursor: false,
           focusNode: focusNode,
           controller: textEditingController,
           onTap: () {
-            textEditingController.selection = TextSelection.collapsed(
-                offset: textEditingController.text.length);
+            textEditingController.selection = TextSelection.collapsed(offset: textEditingController.text.length);
           },
           onChanged: (value) {
             if (textEditingController.text.isNotEmpty) {
@@ -186,22 +180,17 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
               }
             });
           },
+          textAlign: TextAlign.center,
           cursorColor: primaryColor,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: primaryColor, width: 2)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: primaryColor, width: 2)),
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.all(0),
           ),
-          style: const TextStyle(
-              fontSize: 30, fontWeight: FontWeight.bold, color: primaryColor),
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: primaryColor),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          textAlign: TextAlign.center,
           keyboardType: const TextInputType.numberWithOptions(signed: true),
         ),
       ),

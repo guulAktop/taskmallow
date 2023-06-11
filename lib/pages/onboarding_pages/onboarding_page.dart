@@ -33,30 +33,38 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       body: Column(
         children: [
           Expanded(
-              child: PageView(
-            onPageChanged: (value) {
-              setState(() {
-                currentPageIndex = value;
-              });
+              child: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (OverscrollIndicatorNotification overscroll) {
+              overscroll.disallowIndicator();
+              return true;
             },
-            controller: _controller,
-            children: [
-              ContentPage(
-                  title: getTranslated(context, AppKeys.onboardingTitle1),
-                  content: getTranslated(context, AppKeys.onboardingContent1),
-                  imageAsset: ImageAssetKeys.onboarding1),
-              ContentPage(
-                  title: getTranslated(context, AppKeys.onboardingTitle2),
-                  content: getTranslated(context, AppKeys.onboardingContent2),
-                  imageAsset: ImageAssetKeys.onboarding2),
-              ContentPage(
-                  title: getTranslated(context, AppKeys.onboardingTitle3),
-                  content: getTranslated(context, AppKeys.onboardingContent3),
-                  imageAsset: ImageAssetKeys.onboarding3),
-            ],
+            child: PageView(
+              scrollDirection: Axis.horizontal,
+              physics: const ClampingScrollPhysics(),
+              onPageChanged: (value) {
+                setState(() {
+                  currentPageIndex = value;
+                });
+              },
+              controller: _controller,
+              children: [
+                ContentPage(
+                    title: getTranslated(context, AppKeys.onboardingTitle1),
+                    content: getTranslated(context, AppKeys.onboardingContent1),
+                    imageAsset: ImageAssetKeys.onboarding1),
+                ContentPage(
+                    title: getTranslated(context, AppKeys.onboardingTitle2),
+                    content: getTranslated(context, AppKeys.onboardingContent2),
+                    imageAsset: ImageAssetKeys.onboarding2),
+                ContentPage(
+                    title: getTranslated(context, AppKeys.onboardingTitle3),
+                    content: getTranslated(context, AppKeys.onboardingContent3),
+                    imageAsset: ImageAssetKeys.onboarding3),
+              ],
+            ),
           )),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            padding: EdgeInsets.all(UIHelper.getDeviceHeight(context) < 400 ? 10 : 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,14 +85,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     }
                   },
                   child: SizedBox(
-                    height: 50,
+                    height: UIHelper.getDeviceHeight(context) < 400 ? 25 : 50,
                     child: currentPageIndex == 2
                         ? Center(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                               child: Text(
                                 getTranslated(context, AppKeys.next),
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: UIHelper.getDeviceHeight(context) < 400 ? 15 : 20),
                               ),
                             ),
                           )
