@@ -9,9 +9,13 @@
     "forgot_password": "Şifremi Unuttum",
     "sign_in": "Giriş Yap",
     "sign_up": "Kaydol",
-
-
-
+    "send_code": "Kodu Gönder",
+    "change_password": "Şifre Değiştir",
+    "password_again": "Şifre (Tekrar)",
+    "update": "Güncelle",
+    
+    "change_password_content": "Lütfen güncellemek istediğiniz şifreyi \naşağıdaki alanlara doğru bir şekilde giriniz.",
+    "forgot_password_content": "Hesabınızın şifresini \ndeğiştirmek için e-posta'nızı giriniz...",
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",
     "onboarding_title3": "Zamanı Etkili Kullanın",
