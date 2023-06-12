@@ -186,7 +186,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: primaryColor, width: 2)),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: containerColor,
             contentPadding: const EdgeInsets.all(0),
           ),
           style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: primaryColor),
