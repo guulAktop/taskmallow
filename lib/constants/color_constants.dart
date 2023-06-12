@@ -18,8 +18,9 @@ MaterialColor primaryMaterialColor = const MaterialColor(
 
 const Color primaryColor = Color(0xFF0079FF);
 const Color secondaryColor = Color(0xFFB3D7FF);
-const Color backgroundColor = Color(0xFFE6F2FF);
+const Color backgroundColor = Color(0xFFFFFFFF);
 const Color midTitleColor = Color(0xFF66AFFF);
+const Color containerColor = Color(0xFFE6F2FF);
 
 const Color danger = Color(0xFFFF4444);
 const Color dangerDark = Color(0xFFCC0000);
