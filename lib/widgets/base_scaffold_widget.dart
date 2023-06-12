@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 
 class BaseScaffoldWidget extends StatelessWidget {
@@ -36,7 +37,7 @@ class BaseScaffoldWidget extends StatelessWidget {
     this.leftPadding = 10,
     this.actionList,
     this.popScopeFunction,
-    this.appBarBackgroundColor = primaryColor,
+    this.appBarBackgroundColor = Colors.transparent,
   }) : super(key: key);
 
   defaultFunction() {
@@ -54,6 +55,11 @@ class BaseScaffoldWidget extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         appBar: hasAppBar
             ? AppBar(
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: Brightness.dark,
+                  statusBarBrightness: Brightness.light,
+                ),
                 backgroundColor: appBarBackgroundColor,
                 toolbarHeight: toolbarHeight,
                 elevation: 0,

@@ -70,7 +70,6 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
     return Padding(
       padding: EdgeInsets.only(top: widget.topPadding, bottom: widget.bottomPadding, right: widget.rightPadding, left: widget.leftPadding),
       child: TextFormField(
-        // toolbarOptions: const ToolbarOptions(),
         textAlignVertical: TextAlignVertical.top,
         textAlign: widget.textAlign,
         expands: widget.maxLines == null ? true : false,
@@ -121,7 +120,7 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
                 )
               : null,
           hintText: widget.hintText,
-          fillColor: widget.itemBackgroundColor ?? Colors.white,
+          fillColor: widget.itemBackgroundColor ?? containerColor,
           filled: true,
           suffixIcon: widget.isPassword == true
               ? InkWell(

@@ -18,8 +18,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final TextEditingController _emailTextEditingController =
-      TextEditingController();
+  final TextEditingController _emailTextEditingController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String emailArg = "";
@@ -30,8 +29,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     _isLoading = false;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.red, // StatusBar (durum çubuğu) rengi
-      statusBarIconBrightness:
-          Brightness.light, // StatusBar (durum çubuğu) ikon rengi
+      statusBarIconBrightness: Brightness.light, // StatusBar (durum çubuğu) ikon rengi
     ));
   }
 
@@ -49,8 +47,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         title: getTranslated(context, AppKeys.forgotPassword),
         leadingWidget: IconButton(
           splashRadius: AppConstants.iconSplashRadius,
-          icon: const IconComponent(
-              iconData: CustomIconData.chevronLeft, color: Colors.black),
+          icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
           onPressed: () => _isLoading ? null : Navigator.pop(context),
         ),
         widgetList: [
@@ -88,8 +85,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       onPressed: _isLoading
                           ? null
                           : () async {
-                              Navigator.pushNamed(
-                                  context, verificationCodePageRoute);
+                              Navigator.pushNamed(context, verificationCodePageRoute);
                               if (_loginFormKey.currentState!.validate()) {}
                             },
                     ),

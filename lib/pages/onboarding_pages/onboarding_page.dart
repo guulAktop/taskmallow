@@ -113,7 +113,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget generateContainerList(int pageCount, int currentIndex) {
     return Row(
       children: List<Widget>.generate(pageCount, (index) {
-        Color color = index == currentIndex ? primaryColor : secondaryColor;
+        Color color = index == currentIndex ? primaryColor : containerColor;
         return Container(
           decoration: BoxDecoration(
             color: color,

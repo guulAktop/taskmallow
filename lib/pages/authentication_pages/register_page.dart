@@ -15,7 +15,7 @@ class RegisterPage extends StatefulWidget {
   State<StatefulWidget> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
   final TextEditingController _passwordAgainTextEditingController = TextEditingController();
@@ -24,7 +24,6 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  bool isKeyboardVisible = false;
 
   @override
   void initState() {
@@ -33,16 +32,8 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
   }
 
   @override
-  void didChangeMetrics() {
-    super.didChangeMetrics();
-    setState(() {
-      final keyboardVisible = WidgetsBinding.instance.window.viewInsets.bottom != 0.0;
-      isKeyboardVisible = keyboardVisible;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    bool isKeyboardVisible = MediaQuery.of(context).viewInsets.vertical > 0;
     return BaseScaffoldWidget(
       popScopeFunction: _isLoading ? () async => false : () async => true,
       toolbarHeight: 0,
@@ -135,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> with WidgetsBindingObserver
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: Colors.white,
+                          color: containerColor,
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Row(
