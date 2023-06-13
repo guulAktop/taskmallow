@@ -19,6 +19,14 @@ class AppKeys {
   static String enterThe6Digit = 'enter_the_6_digit_code_sent_your_email';
   static String checkSpamBox = 'check_spam_box';
   static String verify = 'verify';
+  static String editProfile = 'edit_profile';
+  static String done = 'done';
+  static String name = 'name';
+  static String surname = 'surname';
+  static String bio = 'bio';
+  static String dateofBirth = 'date_of_birth';
+  static String gender = 'gender';
+  static String links = 'links';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";
