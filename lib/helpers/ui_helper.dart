@@ -8,4 +8,8 @@ class UIHelper {
   static double getDeviceWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
+
+  static isDevicePortrait(BuildContext context) {
+    return MediaQuery.of(context).orientation == Orientation.portrait ? true : false;
+  }
 }

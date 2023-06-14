@@ -51,7 +51,7 @@ class BaseScaffoldWidget extends StatelessWidget {
         return popScopeFunction == null ? defaultFunction() : popScopeFunction!();
       },
       child: Scaffold(
-        backgroundColor: backgroundColor,
+        backgroundColor: appBackgroundLightColor,
         resizeToAvoidBottomInset: true,
         appBar: hasAppBar
             ? AppBar(
@@ -85,6 +85,7 @@ class BaseScaffoldWidget extends StatelessWidget {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,

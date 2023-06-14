@@ -21,12 +21,17 @@ class AppKeys {
   static String verify = 'verify';
   static String editProfile = 'edit_profile';
   static String done = 'done';
-  static String name = 'name';
-  static String surname = 'surname';
+  static String firstName = 'first_name';
+  static String lastName = 'last_name';
   static String bio = 'bio';
-  static String dateofBirth = 'date_of_birth';
+  static String dateOfBirth = 'date_of_birth';
   static String gender = 'gender';
   static String links = 'links';
+  static String enterFirstName = 'enter_first_name';
+  static String enterLastName = 'enter_last_name';
+  static String male = 'male';
+  static String female = 'female';
+  static String iDoNotWantToSpecify = 'i_do_not_want_to_specify';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";

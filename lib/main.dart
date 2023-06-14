@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/shared_preferences_constants.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/localization/language_localization.dart';
 import 'package:taskmallow/pages/onboarding_pages/onboarding_page.dart';
 import 'package:taskmallow/routes/router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
@@ -24,24 +27,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale? _locale;
-  setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     SharedPreferencesHelper(WidgetsBinding.instance.window.locale).getSettingsSharedPreferencesValues();
+    debugPrint(SharedPreferencesConstants.appLanguageCode);
+  }
+
+  Locale? _locale;
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+      debugPrint("locale : $locale");
+    });
   }
 
   @override
   void didChangeDependencies() {
+    SharedPreferencesHelper(WidgetsBinding.instance.window.locale).getSettingsSharedPreferencesValues();
     getLocale().then((locale) {
       setState(() {
         _locale = locale;
+        debugPrint(locale.languageCode.toString());
       });
     });
     super.didChangeDependencies();
@@ -49,6 +56,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       locale: _locale,
       supportedLocales: const [
@@ -70,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         return supportedLocales.first;
       },
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Taskmallow',
       theme: ThemeData(
         fontFamily: "Poppins",
         primarySwatch: primaryMaterialColor,

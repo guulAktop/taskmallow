@@ -17,7 +17,7 @@ class ContentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: backgroundColor,
+      color: appBackgroundLightColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

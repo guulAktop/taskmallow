@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../constants/shared_preferences_constants.dart';
+import 'package:taskmallow/constants/shared_preferences_constants.dart';
 
 const String languageCode = 'languageCode';
 const String english = 'en';
@@ -10,11 +9,11 @@ const String turkish = 'tr';
 Locale _locale(String languageCode) {
   switch (languageCode) {
     case english:
-      return const Locale(english, 'US');
+      return const Locale(english, "EN");
     case turkish:
       return const Locale(turkish, "TR");
     default:
-      return const Locale(english, "US");
+      return const Locale(turkish, "TR");
   }
 }
 

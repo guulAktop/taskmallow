@@ -23,12 +23,20 @@
     "forgot_password_content": "Enter email for change password of your account..",
     "edit_profile": "Edit Profile",
     "done": "Done",
-    "name": "Name",
-    "surname": "Surname",
+    "first_name": "First Name",
+    "last_name": "Last Name",
     "bio": "Bio",
     "date_of_birth": "Date of birth",
     "gender": "Gender",
     "links": "Links",
+    "enter_first_name":"Please enter your first name.",
+    "enter_last_name":"Please enter your last name.",
+    "male":"Male",
+    "female":"Female",
+    "i_do_not_want_to_specify":"I do not want to specify",
+
+
+    
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
     "onboarding_title3": "Use Time Effectively",
