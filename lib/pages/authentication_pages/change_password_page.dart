@@ -17,10 +17,8 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController();
-  final TextEditingController _confirmPasswordTextEditingController =
-      TextEditingController();
+  final TextEditingController _passwordTextEditingController = TextEditingController();
+  final TextEditingController _confirmPasswordTextEditingController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
@@ -40,68 +38,62 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       title: getTranslated(context, AppKeys.changePassword),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(
-            iconData: CustomIconData.chevronLeft, color: Colors.black),
+        icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
         onPressed: () => _isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Form(
-              key: _loginFormKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Text(
-                    getTranslated(context, AppKeys.changePasswordContent),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: primaryColor, fontSize: 16),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormFieldComponent(
-                    context: context,
-                    textEditingController: _passwordTextEditingController,
-                    focusNode: _focusNode1,
-                    onSubmitted: (p0) =>
-                        FocusScope.of(context).requestFocus(_focusNode2),
-                    textInputAction: TextInputAction.next,
-                    isPassword: true,
-                    hintText: getTranslated(context, AppKeys.password),
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (passwordText) {
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormFieldComponent(
-                    context: context,
-                    textEditingController:
-                        _confirmPasswordTextEditingController,
-                    focusNode: _focusNode2,
-                    isPassword: true,
-                    hintText: getTranslated(context, AppKeys.passwordAgain),
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (passwordText) {
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ButtonComponent(
-                    text: getTranslated(context, AppKeys.update),
-                    isWide: true,
-                    isLoading: _isLoading,
-                    onPressed: _isLoading
-                        ? null
-                        : () {
-                            _update();
-                          },
-                  ),
-                  const SizedBox(height: 20),
-                  const Spacer(),
-                ],
-              ),
+          child: Form(
+            key: _loginFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                Text(
+                  getTranslated(context, AppKeys.changePasswordContent),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: primaryColor, fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+                TextFormFieldComponent(
+                  context: context,
+                  textEditingController: _passwordTextEditingController,
+                  focusNode: _focusNode1,
+                  onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
+                  textInputAction: TextInputAction.next,
+                  isPassword: true,
+                  hintText: getTranslated(context, AppKeys.password),
+                  keyboardType: TextInputType.visiblePassword,
+                  validator: (passwordText) {
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormFieldComponent(
+                  context: context,
+                  textEditingController: _confirmPasswordTextEditingController,
+                  focusNode: _focusNode2,
+                  isPassword: true,
+                  hintText: getTranslated(context, AppKeys.passwordAgain),
+                  keyboardType: TextInputType.visiblePassword,
+                  validator: (passwordText) {
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                ButtonComponent(
+                  text: getTranslated(context, AppKeys.update),
+                  isWide: true,
+                  isLoading: _isLoading,
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          _update();
+                        },
+                ),
+                const SizedBox(height: 20),
+                const Spacer(),
+              ],
             ),
           ),
         )
@@ -110,7 +102,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   _update() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, loginPageRoute, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
   }
 }

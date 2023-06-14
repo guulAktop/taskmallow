@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskmallow/components/icon_component.dart';
+import 'package:taskmallow/components/text_component.dart';
 import '../constants/color_constants.dart';
 
 class TextFormFieldComponent extends StatefulWidget {
@@ -8,6 +9,7 @@ class TextFormFieldComponent extends StatefulWidget {
   final TextEditingController textEditingController;
   final TextInputType keyboardType;
   final CustomIconData? iconData;
+  final String? prefixText;
   final String? hintText;
   final bool readOnly;
   final bool enabled;
@@ -26,6 +28,7 @@ class TextFormFieldComponent extends StatefulWidget {
   final TextInputAction textInputAction;
   final Function(String)? onSubmitted;
   final Function(String)? onChanged;
+  final Function()? onTap;
   final FocusNode? focusNode;
   final int? maxLines;
   final int? maxCharacter;
@@ -54,9 +57,11 @@ class TextFormFieldComponent extends StatefulWidget {
     this.textInputAction = TextInputAction.done,
     this.onSubmitted,
     this.onChanged,
+    this.onTap,
     this.focusNode,
     this.maxLines = 1,
     this.maxCharacter = 1000,
+    this.prefixText,
   }) : super(key: key);
 
   @override
@@ -83,6 +88,7 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
         ),
         textInputAction: widget.textInputAction,
         onFieldSubmitted: widget.onSubmitted,
+        onTap: widget.onTap,
         onChanged: widget.onChanged,
         focusNode: widget.focusNode,
         validator: widget.validator,
@@ -95,7 +101,7 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
           LengthLimitingTextInputFormatter(widget.maxCharacter),
         ],
         decoration: InputDecoration(
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: const TextStyle(color: hintTextLightColor),
           errorStyle: const TextStyle(height: 0),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -118,9 +124,18 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
                     color: primaryColor,
                   ),
                 )
-              : null,
+              : widget.prefixText != null
+                  ? Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: TextComponent(
+                        text: widget.prefixText!,
+                        headerType: HeaderType.h7,
+                        color: secondaryColor,
+                      ),
+                    )
+                  : null,
           hintText: widget.hintText,
-          fillColor: widget.itemBackgroundColor ?? containerColor,
+          fillColor: widget.itemBackgroundColor ?? itemBackgroundLightColor,
           filled: true,
           suffixIcon: widget.isPassword == true
               ? InkWell(
@@ -135,7 +150,7 @@ class _TextFormFieldComponentState extends State<TextFormFieldComponent> {
                     margin: const EdgeInsets.only(right: 10, top: 15, bottom: 15),
                     child: IconComponent(
                       iconData: isObscured ? CustomIconData.eye : CustomIconData.eyeSlash,
-                      color: Colors.grey,
+                      color: hintTextLightColor,
                     ),
                   ),
                 )

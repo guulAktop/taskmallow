@@ -52,49 +52,46 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         widgetList: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Form(
-                key: _loginFormKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-                    Text(
-                      getTranslated(context, AppKeys.forgotPasswordContent),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: primaryColor, fontSize: 16),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormFieldComponent(
-                      context: context,
-                      textEditingController: _emailTextEditingController,
-                      hintText: getTranslated(context, AppKeys.email),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (emailText) {
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ButtonComponent(
-                      text: getTranslated(context, AppKeys.sendCode),
-                      isWide: true,
-                      isLoading: _isLoading,
-                      onPressed: _isLoading
-                          ? null
-                          : () async {
-                              Navigator.pushNamed(context, verificationCodePageRoute);
-                              if (_loginFormKey.currentState!.validate()) {}
-                            },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Spacer(),
-                  ],
-                ),
+            child: Form(
+              key: _loginFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    getTranslated(context, AppKeys.forgotPasswordContent),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: primaryColor, fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormFieldComponent(
+                    context: context,
+                    textEditingController: _emailTextEditingController,
+                    hintText: getTranslated(context, AppKeys.email),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (emailText) {
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ButtonComponent(
+                    text: getTranslated(context, AppKeys.sendCode),
+                    isWide: true,
+                    isLoading: _isLoading,
+                    onPressed: _isLoading
+                        ? null
+                        : () async {
+                            Navigator.pushNamed(context, verificationCodePageRoute);
+                            if (_loginFormKey.currentState!.validate()) {}
+                          },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Spacer(),
+                ],
               ),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:taskmallow/constants/color_constants.dart';
 
 class IconComponent extends StatelessWidget {
   final CustomIconData iconData;
@@ -15,7 +16,7 @@ class IconComponent extends StatelessWidget {
       _getIconPath(iconData, iconWeight),
       width: size,
       height: size,
-      color: color ?? Colors.white,
+      color: color ?? iconLightColor,
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:taskmallow/pages/authentication_pages/change_password_page.dart'
 import 'package:taskmallow/pages/authentication_pages/forgot_password_page.dart';
 import 'package:taskmallow/pages/authentication_pages/register_page.dart';
 import 'package:taskmallow/pages/authentication_pages/verification_code_page.dart';
+import 'package:taskmallow/pages/edit_profile_page.dart';
 import 'package:taskmallow/pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
@@ -59,6 +60,8 @@ class RouteGenerator {
         return createRoute(const VerificationCodePage(), settings);
       case homePageRoute:
         return createRoute(const HomePage(), settings);
+      case editProfilePageRoute:
+        return createRoute(const EditProfilePage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }

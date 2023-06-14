@@ -29,7 +29,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: appBackgroundLightColor,
       body: Column(
         children: [
           Expanded(
@@ -98,6 +98,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           )
                         : const IconComponent(
                             iconData: CustomIconData.arrowRight,
+                            color: iconDarkColor,
                             size: 30,
                           ),
                   ),
@@ -113,7 +114,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget generateContainerList(int pageCount, int currentIndex) {
     return Row(
       children: List<Widget>.generate(pageCount, (index) {
-        Color color = index == currentIndex ? primaryColor : containerColor;
+        Color color = index == currentIndex ? primaryColor : itemBackgroundLightColor;
         return Container(
           decoration: BoxDecoration(
             color: color,

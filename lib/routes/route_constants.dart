@@ -4,3 +4,4 @@ const String registerPageRoute = "registerPageRoute";
 const String forgotPasswordPageRoute = "forgotPasswordPageRoute";
 const String changePasswordPageRoute = "changePasswordPageRoute";
 const String verificationCodePageRoute = "verificationCodePageRoute";
+const String editProfilePageRoute = "editProfilePageRoute";
