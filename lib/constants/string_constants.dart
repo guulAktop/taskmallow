@@ -42,3 +42,38 @@ class AppKeys {
   static String onboardingContent2 = 'onboarding_content2';
   static String onboardingContent3 = 'onboarding_content3';
 }
+
+class CategoryKeys {
+  static String technologyAndSoftware = 'technology_and_software';
+  static String artificialIntelligence = 'artificial_intelligence';
+  static String mobileApplications = 'mobile_applications';
+  static String dataAnalytics = 'data_analytics';
+  static String cloudComputing = 'cloud_computing';
+  static String internetOfThingsIoT = 'internet_of_things_iot';
+  static String socialInnovation = 'social_innovation';
+  static String educationAndLearning = 'education_and_learning';
+  static String sustainableDevelopment = 'sustainable_development';
+  static String socialEquality = 'social_equality';
+  static String humanCenteredDesign = 'human_centered_design';
+  static String socialEntrepreneurship = 'social_entrepreneurship';
+  static String energyAndEnvironment = 'energy_and_environment';
+  static String renewableEnergySources = 'renewable_energy_sources';
+  static String energyEfficiency = 'energy_efficiency';
+  static String wasteManagement = 'waste_management';
+  static String environmentalSustainability = 'environmental_sustainability';
+  static String climateChangeAdaptation = 'climate_change_adaptation';
+  static String designAndArchitecture = 'design_and_architecture';
+  static String interiorDesign = 'interior_design';
+  static String urbanDesign = 'urban_design';
+  static String sustainableArchitecture = 'sustainable_architecture';
+  static String productDesign = 'product_design';
+  static String visualCommunicationDesign = 'visual_communication_design';
+  static String healthAndMedicine = 'health_and_medicine';
+  static String diagnosticToolsAndTechnologies = 'diagnostic_tools_and_technologies';
+  static String digitalHealthSolutions = 'digital_health_solutions';
+  static String geneticResearch = 'genetic_research';
+  static String cognitiveHealth = 'cognitive_health';
+  static String medicalImagingTechnologies = 'medical_imaging_technologies';
+  static String other = 'other';
+  static String otherCategory = 'other_category';
+}

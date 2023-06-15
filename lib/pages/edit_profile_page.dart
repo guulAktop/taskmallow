@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
@@ -37,18 +39,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
   int? selectedGender;
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    await showModalBottomSheet(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: UIHelper.getDeviceHeight(context) / 2.5,
+          child: CupertinoDatePicker(
+            mode: CupertinoDatePickerMode.date,
+            initialDateTime:
+                _dateOfBirthTextEditingController.text.isEmpty ? DateTime.now() : DateFormat("dd.MM.yyyy").parse(_dateOfBirthTextEditingController.text),
+            minimumYear: 1900,
+            maximumYear: DateTime.now().year,
+            maximumDate: DateTime.now(),
+            onDateTimeChanged: (DateTime newDate) {
+              setState(() {
+                _dateOfBirthTextEditingController.text =
+                    '${newDate.day.toString().padLeft(2, '0')}.${newDate.month.toString().padLeft(2, '0')}.${newDate.year}';
+              });
+            },
+          ),
+        );
+      },
     );
-
-    if (picked != null) {
-      setState(() {
-        _dateOfBirthTextEditingController.text = '${picked.day.toString().padLeft(2, '0')}.${picked.month.toString().padLeft(2, '0')}.${picked.year}';
-      });
-    }
   }
 
   @override
@@ -138,26 +150,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 3),
-                  child: TextComponent(
-                    text: getTranslated(context, AppKeys.firstName),
-                    headerType: HeaderType.h7,
-                    color: textPrimaryLightColor,
-                  ),
-                ),
-              ),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _firstNameTextEditingController,
+              getFormField(
+                getTranslated(context, AppKeys.firstName),
+                _firstNameTextEditingController,
+                20,
                 textCapitalization: TextCapitalization.words,
-                enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.firstName),
-                maxCharacter: 20,
                 validator: (firstNameText) {
                   if (firstNameText!.trim().isEmpty) {
                     AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterFirstName),
@@ -167,26 +165,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 3),
-                  child: TextComponent(
-                    text: getTranslated(context, AppKeys.lastName),
-                    headerType: HeaderType.h7,
-                    color: textPrimaryLightColor,
-                  ),
-                ),
-              ),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _lastNameTextEditingController,
-                enabled: !isLoading,
+              getFormField(
+                getTranslated(context, AppKeys.lastName),
+                _lastNameTextEditingController,
+                20,
                 textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.lastName),
-                maxCharacter: 20,
                 validator: (lastNameText) {
                   if (_firstNameTextEditingController.text.trim().isNotEmpty) {
                     if (lastNameText!.trim().isEmpty) {
@@ -198,121 +182,109 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 3),
-                  child: TextComponent(
-                    text: getTranslated(context, AppKeys.bio),
-                    headerType: HeaderType.h7,
-                    color: textPrimaryLightColor,
-                  ),
-                ),
-              ),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _bioTextEditingController,
-                hintText: getTranslated(context, AppKeys.bio),
-                enabled: !isLoading,
+              getFormField(
+                getTranslated(context, AppKeys.bio),
+                _bioTextEditingController,
+                100,
+                textCapitalization: TextCapitalization.words,
                 textInputAction: TextInputAction.next,
-                maxCharacter: 20,
-                keyboardType: TextInputType.name,
-                validator: (bioText) {
-                  return null;
-                },
               ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 3),
-                  child: TextComponent(
-                    text: getTranslated(context, AppKeys.dateOfBirth),
-                    headerType: HeaderType.h7,
-                    color: textPrimaryLightColor,
-                  ),
-                ),
-              ),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _dateOfBirthTextEditingController,
-                hintText: getTranslated(context, AppKeys.dateOfBirth),
-                enabled: !isLoading,
-                maxCharacter: 20,
-                keyboardType: TextInputType.name,
-                readOnly: true,
-                onTap: () {
-                  _selectDate(context);
-                },
-                validator: (dateText) {
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 3),
-                  child: TextComponent(
-                    text: getTranslated(context, AppKeys.gender),
-                    headerType: HeaderType.h7,
-                    color: textPrimaryLightColor,
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: itemBackgroundLightColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                  child: DropdownButton<int>(
-                    value: selectedGender,
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        selectedGender = newValue;
-                      });
-                    },
-                    items: <DropdownMenuItem<int>>[
-                      DropdownMenuItem<int>(
-                        value: 0,
-                        child: TextComponent(
-                          text: getTranslated(context, AppKeys.male),
-                          textAlign: TextAlign.start,
-                        ),
+              Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 3),
+                      child: TextComponent(
+                        text: getTranslated(context, AppKeys.dateOfBirth),
+                        headerType: HeaderType.h7,
+                        color: textPrimaryLightColor,
                       ),
-                      DropdownMenuItem<int>(
-                        value: 1,
-                        child: TextComponent(
-                          text: getTranslated(context, AppKeys.female),
-                          maxLines: 1,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      DropdownMenuItem<int>(
-                        value: 2,
-                        child: TextComponent(
-                          text: getTranslated(context, AppKeys.iDoNotWantToSpecify),
-                          maxLines: 1,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                    ],
-                    underline: Container(),
-                    iconEnabledColor: hintTextLightColor,
-                    isExpanded: true,
-                    icon: const IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
-                    hint: TextComponent(
-                      text: getTranslated(context, AppKeys.gender),
-                      color: hintTextLightColor,
                     ),
                   ),
-                ),
+                  TextFormFieldComponent(
+                    context: context,
+                    textEditingController: _dateOfBirthTextEditingController,
+                    hintText: getTranslated(context, AppKeys.dateOfBirth),
+                    enabled: !isLoading,
+                    maxCharacter: 20,
+                    keyboardType: TextInputType.name,
+                    readOnly: true,
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                    validator: (dateText) {
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 3),
+                      child: TextComponent(
+                        text: getTranslated(context, AppKeys.gender),
+                        headerType: HeaderType.h7,
+                        color: textPrimaryLightColor,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: itemBackgroundLightColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: DropdownButton<int>(
+                        value: selectedGender,
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            selectedGender = newValue;
+                          });
+                        },
+                        autofocus: true,
+                        items: <DropdownMenuItem<int>>[
+                          getDropdownItem(getTranslated(context, AppKeys.male), 0),
+                          getDropdownItem(getTranslated(context, AppKeys.female), 1),
+                          getDropdownItem(getTranslated(context, AppKeys.iDoNotWantToSpecify), 2),
+                        ],
+                        selectedItemBuilder: (context) {
+                          return [
+                            getDropdownSelectedItem(getTranslated(context, AppKeys.male)),
+                            getDropdownSelectedItem(getTranslated(context, AppKeys.female)),
+                            getDropdownSelectedItem(getTranslated(context, AppKeys.iDoNotWantToSpecify)),
+                          ];
+                        },
+                        underline: Container(),
+                        iconEnabledColor: hintTextLightColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        isExpanded: true,
+                        icon: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
+                        ),
+                        hint: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextComponent(
+                              textAlign: TextAlign.center,
+                              text: getTranslated(context, AppKeys.gender),
+                              color: hintTextLightColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Align(
@@ -334,6 +306,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 enabled: !isLoading,
                 maxCharacter: 20,
                 keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
                 validator: (dateText) {
                   return null;
                 },
@@ -355,6 +328,63 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         const Spacer(),
+      ],
+    );
+  }
+
+  DropdownMenuItem<int> getDropdownItem(String label, int value) {
+    return DropdownMenuItem<int>(
+      value: value,
+      child: TextComponent(
+        text: label,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.start,
+      ),
+    );
+  }
+
+  Widget getDropdownSelectedItem(String label) {
+    return Container(
+      padding: const EdgeInsets.only(left: 15),
+      alignment: Alignment.centerLeft,
+      child: TextComponent(
+        text: label,
+        maxLines: 1,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.start,
+      ),
+    );
+  }
+
+  Widget getFormField(String labelText, TextEditingController textEditingController, int? maxCharacter,
+      {TextCapitalization? textCapitalization, TextInputAction? textInputAction, TextInputType? keyboardType, String? Function(String?)? validator}) {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, bottom: 3),
+            child: TextComponent(
+              text: labelText,
+              headerType: HeaderType.h7,
+              color: textPrimaryLightColor,
+            ),
+          ),
+        ),
+        TextFormFieldComponent(
+          context: context,
+          textEditingController: textEditingController,
+          textCapitalization: textCapitalization ?? TextCapitalization.sentences,
+          enabled: !isLoading,
+          textInputAction: textInputAction ?? TextInputAction.done,
+          hintText: labelText,
+          keyboardType: keyboardType ?? TextInputType.text,
+          maxCharacter: maxCharacter,
+          validator: validator,
+        ),
       ],
     );
   }
