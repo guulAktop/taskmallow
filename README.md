@@ -55,4 +55,5 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 * Teknoloji ve İnovasyon Şirketleri: Yenilikçi projelerini yönetmek, ekipler arasında iletişimi güçlendirmek ve inovasyonu desteklemek isteyen şirketler.
 
 ## Product Backlog URL
+(https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=939745769171)
 
