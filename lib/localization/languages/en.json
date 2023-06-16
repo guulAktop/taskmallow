@@ -22,7 +22,7 @@
     "change_password_content": "Please enter the password you want to update correctly in the fields below.",
     "forgot_password_content": "Enter email for change password of your account..",
     "edit_profile": "Edit Profile",
-    "done": "Done",
+    "finish_it": "Done",
     "first_name": "First Name",
     "last_name": "Last Name",
     "bio": "Bio",
@@ -76,5 +76,10 @@
     "cognitive_health": "Cognitive Health",
     "medical_imaging_technologies": "Medical Imaging Technologies",
     "other": "Other",
-    "other_category": "Other Category"
+    "other_category": "Other Category",
+    
+
+    "to_do":"To Do", 
+    "in_progress":"In Progress", 
+    "done":"Done"
 }

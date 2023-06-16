@@ -8,7 +8,9 @@ class CircularPhotoComponent extends StatelessWidget {
   final String? url;
   final bool smallCircularProgressIndicator;
   final bool byTotalBytes;
-  const CircularPhotoComponent({Key? key, this.url, this.image, this.smallCircularProgressIndicator = false, this.byTotalBytes = true}) : super(key: key);
+  final bool hasBorder;
+  const CircularPhotoComponent({Key? key, this.url, this.image, this.smallCircularProgressIndicator = false, this.byTotalBytes = true, this.hasBorder = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +18,12 @@ class CircularPhotoComponent extends StatelessWidget {
       decoration: BoxDecoration(
         color: itemBackgroundLightColor,
         borderRadius: const BorderRadius.all(Radius.circular(500)),
-        border: Border.all(
-          width: 2,
-          color: primaryColor,
-        ),
+        border: hasBorder
+            ? Border.all(
+                width: 2,
+                color: primaryColor,
+              )
+            : null,
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(500)),
