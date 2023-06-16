@@ -41,6 +41,18 @@ class AppKeys {
   static String onboardingContent1 = 'onboarding_content1';
   static String onboardingContent2 = 'onboarding_content2';
   static String onboardingContent3 = 'onboarding_content3';
+
+  static String darkTheme = 'dark_theme';
+  static String useDeviceTheme = 'use_device_theme';
+  static String yes = 'yes';
+  static String no = 'no';
+  static String aysLogOut = 'ays_log_out';
+  static String aysDeleteAccount = 'ays_delete_account';
+  static String settings = 'settings';
+  static String language = 'language';
+  static String theme = 'theme';
+  static String privacyPolicy = 'privacy_policy';
+  static String deleteMyAccount = 'delete_my_account';
 }
 
 class CategoryKeys {

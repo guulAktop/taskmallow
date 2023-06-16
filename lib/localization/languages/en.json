@@ -34,6 +34,17 @@
     "male":"Male",
     "female":"Female",
     "i_do_not_want_to_specify":"I do not want to specify",
+    "dark_theme": "Dark Theme",
+    "use_device_theme": "Use device theme",
+    "yes":"Yes",
+    "no":"No",
+    "ays_log_out":"Are you sure you want to log out?",
+    "ays_delete_account":"Are you sure you want to delete your account?",
+    "settings":"Settings",
+    "language":"Language",
+    "theme":"Theme",
+    "privacy_policy":"Privacy Policy",
+    "delete_my_account":"Delete my account",
 
 
     

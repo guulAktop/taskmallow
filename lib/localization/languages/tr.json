@@ -34,6 +34,17 @@
     "male":"Erkek",
     "female":"Kadın",
     "i_do_not_want_to_specify":"Belirtmek istemiyorum",
+    "dark_theme": "Karanlık Tema",
+    "use_device_theme": "Cihaz temasını kullan",
+    "yes":"Evet",
+    "no":"Hayır",
+    "ays_log_out":"Oturumu kapatmak istediğinizden emin misiniz?",
+    "ays_delete_account":"Hesabınızı silmek istediğinizden emin misiniz?",
+    "settings":"Ayarlar",
+    "language":"Dil",
+    "theme":"Tema",
+    "privacy_policy":"Gizlilik Politikası",
+    "delete_my_account":"Hesabımı sil",
 
 
     

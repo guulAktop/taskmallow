@@ -25,6 +25,9 @@ const Color appBackgroundDarkColor = Color(0xFF000000);
 const Color itemBackgroundLightColor = Color(0xFFE6F2FF);
 const Color itemBackgroundDarkColor = Color(0xFF00244c);
 
+const Color listViewItemBackgroundLightColor = Color.fromARGB(255, 240, 240, 240);
+const Color listViewItemBackgroundDarkColor = Color.fromARGB(255, 77, 77, 77);
+
 const Color matchColor = Color(0xFF5200FF);
 const Color matchingItemBackgroundColor = Color(0xFFF0E9FF);
 
