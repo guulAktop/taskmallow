@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/shared_preferences_constants.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/localization/language_localization.dart';
@@ -31,7 +30,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     SharedPreferencesHelper(WidgetsBinding.instance.window.locale).getSettingsSharedPreferencesValues();
-    debugPrint(SharedPreferencesConstants.appLanguageCode);
   }
 
   Locale? _locale;
