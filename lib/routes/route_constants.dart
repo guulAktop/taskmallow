@@ -6,3 +6,4 @@ const String changePasswordPageRoute = "changePasswordPageRoute";
 const String verificationCodePageRoute = "verificationCodePageRoute";
 const String editProfilePageRoute = "editProfilePageRoute";
 const String createProjectPageRoute = "createProjectPageRoute";
+const String updateProjectPageRoute = "updateProjectPageRoute";
