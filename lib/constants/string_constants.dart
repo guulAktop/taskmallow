@@ -20,7 +20,7 @@ class AppKeys {
   static String checkSpamBox = 'check_spam_box';
   static String verify = 'verify';
   static String editProfile = 'edit_profile';
-  static String done = 'done';
+  static String done = 'finish_it';
   static String firstName = 'first_name';
   static String lastName = 'last_name';
   static String bio = 'bio';

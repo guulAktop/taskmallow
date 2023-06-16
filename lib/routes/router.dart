@@ -5,10 +5,12 @@ import 'package:taskmallow/pages/authentication_pages/forgot_password_page.dart'
 import 'package:taskmallow/pages/authentication_pages/register_page.dart';
 import 'package:taskmallow/pages/authentication_pages/verification_code_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
+import 'package:taskmallow/pages/create_task_page.dart';
 import 'package:taskmallow/pages/edit_profile_page.dart';
 import 'package:taskmallow/pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/pages/update_project_page.dart';
+import 'package:taskmallow/pages/update_task_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 
 class RouteGenerator {
@@ -68,6 +70,10 @@ class RouteGenerator {
         return createRoute(const CreateProjectPage(), settings);
       case updateProjectPageRoute:
         return createRoute(const UpdateProjectPage(), settings);
+      case createTaskPageRoute:
+        return createRoute(const CreateTaskPage(), settings);
+      case updateTaskPageRoute:
+        return createRoute(const UpdateTaskPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }

@@ -22,7 +22,7 @@
     "change_password_content": "Lütfen güncellemek istediğin şifreyi aşağıdaki alanlara doğru bir şekilde gir.",
     "forgot_password_content": "Lütfen şifresini değiştirmek istediğin hesaba ait e-posta adresini gir.",
     "edit_profile": "Profili Düzenle",
-    "done": "Bitir",
+    "finish_it": "Bitir",
     "first_name": "Ad",
     "last_name": "Soyad",
     "bio": "Biyografi",
@@ -76,5 +76,10 @@
     "cognitive_health": "Bilişsel Sağlık",
     "medical_imaging_technologies": "Tıbbi Görüntüleme Teknolojileri",
     "other": "Diğer",
-    "other_category": "Diğer Kategori"
+    "other_category": "Diğer Kategori",
+
+
+    "to_do":"Yapılacak", 
+    "in_progress":"Devam ediyor", 
+    "done":"Tamamlandı"
 }
