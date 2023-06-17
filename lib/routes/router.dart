@@ -9,6 +9,7 @@ import 'package:taskmallow/pages/create_task_page.dart';
 import 'package:taskmallow/pages/edit_profile_page.dart';
 import 'package:taskmallow/pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
+import 'package:taskmallow/pages/invitations_page.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_page.dart';
 import 'package:taskmallow/pages/update_project_page.dart';
@@ -44,11 +45,14 @@ class RouteGenerator {
       //   },
       // );
 
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //ios
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //ios
     } else {
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //web
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //web
     }
   }
 
@@ -78,6 +82,8 @@ class RouteGenerator {
         return createRoute(const UpdateTaskPage(), settings);
       case settingsPageRoute:
         return createRoute(const SettingsPage(), settings);
+      case invitationsPageRoute:
+        return createRoute(const InvitationsPage(), settings);
       case projectDetailPageRoute:
         return createRoute(const ProjectDetailPage(), settings);
       default:
