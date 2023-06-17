@@ -6,7 +6,9 @@ import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -25,10 +27,33 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
 
   List<DropdownMenuItem<String>> dropdownItems = [];
   List<Widget> selectedDropdownItems = [];
+  ProjectModel? projectModel;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    projectModel = getProjectModelFromArguments();
+    if (projectModel != null) {
+      selectedCategory = projectModel!.category.name;
+      projectNameTextEditingController.text = projectModel!.name;
+      projectDescriptionTextEditingController.text = projectModel!.description;
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  ProjectModel? getProjectModelFromArguments() {
+    ModalRoute? route = ModalRoute.of(context);
+    dynamic arguments = route?.settings.arguments;
+    if (arguments is ProjectModel) {
+      return arguments;
+    }
+    return null;
   }
 
   TextEditingController projectNameTextEditingController = TextEditingController();
@@ -142,7 +167,9 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
               const SizedBox(height: 10),
               ButtonComponent(
                 text: "Update",
-                onPressed: () {},
+                onPressed: () {
+                  AppFunctions().showSnackbar(context, selectedCategory.toString());
+                },
                 isWide: true,
                 color: warningDark,
               ),

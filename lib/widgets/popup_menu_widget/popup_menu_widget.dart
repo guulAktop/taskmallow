@@ -53,7 +53,7 @@ class PopupMenuWidget extends StatelessWidget {
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
           offset: const Offset(0, 0),
           itemBuilder: ((context) => popupMenuEntryList),
-          color: itemBackgroundLightColor.withOpacity(1),
+          color: textPrimaryDarkColor,
         ),
       ),
     );

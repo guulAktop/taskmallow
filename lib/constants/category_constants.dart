@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class CategoryConstants {
   List<String> titles = ["technology_and_software", "social_innovation", "energy_and_environment", "design_and_architecture", "health_and_medicine", "other"];
   Map<String, List<String>> subtitleMap = {
@@ -20,4 +22,33 @@ class CategoryConstants {
     ],
     "other": ["other_category"]
   };
+}
+
+enum Categories {
+  artificial_intelligence,
+  mobile_applications,
+  data_analytics,
+  cloud_computing,
+  internet_of_things_iot,
+  education_and_learning,
+  sustainable_development,
+  social_equality,
+  human_centered_design,
+  social_entrepreneurship,
+  renewable_energy_sources,
+  energy_efficiency,
+  waste_management,
+  environmental_sustainability,
+  climate_change_adaptation,
+  interior_design,
+  urban_design,
+  sustainable_architecture,
+  product_design,
+  visual_communication_design,
+  diagnostic_tools_and_technologies,
+  digital_health_solutions,
+  genetic_research,
+  cognitive_health,
+  medical_imaging_technologies,
+  other_category
 }
