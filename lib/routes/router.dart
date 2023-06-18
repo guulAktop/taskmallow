@@ -11,6 +11,7 @@ import 'package:taskmallow/pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/pages/invitations_page.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
+import 'package:taskmallow/pages/search_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_page.dart';
 import 'package:taskmallow/pages/update_project_page.dart';
 import 'package:taskmallow/pages/update_task_page.dart';
@@ -86,6 +87,8 @@ class RouteGenerator {
         return createRoute(const InvitationsPage(), settings);
       case projectDetailPageRoute:
         return createRoute(const ProjectDetailPage(), settings);
+      case searchPageRoute:
+        return createRoute(const SearchPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }

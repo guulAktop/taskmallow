@@ -12,3 +12,4 @@ const String updateTaskPageRoute = "updateTaskPageRoute";
 const String settingsPageRoute = "settingsPageRoute";
 const String invitationsPageRoute = "invitationsPageRoute";
 const String projectDetailPageRoute = "projectDetailPageRoute";
+const String searchPageRoute = "searchPageRoute";
