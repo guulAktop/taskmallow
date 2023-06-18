@@ -20,7 +20,7 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
   bool isLoading = false;
 
   List<String> selectedSubtitles = [];
-  int _expandedIndex = -1;
+  // int _expandedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -196,15 +196,15 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
   }
 }
 // onExpansionChanged: (expanded) {
-                      //   if (expanded) {
-                      //     setState(() {
-                      //       _expandedIndex = CategoryConstants().titles.indexOf(title);
-                      //     });
-                      //   } else {
-                      //     setState(() {
-                      //       _expandedIndex = -1;
-                      //     });
-                      //   }
-                      //   debugPrint(_expandedIndex.toString());
-                      // },
-                      // initiallyExpanded: _expandedIndex == CategoryConstants().titles.indexOf(title),
+//   if (expanded) {
+//     setState(() {
+//       _expandedIndex = CategoryConstants().titles.indexOf(title);
+//     });
+//   } else {
+//     setState(() {
+//       _expandedIndex = -1;
+//     });
+//   }
+//   debugPrint(_expandedIndex.toString());
+// },
+// initiallyExpanded: _expandedIndex == CategoryConstants().titles.indexOf(title),

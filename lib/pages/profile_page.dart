@@ -1,14 +1,17 @@
-import 'dart:io';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
+import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
-import '../components/text_component.dart';
+import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,273 +21,306 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool isLoading = false;
-  File? pickedImage;
-  double progressValue = 0.7;
-  int  projectsInvolvedCounter = 3;
-  int completedTaskCounter = 27;
-
-  static const projectCreater = "taskmallow";
-  final List<String> _subcategories = [
-    'subcategory1',
-    'subcategory2',
-    'subcategory3',
-    'subcategory4',
-    'subcategory5'
-  ];
-
+  List<String> selectedSubtitles = ["artificial_intelligence", "mobile_applications", "data_analytics", "cloud_computing", "internet_of_things_iot"];
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
       title: "Profile",
       actionList: [
         IconButton(
-            splashRadius: AppConstants.iconSplashRadius,
-            icon: const IconComponent(iconData: CustomIconData.gear),
-            onPressed: () => Navigator.pushNamed(context, settingsPageRoute)),
+          icon: const IconComponent(
+            iconData: CustomIconData.pen,
+          ),
+          splashRadius: AppConstants.iconSplashRadius,
+          onPressed: () {
+            Navigator.pushNamed(context, editProfilePageRoute);
+          },
+        ),
         IconButton(
-            splashRadius: AppConstants.iconSplashRadius,
-            icon: const IconComponent(iconData: CustomIconData.pencil),
-            onPressed: () =>
-                Navigator.pushNamed(context, editProfilePageRoute)),
+          icon: const IconComponent(
+            iconData: CustomIconData.gear,
+          ),
+          splashRadius: AppConstants.iconSplashRadius,
+          onPressed: () {
+            Navigator.pushNamed(context, settingsPageRoute);
+          },
+        )
       ],
       widgetList: [
-        buildProfileWidget(),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextComponent(
-                text: 'Computeer Engineer', headerType: HeaderType.h6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: UIHelper.getDeviceWidth(context) / 4,
+                  height: UIHelper.getDeviceWidth(context) / 4,
+                  child: CircularPhotoComponent(
+                    url: ImageAssetKeys.defaultProfilePhotoUrl,
+                    hasBorder: false,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TextComponent(
+                        text: "First Last",
+                        fontWeight: FontWeight.bold,
+                        headerType: HeaderType.h4,
+                        textAlign: TextAlign.start,
+                      ),
+                      const TextComponent(
+                        text: "enescerrahoglu1@gmail.com",
+                        headerType: HeaderType.h8,
+                        textAlign: TextAlign.start,
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: IconComponent(
+                                iconData: CustomIconData.linkedin,
+                                color: Color(0xFF0A66C2),
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                          InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: IconComponent(
+                                iconData: CustomIconData.twitter,
+                                color: Color(0xFF1DA1F2),
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
-            Row(
-              children: [
-                const TextComponent(
-                    text: 'Projects Involved: ', headerType: HeaderType.h4),
-                TextComponent(
-                    text: projectsInvolvedCounter.toString(),
-                    headerType: HeaderType.h4,
-                    fontWeight: FontWeight.bold),
-              ],
-            ),
-            Row(
-              children: [
-                const TextComponent(
-                    text: 'Completed Task: ', headerType: HeaderType.h4),
-                TextComponent(
-                    text: completedTaskCounter.toString(),
-                    headerType: HeaderType.h4,
-                    fontWeight: FontWeight.bold),
-              ],
-            ),
-            const Divider(color: secondaryColor),
             const TextComponent(
-                text: 'Preferences Categories', fontWeight: FontWeight.bold),
-            const SizedBox(height: 3),
-            categoryRow(
-              subcategories: _subcategories,
+              text: "Computer Engineer",
+              headerType: HeaderType.h6,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 20),
+            RichText(
+              text: const TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Projects Involved: ",
+                    style: TextStyle(
+                      color: textPrimaryLightColor,
+                      fontSize: 18,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  TextSpan(
+                    text: "3",
+                    style: TextStyle(
+                      color: textPrimaryLightColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RichText(
+              text: const TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Completed Tasks: ",
+                    style: TextStyle(
+                      color: textPrimaryLightColor,
+                      fontSize: 18,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  TextSpan(
+                    text: "27",
+                    style: TextStyle(
+                      color: textPrimaryLightColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Divider(color: secondaryColor, thickness: 1),
+            ),
+            const TextComponent(
+              text: "Preferences Categories",
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.fade,
+              headerType: HeaderType.h6,
+              softWrap: true,
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: itemBackgroundLightColor,
+              ),
+              padding: const EdgeInsets.all(10),
+              child: selectedSubtitles.isNotEmpty
+                  ? Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: selectedSubtitles.map((item) => buildItemContainer(item)).toList()
+                        ..add(
+                          SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(Radius.circular(100)),
+                              child: Material(
+                                color: textPrimaryDarkColor,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, categoryPreferencesPageRoute);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    child: const IconComponent(
+                                      iconData: CustomIconData.plus,
+                                      color: textPrimaryLightColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    )
+                  : const IconComponent(
+                      iconData: CustomIconData.listCheck,
+                      color: primaryColor,
+                      size: 35,
+                    ),
             ),
             const SizedBox(height: 20),
             const TextComponent(
-                text: 'Projects Involved', fontWeight: FontWeight.bold),
-            const SizedBox(height: 3),
-            projectWidget(),
+              text: "Projects",
+              textAlign: TextAlign.start,
+              fontWeight: FontWeight.bold,
+              overflow: TextOverflow.fade,
+              headerType: HeaderType.h6,
+              softWrap: true,
+            ),
+            const SizedBox(height: 10),
+            getProjectContainer(),
+            getProjectContainer(),
+            getProjectContainer(),
           ],
-        ),
+        )
       ],
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    pickedImage = null;
-  }
-
-  Widget projectWidget() {
-    return Column(
-      children: const [
-        ProjectContainer(
-          title: 'Taskmallow',
-          description: 'The error youre encountering suggests...',
-          createdBy: projectCreater,
-          progressValue: 0.7,
+  Widget getProjectContainer() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: itemBackgroundLightColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
         ),
-        ProjectContainer(
-          title: 'App Jam',
-          description: 'The error youre encountering suggests...',
-          createdBy: projectCreater,
-          progressValue: 0.4,
-        ),
-        ProjectContainer(
-          title: 'App Jam',
-          description: 'The error youre encountering suggests...',
-          createdBy: projectCreater,
-          progressValue: 0.4,
-        ),
-        ProjectContainer(
-          title: 'App Jam',
-          description: 'The error youre encountering suggests...',
-          createdBy: projectCreater,
-          progressValue: 0.4,
-        ),
-      ],
-    );
-  }
-
-  Widget buildProfileWidget() {
-    return Row(
-      children: [
-        // Sol
-        Padding(
-            padding: const EdgeInsets.only(bottom: 20, right: 10, left: 10),
-            child: SizedBox(
-              height: UIHelper.isDevicePortrait(context)
-                  ? UIHelper.getDeviceWidth(context) / 4.5
-                  : UIHelper.getDeviceHeight(context) / 4,
-              width: UIHelper.isDevicePortrait(context)
-                  ? UIHelper.getDeviceWidth(context) / 4.5
-                  : UIHelper.getDeviceHeight(context) / 4,
-              child: CircularPhotoComponent(
-                url: ImageAssetKeys.defaultProfilePhotoUrl,
-              ),
-            )),
-        // Sağ
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          Navigator.pushNamed(context, updateProjectPageRoute);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextComponent(
-                text: 'Şevval Özdamar',
-                headerType: HeaderType.h4,
-                fontWeight: FontWeight.bold),
-            const TextComponent(
-                text: 'sevvalozdamar@gmail.com', headerType: HeaderType.h6),
-            Row(
-              children: [
-                IconButton(
-                    splashRadius: AppConstants.iconSplashRadius,
-                    icon: const IconComponent(
-                        iconData: CustomIconData.addressCard),
-                    onPressed: () {}),
-                IconButton(
-                    splashRadius: AppConstants.iconSplashRadius,
-                    icon: const IconComponent(
-                        iconData: CustomIconData.addressCard),
-                    onPressed: () {}),
-              ],
+            TextComponent(
+              text: "Project NameProject NameProject NameProject Name",
+              headerType: HeaderType.h4,
+              textAlign: TextAlign.start,
+              fontWeight: FontWeight.bold,
+            ),
+            TextComponent(
+              text: "Project description is here is here is here is here is here is here is here is here is here is here is here",
+              textAlign: TextAlign.start,
+              headerType: HeaderType.h6,
+            ),
+            const SizedBox(height: 10),
+            TextComponent(
+              text:
+                  "33% Complete", //"${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% Complete",
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+              headerType: HeaderType.h7,
+            ),
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+              child: LinearProgressIndicator(
+                minHeight: 20,
+                value: (0.33).toDouble(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextComponent(
+              text: "created by email@gmail.com",
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+              headerType: HeaderType.h7,
             ),
           ],
         ),
-      ],
+      ),
     );
   }
-}
 
-// PROJECT CONTAINER
-class ProjectContainer extends StatelessWidget {
-  final String title;
-  final String description;
-  final String createdBy;
-  final double progressValue;
-
-  const ProjectContainer({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.createdBy,
-    required this.progressValue,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: itemBackgroundLightColor,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextComponent(
-                text: title,
-                headerType: HeaderType.h5,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(height: 5),
-              TextComponent(
+  Widget buildItemContainer(String item) {
+    return Container(
+      height: 30,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+        color: textPrimaryDarkColor,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: MarqueeWidget(
+              child: TextComponent(
+                text: getTranslated(context, item),
+                headerType: HeaderType.h7,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
-                text: description,
-                headerType: HeaderType.h6,
               ),
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const TextComponent(
-                    text: 'created by ',
-                    headerType: HeaderType.h7,
-                  ),
-                  TextComponent(
-                    text: createdBy,
-                    headerType: HeaderType.h7,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: progressValue,
-                        minHeight: 7,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: TextComponent(
-                      text: '%${(progressValue * 100).toInt()}',
-                      headerType: HeaderType.h6,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
-}
-
-// CATEGORY ROW
-
-Widget categoryRow({required List<String> subcategories}) {
-  return Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-      color: secondaryColor,
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Wrap(
-        spacing: 5.0,
-        children: subcategories.map((subcategory) {
-          return Chip(
-            label: Text(subcategory),
-            backgroundColor: shimmerLightHighlightColor,
-          );
-        }).toList(),
-      ),
-    ),
-  );
 }

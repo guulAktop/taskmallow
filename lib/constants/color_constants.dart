@@ -48,7 +48,7 @@ const Color textSecondaryDarkColor = Color(0xFF99c9ff);
 
 const Color itemOutlineLightColor = Color(0xFFdde7f2);
 const Color itemOutlineDarkColor = Color(0xFF111b26);
-const Color hintTextLightColor = Color(0xFFb3d7ff);
+const Color hintTextLightColor = Color(0xFF99c9ff);
 const Color hintTextDarkColor = Color(0xFF003d80);
 
 const Color itemDividerLightColor = Color(0xFFb3d7ff);

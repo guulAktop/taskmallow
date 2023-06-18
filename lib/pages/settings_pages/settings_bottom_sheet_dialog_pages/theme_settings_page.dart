@@ -45,6 +45,7 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
             suffixWidget: Transform.scale(
               scale: 0.7,
               child: CupertinoSwitch(
+                activeColor: primaryColor,
                 value: SharedPreferencesConstants.useDeviceTheme,
                 onChanged: (value) {
                   setState(() {
@@ -67,6 +68,7 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
                   suffixWidget: Transform.scale(
                     scale: 0.7,
                     child: CupertinoSwitch(
+                      activeColor: primaryColor,
                       value: SharedPreferencesConstants.isDarkTheme,
                       onChanged: (value) {
                         setState(() {
