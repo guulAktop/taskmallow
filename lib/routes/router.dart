@@ -20,6 +20,7 @@ import 'package:taskmallow/pages/settings_pages/settings_page.dart';
 import 'package:taskmallow/pages/starred_projects_page.dart';
 import 'package:taskmallow/pages/update_project_page.dart';
 import 'package:taskmallow/pages/update_task_page.dart';
+import 'package:taskmallow/pages/user_match_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 
 class RouteGenerator {
@@ -101,6 +102,8 @@ class RouteGenerator {
         return createRoute(const StarredProjectsPage(), settings);
       case projectMatchPageRoute:
         return createRoute(const ProjectMatchPage(), settings);
+      case userMatchPageRoute:
+        return createRoute(const UserMatchPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }
