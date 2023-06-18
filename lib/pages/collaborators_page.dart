@@ -67,7 +67,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
 
   List<UserModel> filteredUsers = [];
 
-  TextEditingController searchTextEditingController = TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -278,7 +278,8 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                 ),
                 TextFormFieldComponent(
                   context: context,
-                  textEditingController: searchTextEditingController,
+                  textEditingController: _searchTextEditingController,
+                  iconData: CustomIconData.magnifyingGlass,
                   hintText: "Search users",
                   onChanged: (text) {
                     setState(() {
@@ -289,7 +290,8 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                             .where((user) =>
                                 user.firstName.toLowerCase().contains(text.toLowerCase()) ||
                                 user.lastName.toLowerCase().contains(text.toLowerCase()) ||
-                                user.email.toLowerCase().contains(text.toLowerCase()))
+                                user.email.toLowerCase().contains(text.toLowerCase()) ||
+                                ("${user.firstName} ${user.lastName}").toLowerCase().contains(text.toLowerCase()))
                             .where((user) => !invitedUsers.contains(user))
                             .toList();
                       }
@@ -403,14 +405,14 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                       });
                     }
                     setState(() {
-                      if (searchTextEditingController.text.isEmpty) {
+                      if (_searchTextEditingController.text.isEmpty) {
                         filteredUsers.clear();
                       } else {
                         filteredUsers = users
                             .where((user) =>
-                                user.firstName.toLowerCase().contains(searchTextEditingController.text.toLowerCase()) ||
-                                user.lastName.toLowerCase().contains(searchTextEditingController.text.toLowerCase()) ||
-                                user.email.toLowerCase().contains(searchTextEditingController.text.toLowerCase()))
+                                user.firstName.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()) ||
+                                user.lastName.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()) ||
+                                user.email.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()))
                             .where((user) => !invitedUsers.contains(user))
                             .toList();
                       }
@@ -418,7 +420,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                   },
                   icon: IconComponent(
                     iconData: !invitedUsers.contains(user) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
-                    color: !invitedUsers.contains(user) ? matchColor : dangerDark,
+                    color: !invitedUsers.contains(user) ? primaryColor : dangerDark,
                   ),
                 ),
               ),
