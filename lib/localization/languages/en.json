@@ -45,7 +45,11 @@
     "theme":"Theme",
     "privacy_policy":"Privacy Policy",
     "delete_my_account":"Delete my account",
-
+    "invitations":"Invitations",
+    "invitation_message_part1":" would like to involve you in the ",
+    "invitation_message_part2":" project.",
+    "accept":"Accept",
+    "reject":"Reject",
 
     
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",

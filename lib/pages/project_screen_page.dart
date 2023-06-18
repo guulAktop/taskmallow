@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:taskmallow/components/button_component.dart';
 
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -16,17 +17,16 @@ import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
 
-class ProjectDetailPage extends StatefulWidget {
-  const ProjectDetailPage({super.key});
+class ProjectScreenPage extends StatefulWidget {
+  const ProjectScreenPage({super.key});
 
   @override
-  State<ProjectDetailPage> createState() => _ProjectDetailPageState();
+  State<ProjectScreenPage> createState() => _ProjectScreenPageState();
 }
 
-class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProviderStateMixin {
+class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProviderStateMixin {
   bool isLoading = false;
   TabController? tabController;
-  int _selectedTab = 0;
 
   List<UserModel> users = [
     UserModel(
@@ -139,15 +139,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
         onPressed: () => isLoading ? null : Navigator.pop(context),
       ),
-      actionList: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, createTaskPageRoute);
-          },
-          splashRadius: AppConstants.iconSplashRadius,
-          icon: const IconComponent(iconData: CustomIconData.squarePlus),
-        ),
-      ],
       widgetList: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -165,13 +156,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
                     softWrap: true,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectModel);
-                  },
-                  splashRadius: AppConstants.iconSplashRadius,
-                  icon: const IconComponent(iconData: CustomIconData.penCircle, color: primaryColor),
-                )
               ],
             ),
             Column(
@@ -245,34 +229,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
                                 ],
                               ),
                             ))
-                        .toList()
-                      ..add(
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          child: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              child: Material(
-                                color: primaryColor,
-                                child: InkWell(
-                                  onTap: () {
-                                    debugPrint("Add Collaborator");
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    child: const IconComponent(
-                                      iconData: CustomIconData.plus,
-                                      color: textPrimaryDarkColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                        .toList(),
                   ),
                 ),
               ],
@@ -281,66 +238,10 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Divider(color: secondaryColor, thickness: 1),
             ),
-            Center(
-              child: TabBar(
-                onTap: (value) {
-                  setState(() {
-                    _selectedTab = value;
-                  });
-                  debugPrint(_selectedTab.toString());
-                },
-                splashBorderRadius: const BorderRadius.all(Radius.circular(50)),
-                physics: const BouncingScrollPhysics(),
-                controller: tabController,
-                labelColor: primaryColor,
-                isScrollable: true,
-                unselectedLabelColor: Colors.black,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 15),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(color: primaryColor, width: 2),
-                ),
-                tabs: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: TextComponent(text: getTranslated(context, TaskSituation.to_do.name)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: TextComponent(text: getTranslated(context, TaskSituation.in_progress.name)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: TextComponent(text: getTranslated(context, TaskSituation.done.name)),
-                  ),
-                ],
-              ),
-            ),
-            Builder(
-              builder: (context) {
-                if (_selectedTab == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Column(
-                      children: tasks.where((element) => element.situation == TaskSituation.to_do).map((e) => getTaskRow(e)).toList(),
-                    ),
-                  );
-                } else if (_selectedTab == 1) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Column(
-                      children: tasks.where((element) => element.situation == TaskSituation.in_progress).map((e) => getTaskRow(e)).toList(),
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Column(
-                      children: tasks.where((element) => element.situation == TaskSituation.done).map((e) => getTaskRow(e)).toList(),
-                    ),
-                  );
-                }
-              },
+            ButtonComponent(
+              text: "Send join request",
+              isOutLined: true,
+              onPressed: () {},
             )
           ],
         ),
@@ -502,17 +403,5 @@ class ProjectModel {
     required this.userWhoCreated,
     required this.tasks,
     required this.collaborators,
-  });
-}
-
-class InvitationModel {
-  String id;
-  ProjectModel projectModel;
-  String to;
-
-  InvitationModel({
-    required this.id,
-    required this.projectModel,
-    required this.to,
   });
 }
