@@ -52,11 +52,14 @@ class RouteGenerator {
       //   },
       // );
 
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //ios
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //ios
     } else {
-      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //web
+      return CupertinoPageRoute(
+          builder: (_) => routeToGo, settings: settings); //web
     }
   }
 
@@ -92,6 +95,8 @@ class RouteGenerator {
         return createRoute(const InvitationsPage(), settings);
       case projectDetailPageRoute:
         return createRoute(const ProjectDetailPage(), settings);
+      case collaboratorsPage:
+        return createRoute(const CollaboratorsPage(), settings);
       case projectsPageRoute:
         return createRoute(const ProjectsPage(), settings);
       case projectScreenPageRoute:
