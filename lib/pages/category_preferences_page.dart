@@ -186,7 +186,11 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
               },
               child: const Padding(
                 padding: EdgeInsets.all(5),
-                child: SizedBox(width: 15, height: 15, child: IconComponent(iconData: CustomIconData.xmark)),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: IconComponent(iconData: CustomIconData.xmark),
+                ),
               ),
             ),
           ),
