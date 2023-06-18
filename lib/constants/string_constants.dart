@@ -53,6 +53,11 @@ class AppKeys {
   static String theme = 'theme';
   static String privacyPolicy = 'privacy_policy';
   static String deleteMyAccount = 'delete_my_account';
+  static String invitations = 'invitations';
+  static String invitationMessagePart1 = 'invitation_message_part1';
+  static String invitationMessagePart2 = 'invitation_message_part2';
+  static String accept = 'accept';
+  static String reject = 'reject';
 }
 
 class CategoryKeys {

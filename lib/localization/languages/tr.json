@@ -45,6 +45,11 @@
     "theme":"Tema",
     "privacy_policy":"Gizlilik Politikası",
     "delete_my_account":"Hesabımı sil",
+    "invitations":"Davetler",
+    "invitation_message_part1":" seni ",
+    "invitation_message_part2":" projesine dahil etmek istiyor.",
+    "accept":"Kabul et",
+    "reject":"Reddet",
 
 
     

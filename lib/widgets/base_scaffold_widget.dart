@@ -19,6 +19,8 @@ class BaseScaffoldWidget extends StatelessWidget {
   final List<Widget>? actionList;
   final Function? popScopeFunction;
   final Color appBarBackgroundColor;
+  final Widget? floatingActionButton;
+  final CrossAxisAlignment crossAxisAlignment;
 
   const BaseScaffoldWidget({
     Key? key,
@@ -38,6 +40,8 @@ class BaseScaffoldWidget extends StatelessWidget {
     this.actionList,
     this.popScopeFunction,
     this.appBarBackgroundColor = Colors.transparent,
+    this.floatingActionButton,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
   }) : super(key: key);
 
   defaultFunction() {
@@ -51,6 +55,7 @@ class BaseScaffoldWidget extends StatelessWidget {
         return popScopeFunction == null ? defaultFunction() : popScopeFunction!();
       },
       child: Scaffold(
+        floatingActionButton: floatingActionButton,
         backgroundColor: appBackgroundLightColor,
         resizeToAvoidBottomInset: true,
         appBar: hasAppBar
@@ -92,6 +97,7 @@ class BaseScaffoldWidget extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding, right: rightPadding, left: leftPadding),
                   child: Column(
+                    crossAxisAlignment: crossAxisAlignment,
                     children: widgetList,
                   ),
                 ),

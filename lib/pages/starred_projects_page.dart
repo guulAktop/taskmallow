@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
@@ -13,14 +12,14 @@ import 'package:taskmallow/pages/update_task_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class StarredProjectsPage extends StatefulWidget {
+  const StarredProjectsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<StarredProjectsPage> createState() => _StarredProjectsPageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerProviderStateMixin {
   bool isLoading = false;
 
   bool isExpanded = false;
@@ -132,52 +131,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         title: const TextComponent(
-          text: "Hello User",
+          text: "Starred Projects",
           color: textPrimaryLightColor,
           headerType: HeaderType.h4,
         ),
-        leading: null,
-        leadingWidth: 0,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const IconComponent(
-              iconData: CustomIconData.magnifyingGlass,
-            ),
-            splashRadius: AppConstants.iconSplashRadius,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const IconComponent(
-              iconData: CustomIconData.envelopes,
-            ),
-            splashRadius: AppConstants.iconSplashRadius,
-          ),
-        ],
+        leading: IconButton(
+          splashRadius: AppConstants.iconSplashRadius,
+          icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+          onPressed: () => isLoading ? null : Navigator.pop(context),
+        ),
       ),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  getMatchingContainer(),
-                  const SizedBox(height: 20),
-                  const TextComponent(
-                    text: "Some Projects",
-                    textAlign: TextAlign.start,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.fade,
-                    softWrap: true,
-                  ),
-                ],
-              ),
+            child: Column(
+              children: const [
+                SizedBox(),
+              ],
             ),
           ),
           SliverPadding(
@@ -196,49 +170,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 childCount: favoriteProjects.length,
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget getMatchingContainer() {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: matchColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              IconComponent(
-                iconData: CustomIconData.wandMagicSparkles,
-                color: textPrimaryDarkColor,
-                size: UIHelper.getDeviceWidth(context) / 8,
-              ),
-              const SizedBox(width: 10),
-              const Expanded(
-                child: TextComponent(
-                  text: "See the most suitable projects for you instantly with the matching feature.",
-                  textAlign: TextAlign.start,
-                  color: textPrimaryDarkColor,
-                  headerType: HeaderType.h6,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          ButtonComponent(
-            text: "Start Matching",
-            isOutLined: true,
-            isWide: true,
-            textPadding: 6,
-            color: textPrimaryDarkColor,
-            onPressed: () {},
           ),
         ],
       ),
