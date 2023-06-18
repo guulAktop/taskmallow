@@ -4,6 +4,7 @@ import 'package:taskmallow/pages/authentication_pages/change_password_page.dart'
 import 'package:taskmallow/pages/authentication_pages/forgot_password_page.dart';
 import 'package:taskmallow/pages/authentication_pages/register_page.dart';
 import 'package:taskmallow/pages/authentication_pages/verification_code_page.dart';
+import 'package:taskmallow/pages/category_preferences_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
 import 'package:taskmallow/pages/create_task_page.dart';
 import 'package:taskmallow/pages/edit_profile_page.dart';
@@ -13,6 +14,7 @@ import 'package:taskmallow/pages/profile_page.dart';
 import 'package:taskmallow/pages/invitations_page.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/pages/projects_page.dart';
+import 'package:taskmallow/pages/project_screen_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_page.dart';
 import 'package:taskmallow/pages/update_project_page.dart';
 import 'package:taskmallow/pages/update_task_page.dart';
@@ -47,14 +49,11 @@ class RouteGenerator {
       //   },
       // );
 
-      return CupertinoPageRoute(
-          builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return CupertinoPageRoute(
-          builder: (_) => routeToGo, settings: settings); //ios
+      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //ios
     } else {
-      return CupertinoPageRoute(
-          builder: (_) => routeToGo, settings: settings); //web
+      return CupertinoPageRoute(builder: (_) => routeToGo, settings: settings); //web
     }
   }
 
@@ -92,6 +91,10 @@ class RouteGenerator {
         return createRoute(const ProjectDetailPage(), settings);
       case projectsPageRoute:
         return createRoute(const ProjectsPage(), settings);
+      case projectScreenPageRoute:
+        return createRoute(const ProjectScreenPage(), settings);
+      case categoryPreferencesPageRoute:
+        return createRoute(const CategoryPreferencesPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }
