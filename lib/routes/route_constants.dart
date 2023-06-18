@@ -13,6 +13,7 @@ const String settingsPageRoute = "settingsPageRoute";
 const String profilePageRoute = "profilePageRoute";
 const String invitationsPageRoute = "invitationsPageRoute";
 const String projectDetailPageRoute = "projectDetailPageRoute";
+const String searchPageRoute = "searchPageRoute";
 const String collaboratorsPageRoute = "collaboratorsPageRoute";
 const String projectsPageRoute = "projectsPageRoute";
 const String projectScreenPageRoute = "projectScreenPageRoute";
