@@ -9,7 +9,6 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/pages/update_task_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class StarredProjectsPage extends StatefulWidget {
@@ -99,7 +98,7 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
     super.dispose();
   }
 
-  void _handleButtonTap() {
+  void handleButtonTap() {
     setState(() {
       isExpanded = true;
     });
@@ -178,7 +177,6 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
                                 child: TextComponent(
                                   text: projects[index].name,
                                   fontWeight: FontWeight.bold,
-                                  headerType: HeaderType.h6,
                                 ),
                               ),
                               const Spacer(),
