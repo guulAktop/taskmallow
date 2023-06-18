@@ -10,5 +10,6 @@ const String updateProjectPageRoute = "updateProjectPageRoute";
 const String createTaskPageRoute = "createTaskPageRoute";
 const String updateTaskPageRoute = "updateTaskPageRoute";
 const String settingsPageRoute = "settingsPageRoute";
+const String profilePageRoute = "profilePageRoute";
 const String invitationsPageRoute = "invitationsPageRoute";
 const String projectDetailPageRoute = "projectDetailPageRoute";
