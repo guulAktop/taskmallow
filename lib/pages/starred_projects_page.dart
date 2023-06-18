@@ -178,6 +178,8 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
 
   Widget getProjectGridCard(FavoriteProjectModel favoriteProjectModel) {
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: () {
         Navigator.pushNamed(context, projectScreenPageRoute);
       },
