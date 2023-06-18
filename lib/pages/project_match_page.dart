@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
@@ -7,19 +9,18 @@ import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
-import 'package:taskmallow/pages/project_match_page.dart';
 import 'package:taskmallow/pages/update_task_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
-class StarredProjectsPage extends StatefulWidget {
-  const StarredProjectsPage({super.key});
+class ProjectMatchPage extends StatefulWidget {
+  const ProjectMatchPage({super.key});
 
   @override
-  State<StarredProjectsPage> createState() => _StarredProjectsPageState();
+  State<ProjectMatchPage> createState() => _ProjectMatchPageState();
 }
 
-class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerProviderStateMixin {
+class _ProjectMatchPageState extends State<ProjectMatchPage> with TickerProviderStateMixin {
   bool isLoading = false;
 
   bool isExpanded = false;
@@ -133,7 +134,7 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
         elevation: 0,
         centerTitle: true,
         title: const TextComponent(
-          text: "Starred Projects",
+          text: "Your Project Matches",
           color: textPrimaryLightColor,
           headerType: HeaderType.h4,
         ),
@@ -148,10 +149,23 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
         shrinkWrap: true,
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: Column(
-              children: const [
-                SizedBox(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: const [
+                  TextComponent(
+                    text: "Here are the projects taht match your preferences.",
+                    textAlign: TextAlign.start,
+                  ),
+                  TextComponent(
+                    text: "Take a look!",
+                    color: matchColor,
+                    fontWeight: FontWeight.bold,
+                    headerType: HeaderType.h3,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
             ),
           ),
           SliverPadding(
@@ -184,7 +198,7 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
-          color: itemBackgroundLightColor,
+          color: matchItemBackgroundColor,
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
@@ -212,9 +226,9 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
                         height: UIHelper.getDeviceWidth(context) / 5,
                         width: UIHelper.getDeviceWidth(context) / 5,
                         child: const CircularProgressIndicator(
-                          color: primaryColor,
+                          color: matchColor,
                           strokeWidth: 15,
-                          backgroundColor: secondaryColor,
+                          backgroundColor: matchSecondaryColor,
                           value: 0.75,
                         ),
                       ),
@@ -246,7 +260,7 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
                         scale: isExpanded ? _animation.value : 1.0,
                         child: IconComponent(
                           iconData: CustomIconData.star,
-                          color: primaryColor,
+                          color: matchColor,
                           iconWeight: favoriteProjectModel.isFavorite ? CustomIconWeight.solid : CustomIconWeight.regular,
                         ),
                       );
@@ -260,4 +274,14 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
       ),
     );
   }
+}
+
+class FavoriteProjectModel {
+  ProjectModel projectModel;
+  bool isFavorite;
+
+  FavoriteProjectModel({
+    required this.projectModel,
+    required this.isFavorite,
+  });
 }

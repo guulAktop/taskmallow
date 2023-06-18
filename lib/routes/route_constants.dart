@@ -17,3 +17,4 @@ const String projectsPageRoute = "projectsPageRoute";
 const String projectScreenPageRoute = "projectScreenPageRoute";
 const String categoryPreferencesPageRoute = "categoryPreferencesPageRoute";
 const String starredProjectsPageRoute = "starredProjectsPageRoute";
+const String projectMatchPageRoute = "projectMatchPageRoute";
