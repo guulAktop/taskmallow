@@ -3155,5 +3155,7 @@ enum CustomIconData {
   y,
   yenSign,
   yinYang,
-  z
+  z,
+  linkedin,
+  twitter
 }

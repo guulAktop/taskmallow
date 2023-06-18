@@ -177,6 +177,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                     color: textPrimaryLightColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -188,6 +189,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                   style: const TextStyle(
                     color: textPrimaryLightColor,
                     fontSize: 18,
+                    fontFamily: "Poppins",
                   ),
                 ),
                 TextSpan(
@@ -196,6 +198,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                     color: primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
@@ -207,6 +210,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                   style: const TextStyle(
                     color: textPrimaryLightColor,
                     fontSize: 18,
+                    fontFamily: "Poppins",
                   ),
                 ),
               ],

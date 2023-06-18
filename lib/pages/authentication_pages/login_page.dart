@@ -197,6 +197,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    Navigator.pushNamed(context, categoryPreferencesPageRoute);
+    Navigator.pushNamed(context, starredProjectsPageRoute);
   }
 }
