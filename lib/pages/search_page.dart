@@ -1,58 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:taskmallow/components/circular_photo_component.dart';
+import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
+import 'package:taskmallow/components/text_form_field_component.dart';
+import 'package:taskmallow/constants/app_constants.dart';
+import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/helpers/ui_helper.dart';
+import 'package:taskmallow/pages/project_detail_page.dart';
+import 'package:taskmallow/pages/update_task_page.dart';
+import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
-
-import '../components/icon_component.dart';
-import '../constants/app_constants.dart';
+import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  bool isLoading = true;
-  TextEditingController _searchController = TextEditingController();
-  String _searchText = "";
-  bool _userFound = true;
-  bool _projectFound = true;
+  bool isLoading = false;
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
-  List<String> users = [
-    "Firstname Lastname",
-    "John Doe",
-    "Jane Smith",
+  List<UserModel> users = [
+    UserModel(
+        email: "enescerrahoglu1@gmail.com",
+        firstName: "Enes",
+        lastName: "Cerrahoğlu",
+        profilePhotoURL:
+            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
+    UserModel(
+        email: "gul.aktopp@gmail.com",
+        firstName: "Gülsüm",
+        lastName: "Aktop",
+        profilePhotoURL:
+            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
+    UserModel(
+        email: "ozdamarsevval.01@gmail.com",
+        firstName: "Şevval",
+        lastName: "Özdamar",
+        profilePhotoURL:
+            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
+    UserModel(
+        email: "izzetjmy@gmail.com",
+        firstName: "İzzet",
+        lastName: "Jumayev",
+        profilePhotoURL:
+            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
+    UserModel(
+        email: "msalihgirgin@gmail.com",
+        firstName: "Muhammed Salih",
+        lastName: "Girgin",
+        profilePhotoURL:
+            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
   ];
 
-  List<String> projects = [
-    "Bootcamp/Taskmallow",
-    "Project XYZ",
-    "Project ABC",
+  List<ProjectModel> projects = [
+    ProjectModel(
+      name: "Taskmallow",
+      category: Categories.mobile_applications,
+      description:
+          "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
+      userWhoCreated: UserModel(
+          email: "enescerrahoglu1@gmail.com",
+          firstName: "Enes",
+          lastName: "Cerrahoğlu",
+          profilePhotoURL:
+              "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
+      tasks: [],
+      collaborators: [],
+    ),
+    ProjectModel(
+      name: "Tesla",
+      category: Categories.mobile_applications,
+      description: "Lorem ipsum dolor sit amet.",
+      userWhoCreated: UserModel(
+          email: "ozdamarsevval.01@gmail.com",
+          firstName: "Şevval",
+          lastName: "Özdamar",
+          profilePhotoURL:
+              "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
+      tasks: [],
+      collaborators: [],
+    ),
+    ProjectModel(
+      name: "Gül Aktop",
+      category: Categories.mobile_applications,
+      description: "Lorem ipsum dolor sit amet.",
+      userWhoCreated: UserModel(
+          email: "gul.aktopp@gmail.com",
+          firstName: "Gülsüm",
+          lastName: "Aktop",
+          profilePhotoURL:
+              "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
+      tasks: [],
+      collaborators: [],
+    ),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchTextChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchTextChanged() {
-    setState(() {
-      _searchText = _searchController.text;
-      _userFound = users.any(
-          (user) => user.toLowerCase().contains(_searchText.toLowerCase()));
-      _projectFound = projects.any((project) =>
-          project.toLowerCase().contains(_searchText.toLowerCase()));
-    });
-  }
+  List<UserModel> filteredUsers = [];
+  List<ProjectModel> filteredProjects = [];
 
   @override
   Widget build(BuildContext context) {
@@ -63,168 +112,200 @@ class _SearchPageState extends State<SearchPage> {
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
         onPressed: () => isLoading ? null : Navigator.pop(context),
       ),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       widgetList: [
-        Container(
-          decoration: BoxDecoration(
-            color: itemBackgroundLightColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search users or projects',
-              prefixIcon: IconComponent(
-                iconData: CustomIconData.magnifyingGlass,
-                color: Colors.blue,
-                size: 10.5,
+        TextFormFieldComponent(
+          context: context,
+          textEditingController: _searchTextEditingController,
+          iconData: CustomIconData.magnifyingGlass,
+          hintText: "Search",
+          onChanged: (text) {
+            setState(
+              () {
+                if (text.isEmpty) {
+                  filteredUsers.clear();
+                } else {
+                  filteredUsers = users
+                      .where((user) =>
+                          user.firstName.toLowerCase().contains(text.toLowerCase()) ||
+                          user.lastName.toLowerCase().contains(text.toLowerCase()) ||
+                          user.email.toLowerCase().contains(text.toLowerCase()) ||
+                          ("${user.firstName} ${user.lastName}").toLowerCase().contains(text.toLowerCase()))
+                      .toList();
+
+                  filteredProjects = projects
+                      .where((project) =>
+                          project.name.toLowerCase().contains(text.toLowerCase()) ||
+                          project.description.toLowerCase().contains(text.toLowerCase()) ||
+                          project.userWhoCreated.email.toLowerCase().contains(text.toLowerCase()) ||
+                          project.userWhoCreated.firstName.toLowerCase().contains(text.toLowerCase()) ||
+                          project.userWhoCreated.lastName.toLowerCase().contains(text.toLowerCase()) ||
+                          ("${project.userWhoCreated.firstName} ${project.userWhoCreated.lastName}").toLowerCase().contains(text.toLowerCase()))
+                      .toList();
+                }
+              },
+            );
+          },
+        ),
+        Visibility(
+          visible: _searchTextEditingController.text.isNotEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 10),
+              TextComponent(
+                text: filteredUsers.isNotEmpty ? "Users" : "User not found!",
+                color: filteredUsers.isNotEmpty ? textPrimaryLightColor : danger,
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+                softWrap: true,
               ),
-              border: InputBorder.none,
-            ),
+              Column(
+                children: filteredUsers.map((user) => getUserRow(user)).toList(),
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 6),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 3),
-            child: TextComponent(
-              text: "Users",
-              headerType: HeaderType.h6,
-              color: textPrimaryLightColor,
-            ),
+        Visibility(
+          visible: _searchTextEditingController.text.isNotEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 10),
+              TextComponent(
+                text: filteredProjects.isNotEmpty ? "Projects" : "Project not found!",
+                color: filteredProjects.isNotEmpty ? textPrimaryLightColor : danger,
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+                softWrap: true,
+              ),
+              Column(
+                children: filteredProjects.map((project) => getProjectRow(project)).toList(),
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 6),
-        _userFound
-            ? Column(
-                children: users
-                    .where((user) =>
-                        user.toLowerCase().contains(_searchText.toLowerCase()))
-                    .map((user) => Column(
-                          children: [
-                            _buildUserContainer(user),
-                            SizedBox(height: 6),
-                          ],
-                        ))
-                    .toList(),
-              )
-            : Text(
-                "User not found",
-                style: TextStyle(color: danger),
-              ),
-        SizedBox(height: 6),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 3),
-            child: TextComponent(
-              text: "Projects",
-              headerType: HeaderType.h6,
-              color: textPrimaryLightColor,
-            ),
-          ),
-        ),
-        _projectFound
-            ? Column(
-                children: projects
-                    .where((project) => project
-                        .toLowerCase()
-                        .contains(_searchText.toLowerCase()))
-                    .map((project) => Column(
-                          children: [
-                            _buildProjectContainer(project),
-                            SizedBox(height: 6),
-                          ],
-                        ))
-                    .toList(),
-              )
-            : Text(
-                "Project not found",
-                style: TextStyle(color: danger),
-              ),
       ],
     );
   }
 
-  Widget _buildUserContainer(String user) {
+  Widget getUserRow(UserModel user) {
     return Container(
-      decoration: BoxDecoration(
-        color: itemBackgroundLightColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.grey,
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: listViewItemBackgroundLightColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
         ),
-        title: Text(user),
-        subtitle: Text("example@gmail.com"),
+      ),
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          Navigator.pushNamed(context, profilePageRoute);
+        },
+        child: Row(
+          children: [
+            SizedBox(
+              width: UIHelper.getDeviceWidth(context) / 7,
+              height: UIHelper.getDeviceWidth(context) / 7,
+              child: CircularPhotoComponent(
+                url: user.profilePhotoURL,
+                hasBorder: false,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MarqueeWidget(
+                    child: TextComponent(
+                      text: "${user.firstName} ${user.lastName}",
+                      fontWeight: FontWeight.bold,
+                      headerType: HeaderType.h4,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                    ),
+                  ),
+                  MarqueeWidget(
+                    child: TextComponent(
+                      text: user.email,
+                      headerType: HeaderType.h7,
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildProjectContainer(String project) {
+  Widget getProjectRow(ProjectModel projectModel) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
         color: itemBackgroundLightColor,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 4.0,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            project,
-            style: TextStyle(
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () {
+          Navigator.pushNamed(context, updateProjectPageRoute);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextComponent(
+              text: projectModel.name,
+              headerType: HeaderType.h4,
+              textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
-              fontSize: 14.0,
             ),
-          ),
-          SizedBox(height: 6.0),
-          Text(
-            "Taskmallow is an innovative application that brings together project management and innovation. It is designed to manage your projects, track innovations, develop creative ideas, and find the most suitable tasks through matching feature.",
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 12.0,
+            TextComponent(
+              text: projectModel.description,
+              textAlign: TextAlign.start,
+              headerType: HeaderType.h6,
             ),
-          ),
-          SizedBox(height: 4.0),
-          Text(
-            "created by taskmallow",
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.grey,
+            const SizedBox(height: 10),
+            const TextComponent(
+              text:
+                  "33% Complete", //"${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% Complete",
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+              headerType: HeaderType.h7,
             ),
-          ),
-          SizedBox(height: 4.0),
-          Row(
-            children: [
-              Expanded(
-                child: LinearProgressIndicator(
-                  value: 0.15, // %15
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  backgroundColor: Colors.grey[200],
-                ),
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+              child: LinearProgressIndicator(
+                minHeight: 20,
+                value: (0.33).toDouble(),
               ),
-              SizedBox(width: 8.0),
-              Text(
-                "%15",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          )
-        ],
+            ),
+            const SizedBox(height: 10),
+            TextComponent(
+              text: "created by ${projectModel.userWhoCreated.email}",
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+              headerType: HeaderType.h7,
+            ),
+          ],
+        ),
       ),
     );
   }
