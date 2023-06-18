@@ -13,3 +13,4 @@ const String settingsPageRoute = "settingsPageRoute";
 const String profilePageRoute = "profilePageRoute";
 const String invitationsPageRoute = "invitationsPageRoute";
 const String projectDetailPageRoute = "projectDetailPageRoute";
+const String projectsPageRoute = "projectsPageRoute";
