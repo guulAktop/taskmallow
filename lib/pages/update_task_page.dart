@@ -8,6 +8,7 @@ import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -25,6 +26,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
   bool isLoading = false;
   String? selectedSituation = "done";
 
+  TaskModel? taskModel;
+
   @override
   void initState() {
     super.initState();
@@ -37,25 +40,58 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
   List<UserModel> users = [
     UserModel(
         email: "enescerrahoglu1@gmail.com",
+        firstName: "Enes",
+        lastName: "Cerrahoğlu",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
     UserModel(
         email: "gul.aktopp@gmail.com",
+        firstName: "Gülsüm",
+        lastName: "Aktop",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
     UserModel(
         email: "ozdamarsevval.01@gmail.com",
+        firstName: "Şevval",
+        lastName: "Özdamar",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
     UserModel(
         email: "izzetjmy@gmail.com",
+        firstName: "İzzet",
+        lastName: "Jumayev",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
     UserModel(
         email: "msalihgirgin@gmail.com",
+        firstName: "Muhammed Salih",
+        lastName: "Girgin",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
   ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    taskModel = getTaskModelFromArguments();
+    if (taskModel != null) {
+      selectedSituation = taskModel!.situation.name;
+      projectNameTextEditingController.text = taskModel!.name;
+      projectDescriptionTextEditingController.text = taskModel!.description;
+      selectedUser = users.where((element) => element.email == taskModel!.collaboratorMail).first;
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  TaskModel? getTaskModelFromArguments() {
+    ModalRoute? route = ModalRoute.of(context);
+    dynamic arguments = route?.settings.arguments;
+    if (arguments is TaskModel) {
+      return arguments;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +258,12 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                     icon: CustomIconData.taskmallow,
                     backgroundColor: primaryColor,
                   );
+                  if (taskModel != null && selectedUser != null) {
+                    setState(() {
+                      taskModel!.collaboratorMail = selectedUser!.email;
+                      Navigator.pop(context);
+                    });
+                  }
                 },
                 isWide: true,
                 color: warningDark,
@@ -287,9 +329,13 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
 class UserModel {
   String email;
+  String firstName;
+  String lastName;
   String profilePhotoURL;
   UserModel({
     required this.email,
+    required this.firstName,
+    required this.lastName,
     required this.profilePhotoURL,
   });
 }
