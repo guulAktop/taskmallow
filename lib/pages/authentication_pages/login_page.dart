@@ -16,10 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailTextEditingController =
-      TextEditingController();
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController();
+  final TextEditingController _emailTextEditingController = TextEditingController();
+  final TextEditingController _passwordTextEditingController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
@@ -70,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   context: context,
                   textEditingController: _emailTextEditingController,
                   focusNode: _focusNode1,
-                  onSubmitted: (p0) =>
-                      FocusScope.of(context).requestFocus(_focusNode2),
+                  onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
                   textInputAction: TextInputAction.next,
                   hintText: getTranslated(context, AppKeys.email),
                   keyboardType: TextInputType.emailAddress,
@@ -97,9 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.black12)),
+                    style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.black12)),
                     onPressed: () {
                       Navigator.pushNamed(context, forgotPasswordPageRoute);
                     },
@@ -117,9 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          debugPrint(WidgetsBinding
-                              .instance.window.viewInsets.bottom
-                              .toString());
+                          debugPrint(WidgetsBinding.instance.window.viewInsets.bottom.toString());
                           _login();
                         },
                 ),
@@ -143,8 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.all(20),
                               decoration: const BoxDecoration(
                                 color: primaryColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
                               ),
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
@@ -167,8 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     PageRouteBuilder(
-                                      pageBuilder: (_, __, ___) =>
-                                          const RegisterPage(),
+                                      pageBuilder: (_, __, ___) => const RegisterPage(),
                                       transitionDuration: Duration.zero,
                                     ),
                                     (route) => false);
@@ -177,8 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.all(20),
                                 decoration: const BoxDecoration(
                                   color: Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -207,6 +197,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    Navigator.pushNamed(context, projectDetailPageRoute);
+    Navigator.pushNamed(context, categoryPreferencesPageRoute);
   }
 }
