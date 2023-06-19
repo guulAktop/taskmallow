@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
@@ -258,7 +256,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
                                 color: primaryColor,
                                 child: InkWell(
                                   onTap: () {
-                                    debugPrint("Add Collaborator");
+                                    Navigator.pushNamed(context, collaboratorsPageRoute);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(10),

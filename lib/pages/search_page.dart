@@ -205,7 +205,7 @@ class _SearchPageState extends State<SearchPage> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
-          Navigator.pushNamed(context, profilePageRoute);
+          Navigator.pushNamed(context, profileScreenPageRoute);
         },
         child: Row(
           children: [

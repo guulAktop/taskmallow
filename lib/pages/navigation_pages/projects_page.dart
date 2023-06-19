@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
+import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -19,6 +20,15 @@ class _ProjectsPageState extends State<ProjectsPage> {
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
       title: "Projects",
+      actionList: [
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, starredProjectsPageRoute);
+          },
+          icon: const IconComponent(iconData: CustomIconData.stars),
+          splashRadius: AppConstants.iconSplashRadius,
+        ),
+      ],
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         child: const IconComponent(iconData: CustomIconData.plus, color: textPrimaryDarkColor),
@@ -27,7 +37,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
         },
       ),
       widgetList: [
-        getProjectContainer(),
         getProjectContainer(),
         getProjectContainer(),
         getProjectContainer(),
@@ -49,19 +58,20 @@ class _ProjectsPageState extends State<ProjectsPage> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
-          Navigator.pushNamed(context, updateProjectPageRoute);
+          Navigator.pushNamed(context, projectDetailPageRoute);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const TextComponent(
-              text: "Project NameProject NameProject NameProject Name",
+              text: "Project Name",
               headerType: HeaderType.h4,
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
             ),
             const TextComponent(
-              text: "Project description is here is here is here is here is here is here is here is here is here is here is here",
+              text:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
               textAlign: TextAlign.start,
               headerType: HeaderType.h6,
             ),

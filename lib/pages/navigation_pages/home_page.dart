@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ),
     FavoriteProjectModel(
       projectModel: ProjectModel(
-        name: "Project 1",
+        name: "Project 2",
         category: Categories.mobile_applications,
         description:
             "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ),
     FavoriteProjectModel(
       projectModel: ProjectModel(
-        name: "Project 1",
+        name: "Project 3",
         category: Categories.mobile_applications,
         description:
             "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
@@ -243,7 +243,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             isWide: true,
             textPadding: 6,
             color: textPrimaryDarkColor,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, projectMatchPageRoute);
+            },
           ),
         ],
       ),

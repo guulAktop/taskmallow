@@ -270,7 +270,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
               children: [
                 const SizedBox(height: 10),
                 const TextComponent(
-                  text: "Find Users",
+                  text: "Search Users",
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.fade,
@@ -280,7 +280,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                   context: context,
                   textEditingController: _searchTextEditingController,
                   iconData: CustomIconData.magnifyingGlass,
-                  hintText: "Search users",
+                  hintText: "Search",
                   onChanged: (text) {
                     setState(() {
                       if (text.isEmpty) {
@@ -326,7 +326,9 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                   color: matchColor,
                   icon: CustomIconData.wandMagicSparkles,
                   isWide: true,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, userMatchPageRoute);
+                  },
                 ),
               ],
             ),

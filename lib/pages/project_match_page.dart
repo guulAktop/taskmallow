@@ -47,7 +47,7 @@ class _ProjectMatchPageState extends State<ProjectMatchPage> with TickerProvider
     ),
     FavoriteProjectModel(
       projectModel: ProjectModel(
-        name: "Project 1",
+        name: "Project 2",
         category: Categories.mobile_applications,
         description:
             "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
@@ -64,7 +64,41 @@ class _ProjectMatchPageState extends State<ProjectMatchPage> with TickerProvider
     ),
     FavoriteProjectModel(
       projectModel: ProjectModel(
-        name: "Project 1",
+        name: "Project 3",
+        category: Categories.mobile_applications,
+        description:
+            "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
+        userWhoCreated: UserModel(
+            email: "enescerrahoglu1@gmail.com",
+            firstName: "Enes",
+            lastName: "Cerrahoğlu",
+            profilePhotoURL:
+                "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
+        tasks: [],
+        collaborators: [],
+      ),
+      isFavorite: true,
+    ),
+    FavoriteProjectModel(
+      projectModel: ProjectModel(
+        name: "Project 4",
+        category: Categories.mobile_applications,
+        description:
+            "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
+        userWhoCreated: UserModel(
+            email: "enescerrahoglu1@gmail.com",
+            firstName: "Enes",
+            lastName: "Cerrahoğlu",
+            profilePhotoURL:
+                "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
+        tasks: [],
+        collaborators: [],
+      ),
+      isFavorite: true,
+    ),
+    FavoriteProjectModel(
+      projectModel: ProjectModel(
+        name: "Project 5",
         category: Categories.mobile_applications,
         description:
             "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
