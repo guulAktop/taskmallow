@@ -9,7 +9,7 @@ Flutter f-52
 * Enes Cerrahoğlu : Product Owner
 * Gülsüm Aktop: Scrum Master
 * Şevval Özdamar : Developer
-* Muhammed Salih Girgin : UI/UX Developer
+* Muhammed Salih Girgin : Developer
 * İzzet Jumaev : Developer
 
 ## Ürün İsmi
