@@ -55,7 +55,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 ## Product Backlog URL
 (https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=99046281895)
 
-##Juriye Not
+## Juriye Not
 
 Uygulamanın son durum ekran görüntülerini ve güncel backlog'u Read.me de yer kaplamaması için drive linki ile ileteceğim.
 
