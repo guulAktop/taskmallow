@@ -66,7 +66,7 @@ Uygulamanın son durum ekran görüntülerini ve güncel backlog'u Read.me de ye
 
   ## Güncel Sprint Sonu Backlog
 
-  (https://drive.google.com/drive/folders/1_F_zuKzhckgBtaiKf8Qg2CVHeStipV_e?usp=drive_link)
+ (https://drive.google.com/file/d/1u_g5TanxHrln2ZhvjrtwdB4-Y75lvInL/view?usp=drive_link)
 
   ## Uygulama Son Durum
 
