@@ -70,7 +70,7 @@ Uygulamanın son durum ekran görüntülerini ve güncel backlog'u Read.me de ye
 
   ## Uygulama Son Durum
 
-  (https://drive.google.com/drive/folders/1kO8ug3hU6VDUHFdByvjS1aOmz2n2Ixps?usp=drive_link)
+  (https://drive.google.com/drive/folders/1svQn9n_o9rFwOb-3Er3RX8rlj8QFTuQI?usp=drive_link)
 
   ## Sprint Review: Sprint 1
 
