@@ -124,6 +124,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBackgroundLightColor,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
@@ -142,14 +143,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         leadingWidth: 0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, searchPageRoute);
+            },
             icon: const IconComponent(
               iconData: CustomIconData.magnifyingGlass,
             ),
             splashRadius: AppConstants.iconSplashRadius,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, invitationsPageRoute);
+            },
             icon: const IconComponent(
               iconData: CustomIconData.envelopes,
             ),

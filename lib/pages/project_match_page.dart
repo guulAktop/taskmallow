@@ -124,6 +124,7 @@ class _ProjectMatchPageState extends State<ProjectMatchPage> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBackgroundLightColor,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

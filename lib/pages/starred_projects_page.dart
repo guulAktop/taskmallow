@@ -123,6 +123,7 @@ class _StarredProjectsPageState extends State<StarredProjectsPage> with TickerPr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appBackgroundLightColor,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
