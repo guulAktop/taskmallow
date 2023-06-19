@@ -9,14 +9,15 @@ import 'package:taskmallow/pages/collaborators_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
 import 'package:taskmallow/pages/create_task_page.dart';
 import 'package:taskmallow/pages/edit_profile_page.dart';
-import 'package:taskmallow/pages/home_page.dart';
+import 'package:taskmallow/pages/navigation_pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
-import 'package:taskmallow/pages/profile_page.dart';
+import 'package:taskmallow/pages/navigation_pages/navigation_page.dart';
+import 'package:taskmallow/pages/navigation_pages/profile_page.dart';
 import 'package:taskmallow/pages/invitations_page.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/pages/search_page.dart';
 import 'package:taskmallow/pages/project_match_page.dart';
-import 'package:taskmallow/pages/projects_page.dart';
+import 'package:taskmallow/pages/navigation_pages/projects_page.dart';
 import 'package:taskmallow/pages/project_screen_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_page.dart';
 import 'package:taskmallow/pages/starred_projects_page.dart';
@@ -110,6 +111,8 @@ class RouteGenerator {
         return createRoute(const ProjectMatchPage(), settings);
       case userMatchPageRoute:
         return createRoute(const UserMatchPage(), settings);
+      case navigationPageRoute:
+        return createRoute(const NavigationPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }

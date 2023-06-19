@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -255,19 +253,19 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextComponent(
+            const TextComponent(
               text: "Project NameProject NameProject NameProject Name",
               headerType: HeaderType.h4,
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
             ),
-            TextComponent(
+            const TextComponent(
               text: "Project description is here is here is here is here is here is here is here is here is here is here is here",
               textAlign: TextAlign.start,
               headerType: HeaderType.h6,
             ),
             const SizedBox(height: 10),
-            TextComponent(
+            const TextComponent(
               text:
                   "33% Complete", //"${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% Complete",
               textAlign: TextAlign.start,
@@ -283,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 10),
-            TextComponent(
+            const TextComponent(
               text: "created by email@gmail.com",
               fontWeight: FontWeight.bold,
               textAlign: TextAlign.end,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
-import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -20,11 +19,6 @@ class _ProjectsPageState extends State<ProjectsPage> {
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
       title: "Projects",
-      leadingWidget: IconButton(
-        splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-        onPressed: () => isLoading ? null : Navigator.pop(context),
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         child: const IconComponent(iconData: CustomIconData.plus, color: textPrimaryDarkColor),
