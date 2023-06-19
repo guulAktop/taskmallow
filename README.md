@@ -56,7 +56,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
 # Sprint 1
 
-*  Sprint Notları: User Story'ler product backlog'ların içine yazılmıştır. Product backlog item'lara tıklandığında hikayelerin detayları okunabilir.
+*  Sprint Notları: User Story'ler product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
 *  Sprint içinde tamamlanması tahmin edilen puan: 90 puandır ve tamamlanmıştır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. İlk sprinte 90 backlog puanı ile başlama kararı aldık ve tamamladık.
 *  Daily Scrum: Gün içerisinde en az 2 saat toplantı yaptık ve eşzamanlı hareket ettiğimiz için bazı günler yazılı olarak bildiri yapamadık. Discordda bulunan daily kanalını toplantıyı uzun tutmadığımız günlerde kullandık.
