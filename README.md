@@ -107,6 +107,5 @@ Sprint 1, Taskmallow projesinin ilk sprintidir. Bu sprintte önemli öncelikleri
 
 ## Sprint Retrospective : Sprint 1
 
-* İletişim ve koordinasyon konularında daha da güçlenmeliyiz. Ekip içi toplantıları daha etkili hale getirmeli ve iletişim kanallarını iyileştirmeliyiz.
-
+* İletişim ve koordinasyon konularında daha da güçlenmeliyiz. 
 
