@@ -83,7 +83,7 @@ Sprint 1, Taskmallow projesinin ilk sprintidir. Bu sprintte önemli öncelikleri
 * Görev ve proje oluşturma ve görev listeleme sayfalarının geliştirilmesi
 * Temel kullanıcı arayüzü bileşenlerinin tasarlanması ve uygulanması
 
-##Gerçekleşen İlerleme:
+## Gerçekleşen İlerleme:
 
 * Ana sayfa tasarımı tamamlandı ve kullanıcı dostu bir arayüz oluşturuldu.
 * Görev oluşturma ve görev listeleme sayfaları geliştirildi. Kullanıcılar görevlerini oluşturabilir, düzenleyebilir ve listelerini görüntüleyebilirler.
