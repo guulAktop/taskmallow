@@ -77,7 +77,7 @@ Uygulamanın son durum ekran görüntülerini ve güncel backlog'u Read.me de ye
 
 Sprint 1, Taskmallow projesinin ilk sprintidir. Bu sprintte önemli önceliklerimiz arasında frontend bölümünü tamamlamak yer alıyordu. 
 
-##Sprint Hedefleri:
+## Sprint Hedefleri:
 
 * Ana sayfa tasarımının oluşturulması
 * Görev ve proje oluşturma ve görev listeleme sayfalarının geliştirilmesi
