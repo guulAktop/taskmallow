@@ -53,7 +53,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 * Teknoloji ve İnovasyon Şirketleri: Yenilikçi projelerini yönetmek, ekipler arasında iletişimi güçlendirmek ve inovasyonu desteklemek isteyen şirketler.
 
 ## Product Backlog URL
-[https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=3280680671229]
+https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=3280680671229
 
 ## Sprint 1
 
@@ -63,11 +63,16 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
   ## Güncel Sprint Sonu Backlog
 
- (https://drive.google.com/file/d/1u_g5TanxHrln2ZhvjrtwdB4-Y75lvInL/view?usp=drive_link)
+![Güncel Backlog](https://github.com/enescerrahoglu/taskmallow/blob/master/image%20(9).png)
+
+![Güncel Backlog](https://github.com/enescerrahoglu/taskmallow/blob/master/image%20(15).png)
 
   ## Uygulama Son Durum
 
-  (https://drive.google.com/drive/folders/1svQn9n_o9rFwOb-3Er3RX8rlj8QFTuQI?usp=drive_link)
+  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/1.jpeg)
+  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/4.jpeg)
+  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/7.jpeg)
+  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/10.jpeg)
 
   ## Sprint Review: Sprint 1
 
