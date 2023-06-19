@@ -36,12 +36,10 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
 * Görev Yönetimi: Projelerinizi kolayca yönetmek için görevleri oluşturabilir, atayabilir ve takip edebilirsiniz.
 * İlerleme Takibi: Görevlerin ilerleme durumunu yüzde üzerinden takip ederek projelerinizin ilerlemesini görsel olarak izleyebilirsiniz.
-* Öncelik Seviyeleri: Görevlere öncelik seviyeleri belirleyerek önem sırasına göre organize edebilirsiniz.
 * İnovasyon Laboratuvarı: Yaratıcı fikirlerinizi paylaşabilir, geri bildirim alabilir ve beyin fırtınası oturumlarına katılarak inovatif çözümler üretebilirsiniz.
 * Dosya Paylaşımı: İnovasyon projelerinizde dosyalarınızı kolayca paylaşabilir ve işbirliğini güçlendirebilirsiniz.
 * Eşleşme Özelliği: Yeteneklerinize, önceliklere ve takvimlere dayalı olarak size en uygun görevleri otomatik olarak eşleştirir.
-* Gerçek Zamanlı Bildirimler: Proje ilerlemesi, görev atamaları ve bildirimlerle ilgili anlık güncellemeler alarak sürekli olarak takipte kalabilirsiniz.
-* Raporlama ve Analiz: Projelerinizi detaylı raporlar ve analizlerle görselleştirerek performansınızı değerlendirebilirsiniz.
+* Gerçek Zamanlı Bildirimler: Proje ilerlemesi, görev atamaları ve bildirimlerle ilgili anlık güncellemeler
 * İşbirliği ve İletişim: Ekip üyeleri arasında etkili iletişimi teşvik eder, işbirliğini güçlendirir ve yaratıcı çözümlerin ortaya çıkmasını sağlar.
 
 ## Hedef Kitle
@@ -55,5 +53,61 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 * Teknoloji ve İnovasyon Şirketleri: Yenilikçi projelerini yönetmek, ekipler arasında iletişimi güçlendirmek ve inovasyonu desteklemek isteyen şirketler.
 
 ## Product Backlog URL
-(https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=939745769171)
+(https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=99046281895)
+
+##Juriye Not
+
+Uygulamanın son durum ekran görüntülerini ve güncel backlog'u Read.me de yer kaplamaması için drive linki ile ileteceğim.
+
+## Sprint 1
+
+* Sprint içerisinde tamamlanması tahmin edilen puan 90 puandır ve tamamlanmıştır.
+* Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. İlk sprinte 90 backlog puanı ile başlama kararı aldık ve tamamladık.
+* Daily Scrum: Gün içerisinde en az 2 saat toplantı yaptık ve eşzamanlı hareket ettiğimiz için bazı günler yazılı olarak bildiri yapamadık. Discordda bulunan daily kanalını toplantıyı uzun tutmadığımız günlerde kullandık.
+
+  ## Güncel Sprint Sonu Backlog
+
+  (https://drive.google.com/drive/folders/1_F_zuKzhckgBtaiKf8Qg2CVHeStipV_e?usp=drive_link)
+
+  ## Uygulama Son Durum
+
+  (https://drive.google.com/drive/folders/1kO8ug3hU6VDUHFdByvjS1aOmz2n2Ixps?usp=drive_link)
+
+  ## Sprint Review: Sprint 1
+
+Sprint 1, Taskmallow projesinin ilk sprintidir. Bu sprintte önemli önceliklerimiz arasında frontend bölümünü tamamlamak yer alıyordu. 
+
+##Sprint Hedefleri:
+
+* Ana sayfa tasarımının oluşturulması
+* Görev ve proje oluşturma ve görev listeleme sayfalarının geliştirilmesi
+* Temel kullanıcı arayüzü bileşenlerinin tasarlanması ve uygulanması
+
+##Gerçekleşen İlerleme:
+
+* Ana sayfa tasarımı tamamlandı ve kullanıcı dostu bir arayüz oluşturuldu.
+* Görev oluşturma ve görev listeleme sayfaları geliştirildi. Kullanıcılar görevlerini oluşturabilir, düzenleyebilir ve listelerini görüntüleyebilirler.
+* Temel kullanıcı arayüzü bileşenleri tasarlandı ve uygulandı. Böylece birimler arasında tutarlı bir görünüm ve deneyim sağlandı.
+
+## Başarılar:
+
+* Frontend bölümünü başarıyla tamamladık ve sprint hedeflerimize ulaştık.
+* Kullanıcı dostu bir arayüz ve etkileşimli işlevler oluşturduk.
+* Ekip üyeleri arasında etkili bir işbirliği sağladık ilerlemeyi sağladık.
+
+## Öğrenim Noktaları:
+
+* Bazı bileşenlerin performansı üzerinde hala iyileştirmeler yapılması gerekiyor. Geri bildirimleri dikkate alarak bu alanlara odaklanmalıyız.
+* Ekip içinde daha sıkı iletişim gerçekleştirilmeli.
+
+## Sonraki Adımlar:
+
+* Sprint 2'ye geçiş yapacak ve backend bölümünü tamamlamaya odaklanacağız.
+* Geri bildirimleri değerlendirerek tasarım ve performans iyileştirmeleri yapacağız.
+* İleriye dönük planlamaları gözden geçireceğiz ve sprint hedeflerimizi güncelleyeceğiz.
+
+## Sprint Retrospective : Sprint 1
+
+* İletişim ve koordinasyon konularında daha da güçlenmeliyiz. Ekip içi toplantıları daha etkili hale getirmeli ve iletişim kanallarını iyileştirmeliyiz.
+
 
