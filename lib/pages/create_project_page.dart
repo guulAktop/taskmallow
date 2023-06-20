@@ -52,7 +52,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
     }
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
-      title: "New Project",
+      title: getTranslated(context, AppKeys.newProject),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -89,7 +89,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                 textCapitalization: TextCapitalization.words,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Project Name",
+                hintText: getTranslated(context, AppKeys.projectName),
                 keyboardType: TextInputType.text,
                 maxCharacter: 50,
                 validator: (text) {
@@ -125,13 +125,13 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
                     ),
-                    hint: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           textAlign: TextAlign.center,
-                          text: "Category",
+                          text: getTranslated(context, AppKeys.category),
                           color: hintTextLightColor,
                         ),
                       ),
@@ -146,7 +146,7 @@ class _CreateProjectPageState extends State<CreateProjectPage> {
                 textCapitalization: TextCapitalization.sentences,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Description",
+                hintText: getTranslated(context, AppKeys.description),
                 keyboardType: TextInputType.text,
                 maxLines: 5,
                 validator: (text) {

@@ -20,12 +20,11 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
   bool isLoading = false;
 
   List<String> selectedSubtitles = [];
-  // int _expandedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      title: "Preferences",
+      title: getTranslated(context, AppKeys.categories),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -49,16 +48,16 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextComponent(
-              text: "Could you please specify your areas of interest and your personal categories?",
+            TextComponent(
+              text: getTranslated(context, AppKeys.addTheCategories),
               textAlign: TextAlign.start,
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Divider(color: secondaryColor, thickness: 1),
             ),
-            const TextComponent(
-              text: "Preferences Categories",
+            TextComponent(
+              text: getTranslated(context, AppKeys.preferredCategories),
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
@@ -85,8 +84,8 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
                     ),
             ),
             const SizedBox(height: 20),
-            const TextComponent(
-              text: "Categories",
+            TextComponent(
+              text: getTranslated(context, AppKeys.categories),
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
@@ -199,16 +198,3 @@ class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
     );
   }
 }
-// onExpansionChanged: (expanded) {
-//   if (expanded) {
-//     setState(() {
-//       _expandedIndex = CategoryConstants().titles.indexOf(title);
-//     });
-//   } else {
-//     setState(() {
-//       _expandedIndex = -1;
-//     });
-//   }
-//   debugPrint(_expandedIndex.toString());
-// },
-// initiallyExpanded: _expandedIndex == CategoryConstants().titles.indexOf(title),

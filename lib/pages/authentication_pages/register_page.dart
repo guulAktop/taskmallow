@@ -5,7 +5,6 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
-
 import '../../constants/string_constants.dart';
 
 class RegisterPage extends StatefulWidget {

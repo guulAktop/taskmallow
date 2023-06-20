@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
-import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/pages/update_task_page.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -26,85 +27,13 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
   TabController? tabController;
   int _selectedTab = 0;
 
-  List<UserModel> users = [
-    UserModel(
-        email: "enescerrahoglu1@gmail.com",
-        firstName: "Enes",
-        lastName: "Cerrahoğlu",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
-    UserModel(
-        email: "gul.aktopp@gmail.com",
-        firstName: "Gülsüm",
-        lastName: "Aktop",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
-    UserModel(
-        email: "ozdamarsevval.01@gmail.com",
-        firstName: "Şevval",
-        lastName: "Özdamar",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
-    UserModel(
-        email: "izzetjmy@gmail.com",
-        firstName: "İzzet",
-        lastName: "Jumayev",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
-    UserModel(
-        email: "msalihgirgin@gmail.com",
-        firstName: "Muhammed Salih",
-        lastName: "Girgin",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
-  ];
+  bool isExpanded = false;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
-  List<TaskModel> tasks = [
-    TaskModel(
-      taskId: "T1",
-      name: "LoginPage UI tasarımı kodlanacak.",
-      description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.to_do,
-      collaboratorMail: "enescerrahoglu1@gmail.com",
-    ),
-    TaskModel(
-      taskId: "T2",
-      name: "RegisterPage UI tasarımı kodlanacak.",
-      description: "RegisterPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.to_do,
-      collaboratorMail: "gul.aktopp@gmail.com",
-    ),
-    TaskModel(
-      taskId: "T3",
-      name: "HomePage UI tasarımı kodlanacak.",
-      description: "HomePage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.done,
-      collaboratorMail: "ozdamarsevval.01@gmail.com",
-    ),
-    TaskModel(
-      taskId: "T4",
-      name: "SettingsPage UI tasarımı kodlanacak.",
-      description: "SettingsPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.done,
-      collaboratorMail: "enescerrahoglu1@gmail.com",
-    ),
-    TaskModel(
-      taskId: "T5",
-      name: "ProfilePage UI tasarımı kodlanacak.",
-      description: "ProfilePage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.to_do,
-      collaboratorMail: "msalihgirgin@gmail.com",
-    ),
-    TaskModel(
-      taskId: "T6",
-      name: "ProjectsPage UI tasarımı kodlanacak.",
-      description: "ProjectsPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-      situation: TaskSituation.in_progress,
-      collaboratorMail: "izzetjmy@gmail.com",
-    ),
-  ];
+  List<ProjectModel> favoriteProjects = [];
 
-  late ProjectModel projectModel;
+  ProjectModel? projectModel;
 
   @override
   void initState() {
@@ -112,26 +41,68 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
 
     tabController = TabController(length: 3, vsync: this);
 
-    projectModel = ProjectModel(
-      name: "Taskmallow",
-      category: Categories.mobile_applications,
-      description:
-          "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
-      userWhoCreated: UserModel(
-          email: "enescerrahoglu1@gmail.com",
-          firstName: "Enes",
-          lastName: "Cerrahoğlu",
-          profilePhotoURL:
-              "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
-      tasks: tasks,
-      collaborators: users,
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
     );
+
+    _animation = Tween<double>(begin: 1.0, end: 1.5).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var arg = _getProjectModelFromArguments();
+    if (arg != null) {
+      projectModel = arg;
+    }
+  }
+
+  ProjectModel? _getProjectModelFromArguments() {
+    ModalRoute? route = ModalRoute.of(context);
+    dynamic arguments = route?.settings.arguments;
+    if (arguments is ProjectModel) {
+      return arguments;
+    } else {
+      Navigator.pop(context);
+    }
+    return null;
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void handleButtonTap() {
+    setState(() {
+      isExpanded = true;
+    });
+
+    _animationController.forward().whenComplete(() {
+      setState(() {
+        isExpanded = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      title: "Project Page",
+      title: projectModel != null ? projectModel!.name : "",
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -140,48 +111,56 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
       actionList: [
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, createTaskPageRoute);
+            handleButtonTap();
+            if (projectModel != null) {
+              if (!favoriteProjects.contains(projectModel)) {
+                setState(() {
+                  favoriteProjects.add(projectModel!);
+                });
+              } else {
+                setState(() {
+                  favoriteProjects.remove(projectModel);
+                });
+              }
+            }
           },
           splashRadius: AppConstants.iconSplashRadius,
-          icon: const IconComponent(iconData: CustomIconData.squarePlus),
+          icon: AnimatedBuilder(
+            animation: _animation,
+            builder: (BuildContext context, Widget? child) {
+              return Transform.scale(
+                scale: isExpanded ? _animation.value : 1.0,
+                child: IconComponent(
+                  iconData: CustomIconData.star,
+                  color: primaryColor,
+                  iconWeight: favoriteProjects.contains(projectModel) ? CustomIconWeight.solid : CustomIconWeight.regular,
+                ),
+              );
+            },
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectModel);
+          },
+          splashRadius: AppConstants.iconSplashRadius,
+          icon: const IconComponent(iconData: CustomIconData.pen),
         ),
       ],
       widgetList: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: TextComponent(
-                    text: projectModel.name,
-                    headerType: HeaderType.h4,
-                    textAlign: TextAlign.start,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.fade,
-                    softWrap: true,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectModel);
-                  },
-                  splashRadius: AppConstants.iconSplashRadius,
-                  icon: const IconComponent(iconData: CustomIconData.penCircle, color: primaryColor),
-                )
-              ],
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextComponent(
-                  text: projectModel.description,
+                  text: projectModel != null ? projectModel!.description : "",
                   textAlign: TextAlign.start,
                   headerType: HeaderType.h6,
                 ),
                 TextComponent(
-                  text: "created by ${projectModel.userWhoCreated.email}",
+                  text: projectModel != null ? projectModel!.userWhoCreated.email : "",
                   fontWeight: FontWeight.bold,
                   textAlign: TextAlign.end,
                   overflow: TextOverflow.fade,
@@ -194,12 +173,15 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextComponent(
-                  text: "${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% Complete",
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.fade,
-                  softWrap: true,
-                  headerType: HeaderType.h7,
+                MarqueeWidget(
+                  child: TextComponent(
+                    text:
+                        "${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.fade,
+                    softWrap: true,
+                    headerType: HeaderType.h7,
+                  ),
                 ),
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(50)),
@@ -214,8 +196,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TextComponent(
-                  text: "Collaborators",
+                TextComponent(
+                  text: getTranslated(context, AppKeys.collaborators),
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.fade,
@@ -279,6 +261,15 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Divider(color: secondaryColor, thickness: 1),
             ),
+            ButtonComponent(
+              text: getTranslated(context, AppKeys.newTask),
+              isOutLined: true,
+              isWide: true,
+              onPressed: () {
+                Navigator.pushNamed(context, createTaskPageRoute);
+              },
+            ),
+            const SizedBox(height: 10),
             Center(
               child: TabBar(
                 onTap: (value) {
@@ -467,50 +458,4 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with TickerProvid
     popupMenuList.add(menuList);
     return popupMenuList;
   }
-}
-
-class TaskModel {
-  String taskId;
-  String name;
-  String description;
-  TaskSituation situation;
-  String collaboratorMail;
-
-  TaskModel({
-    required this.taskId,
-    required this.name,
-    required this.description,
-    required this.situation,
-    required this.collaboratorMail,
-  });
-}
-
-class ProjectModel {
-  String name;
-  String description;
-  Categories category;
-  UserModel userWhoCreated;
-  List<TaskModel> tasks;
-  List<UserModel> collaborators;
-
-  ProjectModel({
-    required this.name,
-    required this.description,
-    required this.category,
-    required this.userWhoCreated,
-    required this.tasks,
-    required this.collaborators,
-  });
-}
-
-class InvitationModel {
-  String id;
-  ProjectModel projectModel;
-  String to;
-
-  InvitationModel({
-    required this.id,
-    required this.projectModel,
-    required this.to,
-  });
 }

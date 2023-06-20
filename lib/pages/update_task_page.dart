@@ -6,9 +6,10 @@ import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -24,7 +25,7 @@ class UpdateTaskPage extends StatefulWidget {
 class _UpdateTaskPageState extends State<UpdateTaskPage> {
   final _loginFormKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String? selectedSituation = "done";
+  String? selectedSituation;
 
   TaskModel? taskModel;
 
@@ -37,38 +38,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
   TextEditingController projectDescriptionTextEditingController = TextEditingController();
 
   UserModel? selectedUser;
-  List<UserModel> users = [
-    UserModel(
-        email: "enescerrahoglu1@gmail.com",
-        firstName: "Enes",
-        lastName: "Cerrahoğlu",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
-    UserModel(
-        email: "gul.aktopp@gmail.com",
-        firstName: "Gülsüm",
-        lastName: "Aktop",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
-    UserModel(
-        email: "ozdamarsevval.01@gmail.com",
-        firstName: "Şevval",
-        lastName: "Özdamar",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
-    UserModel(
-        email: "izzetjmy@gmail.com",
-        firstName: "İzzet",
-        lastName: "Jumayev",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
-    UserModel(
-        email: "msalihgirgin@gmail.com",
-        firstName: "Muhammed Salih",
-        lastName: "Girgin",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
-  ];
 
   @override
   void didChangeDependencies() {
@@ -119,7 +88,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
-      title: "Update Task",
+      title: getTranslated(context, AppKeys.updateTask),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -141,7 +110,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                 textCapitalization: TextCapitalization.words,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Task Name",
+                hintText: getTranslated(context, AppKeys.taskName),
                 keyboardType: TextInputType.text,
                 maxCharacter: 50,
                 validator: (text) {
@@ -177,13 +146,13 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
                     ),
-                    hint: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           textAlign: TextAlign.center,
-                          text: "Situation",
+                          text: getTranslated(context, AppKeys.situation),
                           color: hintTextLightColor,
                         ),
                       ),
@@ -198,7 +167,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                 textCapitalization: TextCapitalization.sentences,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Description",
+                hintText: getTranslated(context, AppKeys.description),
                 keyboardType: TextInputType.text,
                 maxLines: 5,
                 validator: (text) {
@@ -234,13 +203,13 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
                     ),
-                    hint: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           textAlign: TextAlign.center,
-                          text: "Collaboratos",
+                          text: getTranslated(context, AppKeys.collaborators),
                           color: hintTextLightColor,
                         ),
                       ),
@@ -250,11 +219,11 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
               ),
               const SizedBox(height: 10),
               ButtonComponent(
-                text: "Update",
+                text: getTranslated(context, AppKeys.update),
                 onPressed: () {
                   AppFunctions().showSnackbar(
                     context,
-                    selectedUser != null ? selectedUser!.email : "Please select a user!",
+                    selectedUser != null ? selectedUser!.email : getTranslated(context, AppKeys.pleaseSelectCollaborator),
                     icon: CustomIconData.taskmallow,
                     backgroundColor: primaryColor,
                   );
@@ -310,7 +279,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     List<List<PopupMenuWidgetItem>> popupMenuList = [];
     popupMenuList.add([
       PopupMenuWidgetItem(
-          title: "Delete Task",
+          title: getTranslated(context, AppKeys.deleteTask),
           prefixIcon: CustomIconData.trashCan,
           color: dangerDark,
           function: () {
@@ -325,19 +294,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
     return popupMenuList;
   }
-}
-
-class UserModel {
-  String email;
-  String firstName;
-  String lastName;
-  String profilePhotoURL;
-  UserModel({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.profilePhotoURL,
-  });
 }
 
 DropdownMenuItem<UserModel> getDropdownUserItem(
