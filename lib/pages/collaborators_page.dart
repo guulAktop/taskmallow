@@ -129,39 +129,6 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                               text: TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                    text: getTranslated(context, AppKeys.dateOfInvolvement),
-                                                    style: const TextStyle(
-                                                      color: textPrimaryLightColor,
-                                                      fontSize: 18,
-                                                      fontFamily: "Poppins",
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: DateFormat("dd.MM.yyyy").format(DateTime.now()).toString(),
-                                                    style: const TextStyle(
-                                                      color: textPrimaryLightColor,
-                                                      fontSize: 18,
-                                                      fontFamily: "Poppins",
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(bottom: 10),
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                                            color: itemBackgroundLightColor,
-                                          ),
-                                          child: MarqueeWidget(
-                                            child: RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
                                                     text: getTranslated(context, AppKeys.completedTasks),
                                                     style: const TextStyle(
                                                       color: textPrimaryLightColor,
