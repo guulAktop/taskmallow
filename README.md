@@ -83,3 +83,4 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 
 * İletişim ve koordinasyon konularında daha da güçlenmeliyiz. 
 
+
