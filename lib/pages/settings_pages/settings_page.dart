@@ -134,6 +134,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
+        const Spacer(),
+        ListViewWidget(
+          backgroundColor: listViewItemBackgroundLightColor,
+          itemList: [
+            ListViewItem(
+              prefixWidget: const IconComponent(iconData: CustomIconData.code),
+              title: "v.1.0.0",
+            )
+          ],
+        ),
       ],
     );
   }

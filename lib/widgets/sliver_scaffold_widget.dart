@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
-class BaseScaffoldWidget extends StatelessWidget {
+class SliverScaffoldWidget extends StatelessWidget {
   final String? title;
   final Widget? titleWidget;
   final List<Widget> widgetList;
@@ -23,7 +23,7 @@ class BaseScaffoldWidget extends StatelessWidget {
   final Widget? floatingActionButton;
   final CrossAxisAlignment crossAxisAlignment;
 
-  const BaseScaffoldWidget({
+  const SliverScaffoldWidget({
     Key? key,
     this.title,
     this.titleWidget,
@@ -94,18 +94,7 @@ class BaseScaffoldWidget extends StatelessWidget {
           },
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Padding(
-                  padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding, right: rightPadding, left: leftPadding),
-                  child: Column(
-                    crossAxisAlignment: crossAxisAlignment,
-                    children: widgetList,
-                  ),
-                ),
-              ),
-            ],
+            slivers: widgetList,
           ),
         ),
       ),

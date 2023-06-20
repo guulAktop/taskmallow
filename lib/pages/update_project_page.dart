@@ -6,9 +6,10 @@ import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -23,7 +24,7 @@ class UpdateProjectPage extends StatefulWidget {
 class _UpdateProjectPageState extends State<UpdateProjectPage> {
   final _loginFormKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String? selectedCategory = "artificial_intelligence";
+  String? selectedCategory;
 
   List<DropdownMenuItem<String>> dropdownItems = [];
   List<Widget> selectedDropdownItems = [];
@@ -78,7 +79,7 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
     }
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
-      title: "Update Project",
+      title: getTranslated(context, AppKeys.updateProject),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -100,7 +101,7 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
                 textCapitalization: TextCapitalization.words,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Project Name",
+                hintText: getTranslated(context, AppKeys.projectName),
                 keyboardType: TextInputType.text,
                 maxCharacter: 50,
                 validator: (text) {
@@ -136,13 +137,13 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
                     ),
-                    hint: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    hint: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           textAlign: TextAlign.center,
-                          text: "Category",
+                          text: getTranslated(context, AppKeys.category),
                           color: hintTextLightColor,
                         ),
                       ),
@@ -157,7 +158,7 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
                 textCapitalization: TextCapitalization.sentences,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
-                hintText: "Description",
+                hintText: getTranslated(context, AppKeys.description),
                 keyboardType: TextInputType.text,
                 maxLines: 5,
                 validator: (text) {
@@ -166,7 +167,7 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
               ),
               const SizedBox(height: 10),
               ButtonComponent(
-                text: "Update",
+                text: getTranslated(context, AppKeys.update),
                 onPressed: () {
                   AppFunctions().showSnackbar(context, selectedCategory.toString());
                 },
@@ -213,7 +214,16 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
 
   List<List<PopupMenuWidgetItem>> generatePopup() {
     List<List<PopupMenuWidgetItem>> popupMenuList = [];
-    popupMenuList.add([PopupMenuWidgetItem(title: "Delete Project", prefixIcon: CustomIconData.trashCan, color: dangerDark, function: () {})]);
+    popupMenuList.add(
+      [
+        PopupMenuWidgetItem(
+          title: getTranslated(context, AppKeys.deleteProject),
+          prefixIcon: CustomIconData.trashCan,
+          color: dangerDark,
+          function: () {},
+        ),
+      ],
+    );
 
     return popupMenuList;
   }

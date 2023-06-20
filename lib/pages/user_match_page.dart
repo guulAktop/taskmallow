@@ -4,8 +4,10 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
-import 'package:taskmallow/pages/update_task_page.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -20,61 +22,28 @@ class UserMatchPage extends StatefulWidget {
 class _UserMatchPageState extends State<UserMatchPage> {
   bool isLoading = false;
 
-  List<UserModel> users = [
-    UserModel(
-        email: "enescerrahoglu1@gmail.com",
-        firstName: "Enes",
-        lastName: "Cerrahoğlu",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
-    UserModel(
-        email: "gul.aktopp@gmail.com",
-        firstName: "Gülsüm",
-        lastName: "Aktop",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
-    UserModel(
-        email: "ozdamarsevval.01@gmail.com",
-        firstName: "Şevval",
-        lastName: "Özdamar",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
-    UserModel(
-        email: "izzetjmy@gmail.com",
-        firstName: "İzzet",
-        lastName: "Jumayev",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
-    UserModel(
-        email: "msalihgirgin@gmail.com",
-        firstName: "Muhammed Salih",
-        lastName: "Girgin",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
-  ];
-
   List<UserModel> invitedUsers = [];
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      title: "Your User Matches",
+      title: getTranslated(context, AppKeys.yourMatches),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
         onPressed: () => isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
-        const TextComponent(
-          text: "Here are the users matching your project.",
-          textAlign: TextAlign.start,
+        TextComponent(
+          text: getTranslated(context, AppKeys.hereAreTheCollaborators),
+          textAlign: TextAlign.center,
         ),
-        const TextComponent(
-          text: "Take a look!",
+        TextComponent(
+          text: getTranslated(context, AppKeys.takeALook),
           color: matchColor,
           fontWeight: FontWeight.bold,
           headerType: HeaderType.h3,
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         Column(
@@ -141,7 +110,7 @@ class _UserMatchPageState extends State<UserMatchPage> {
               child: Material(
                 color: Colors.transparent,
                 child: IconButton(
-                  tooltip: !invitedUsers.contains(user) ? "Invite" : "Invited",
+                  tooltip: !invitedUsers.contains(user) ? getTranslated(context, AppKeys.invite) : getTranslated(context, AppKeys.removeInvite),
                   onPressed: () {
                     if (!invitedUsers.contains(user)) {
                       setState(() {
@@ -154,8 +123,8 @@ class _UserMatchPageState extends State<UserMatchPage> {
                     }
                   },
                   icon: IconComponent(
-                    iconData: !invitedUsers.contains(user) ? CustomIconData.paperPlane : CustomIconData.circleCheck,
-                    color: !invitedUsers.contains(user) ? matchColor : successDark,
+                    iconData: !invitedUsers.contains(user) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
+                    color: !invitedUsers.contains(user) ? matchColor : dangerDark,
                   ),
                 ),
               ),

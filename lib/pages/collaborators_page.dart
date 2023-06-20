@@ -7,8 +7,10 @@ import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
-import 'package:taskmallow/pages/update_task_page.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -23,44 +25,12 @@ class CollaboratorsPage extends StatefulWidget {
 class _CollaboratorsPageState extends State<CollaboratorsPage> {
   bool isLoading = false;
 
-  List<UserModel> users = [
-    UserModel(
-        email: "enescerrahoglu1@gmail.com",
-        firstName: "Enes",
-        lastName: "Cerrahoğlu",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
-    UserModel(
-        email: "gul.aktopp@gmail.com",
-        firstName: "Gülsüm",
-        lastName: "Aktop",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
-    UserModel(
-        email: "ozdamarsevval.01@gmail.com",
-        firstName: "Şevval",
-        lastName: "Özdamar",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
-    UserModel(
-        email: "izzetjmy@gmail.com",
-        firstName: "İzzet",
-        lastName: "Jumayev",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
-    UserModel(
-        email: "msalihgirgin@gmail.com",
-        firstName: "Muhammed Salih",
-        lastName: "Girgin",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
-  ];
-
   List<UserModel> invitedUsers = [
     UserModel(
         email: "gul.aktopp@gmail.com",
         firstName: "Gülsüm",
         lastName: "Aktop",
+        description: "Bilgisayar Mühendisi",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
   ];
@@ -72,7 +42,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      title: "Collaborators",
+      title: getTranslated(context, AppKeys.collaborators),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -82,8 +52,8 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextComponent(
-              text: "Collaborators",
+            TextComponent(
+              text: getTranslated(context, AppKeys.collaborators),
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
@@ -125,6 +95,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                                   hasBorder: false,
                                                 ),
                                               ),
+                                              const SizedBox(height: 10),
                                               MarqueeWidget(
                                                 child: TextComponent(
                                                   text: "${user.firstName} ${user.lastName}",
@@ -157,9 +128,9 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                             child: RichText(
                                               text: TextSpan(
                                                 children: [
-                                                  const TextSpan(
-                                                    text: "Date of Involvement: ",
-                                                    style: TextStyle(
+                                                  TextSpan(
+                                                    text: getTranslated(context, AppKeys.dateOfInvolvement),
+                                                    style: const TextStyle(
                                                       color: textPrimaryLightColor,
                                                       fontSize: 18,
                                                       fontFamily: "Poppins",
@@ -188,17 +159,17 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                           ),
                                           child: MarqueeWidget(
                                             child: RichText(
-                                              text: const TextSpan(
+                                              text: TextSpan(
                                                 children: [
                                                   TextSpan(
-                                                    text: "Completed Tasks: ",
-                                                    style: TextStyle(
+                                                    text: getTranslated(context, AppKeys.completedTasks),
+                                                    style: const TextStyle(
                                                       color: textPrimaryLightColor,
                                                       fontSize: 18,
                                                       fontFamily: "Poppins",
                                                     ),
                                                   ),
-                                                  TextSpan(
+                                                  const TextSpan(
                                                     text: "4",
                                                     style: TextStyle(
                                                       color: textPrimaryLightColor,
@@ -216,7 +187,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                     ),
                                     const Spacer(),
                                     ButtonComponent(
-                                      text: "Delete Collaborator",
+                                      text: getTranslated(context, AppKeys.deleteCollaborator),
                                       color: dangerDark,
                                       isWide: true,
                                       onPressed: () {},
@@ -252,8 +223,8 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-                  const TextComponent(
-                    text: "Invited Users",
+                  TextComponent(
+                    text: getTranslated(context, AppKeys.invitedUsers),
                     textAlign: TextAlign.start,
                     fontWeight: FontWeight.bold,
                     overflow: TextOverflow.fade,
@@ -269,8 +240,8 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
-                const TextComponent(
-                  text: "Search Users",
+                TextComponent(
+                  text: getTranslated(context, AppKeys.searchUsers),
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.fade,
@@ -280,7 +251,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                   context: context,
                   textEditingController: _searchTextEditingController,
                   iconData: CustomIconData.magnifyingGlass,
-                  hintText: "Search",
+                  hintText: getTranslated(context, AppKeys.search),
                   onChanged: (text) {
                     setState(() {
                       if (text.isEmpty) {
@@ -292,7 +263,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                 user.lastName.toLowerCase().contains(text.toLowerCase()) ||
                                 user.email.toLowerCase().contains(text.toLowerCase()) ||
                                 ("${user.firstName} ${user.lastName}").toLowerCase().contains(text.toLowerCase()))
-                            .where((user) => !invitedUsers.contains(user))
+                            // .where((user) => !invitedUsers.contains(user))
                             .toList();
                       }
                     });
@@ -304,25 +275,25 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                 ),
                 const SizedBox(height: 10),
                 Row(
-                  children: const [
-                    Expanded(
+                  children: [
+                    const Expanded(
                       child: Divider(color: secondaryColor, thickness: 1),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextComponent(
-                        text: "or",
+                        text: getTranslated(context, AppKeys.or),
                         color: secondaryColor,
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Divider(color: secondaryColor, thickness: 1),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
                 ButtonComponent(
-                  text: "Start Matching",
+                  text: getTranslated(context, AppKeys.startMatch),
                   color: matchColor,
                   icon: CustomIconData.wandMagicSparkles,
                   isWide: true,
@@ -395,7 +366,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
               child: Material(
                 color: Colors.transparent,
                 child: IconButton(
-                  tooltip: !invitedUsers.contains(user) ? "Invite" : "Remove Invite",
+                  tooltip: !invitedUsers.contains(user) ? getTranslated(context, AppKeys.invite) : getTranslated(context, AppKeys.removeInvite),
                   onPressed: () {
                     if (!invitedUsers.contains(user)) {
                       setState(() {
@@ -415,7 +386,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                                 user.firstName.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()) ||
                                 user.lastName.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()) ||
                                 user.email.toLowerCase().contains(_searchTextEditingController.text.toLowerCase()))
-                            .where((user) => !invitedUsers.contains(user))
+                            // .where((user) => !invitedUsers.contains(user))
                             .toList();
                       }
                     });

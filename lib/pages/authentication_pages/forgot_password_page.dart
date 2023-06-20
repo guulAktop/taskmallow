@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
@@ -27,10 +26,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void initState() {
     super.initState();
     _isLoading = false;
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.red, // StatusBar (durum çubuğu) rengi
-      statusBarIconBrightness: Brightness.light, // StatusBar (durum çubuğu) ikon rengi
-    ));
   }
 
   @override

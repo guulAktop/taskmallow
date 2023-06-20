@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/navigation_pages/home_page.dart';
 import 'package:taskmallow/pages/navigation_pages/projects_page.dart';
 import 'package:taskmallow/pages/navigation_pages/profile_page.dart';
@@ -39,7 +41,7 @@ class _NavigationPageState extends State<NavigationPage> {
               iconWeight: _selectedIndex == 0 ? CustomIconWeight.solid : CustomIconWeight.regular,
               color: _selectedIndex == 0 ? primaryColor : secondaryColor,
             ),
-            label: "Home",
+            label: getTranslated(context, AppKeys.home),
           ),
           BottomNavigationBarItem(
             icon: IconComponent(
@@ -48,7 +50,7 @@ class _NavigationPageState extends State<NavigationPage> {
               iconWeight: _selectedIndex == 1 ? CustomIconWeight.solid : CustomIconWeight.regular,
               color: _selectedIndex == 1 ? primaryColor : secondaryColor,
             ),
-            label: "Projects",
+            label: getTranslated(context, AppKeys.projects),
           ),
           BottomNavigationBarItem(
             icon: IconComponent(
@@ -57,7 +59,7 @@ class _NavigationPageState extends State<NavigationPage> {
               iconWeight: _selectedIndex == 2 ? CustomIconWeight.solid : CustomIconWeight.regular,
               color: _selectedIndex == 2 ? primaryColor : secondaryColor,
             ),
-            label: "Profile",
+            label: getTranslated(context, AppKeys.profile),
           )
         ],
         currentIndex: _selectedIndex,

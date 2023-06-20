@@ -96,7 +96,7 @@ class _ButtonComponentState extends State<ButtonComponent> {
                       ? const SizedBox()
                       : IconComponent(
                           iconData: widget.icon!,
-                          color: Colors.white,
+                          color: widget.color,
                         ),
                   label: Padding(
                     padding: EdgeInsets.all(widget.textPadding),

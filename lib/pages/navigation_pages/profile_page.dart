@@ -4,12 +4,14 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/image_constants.dart';
+import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
+import 'package:taskmallow/widgets/project_grid_item.dart';
+import 'package:taskmallow/widgets/sliver_scaffold_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,12 +20,20 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
+  bool isLoading = false;
+
   List<String> selectedSubtitles = ["artificial_intelligence", "mobile_applications", "data_analytics", "cloud_computing", "internet_of_things_iot"];
+  UserModel user = users.first;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(
-      title: "Profile",
+    return SliverScaffoldWidget(
+      title: getTranslated(context, AppKeys.profile),
       actionList: [
         IconButton(
           icon: const IconComponent(
@@ -42,256 +52,226 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () {
             Navigator.pushNamed(context, settingsPageRoute);
           },
-        )
+        ),
       ],
       widgetList: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                  width: UIHelper.getDeviceWidth(context) / 4,
-                  height: UIHelper.getDeviceWidth(context) / 4,
-                  child: CircularPhotoComponent(
-                    url: ImageAssetKeys.defaultProfilePhotoUrl,
-                    hasBorder: false,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const TextComponent(
-                        text: "First Last",
-                        fontWeight: FontWeight.bold,
-                        headerType: HeaderType.h4,
-                        textAlign: TextAlign.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: UIHelper.getDeviceWidth(context) / 4,
+                      height: UIHelper.getDeviceWidth(context) / 4,
+                      child: CircularPhotoComponent(
+                        url: user.profilePhotoURL,
+                        hasBorder: false,
                       ),
-                      const TextComponent(
-                        text: "enescerrahoglu1@gmail.com",
-                        headerType: HeaderType.h8,
-                        textAlign: TextAlign.start,
-                      ),
-                      Row(
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
-                            borderRadius: const BorderRadius.all(Radius.circular(50)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(10),
-                              child: IconComponent(
-                                iconData: CustomIconData.linkedin,
-                                color: Color(0xFF0A66C2),
-                              ),
+                          MarqueeWidget(
+                            child: TextComponent(
+                              text: "${user.firstName} ${user.lastName}",
+                              fontWeight: FontWeight.bold,
+                              headerType: HeaderType.h4,
+                              textAlign: TextAlign.start,
                             ),
-                            onTap: () {},
                           ),
-                          InkWell(
-                            borderRadius: const BorderRadius.all(Radius.circular(50)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(10),
-                              child: IconComponent(
-                                iconData: CustomIconData.twitter,
-                                color: Color(0xFF1DA1F2),
-                              ),
+                          MarqueeWidget(
+                            child: TextComponent(
+                              text: user.email,
+                              headerType: HeaderType.h7,
+                              textAlign: TextAlign.start,
                             ),
-                            onTap: () {},
                           ),
+                          Row(
+                            children: [
+                              InkWell(
+                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: IconComponent(
+                                    iconData: CustomIconData.linkedin,
+                                    color: Color(0xFF0A66C2),
+                                  ),
+                                ),
+                                onTap: () {},
+                              ),
+                              InkWell(
+                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: IconComponent(
+                                    iconData: CustomIconData.twitter,
+                                    color: Color(0xFF1DA1F2),
+                                  ),
+                                ),
+                                onTap: () {},
+                              ),
+                            ],
+                          )
                         ],
-                      )
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                TextComponent(
+                  text: user.description,
+                  headerType: HeaderType.h6,
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(height: 20),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: getTranslated(context, AppKeys.projectsInvolved),
+                        style: const TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                      const TextSpan(
+                        text: "3",
+                        style: TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const TextComponent(
-              text: "Computer Engineer",
-              headerType: HeaderType.h6,
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(height: 20),
-            RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Projects Involved: ",
-                    style: TextStyle(
-                      color: textPrimaryLightColor,
-                      fontSize: 18,
-                      fontFamily: "Poppins",
-                    ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: getTranslated(context, AppKeys.completedTasks),
+                        style: const TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                      const TextSpan(
+                        text: "27",
+                        style: TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: "3",
-                    style: TextStyle(
-                      color: textPrimaryLightColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Poppins",
-                    ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Divider(color: secondaryColor, thickness: 1),
+                ),
+                TextComponent(
+                  text: getTranslated(context, AppKeys.preferredCategories),
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.fade,
+                  headerType: HeaderType.h6,
+                  softWrap: true,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: itemBackgroundLightColor,
                   ),
-                ],
-              ),
-            ),
-            RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Completed Tasks: ",
-                    style: TextStyle(
-                      color: textPrimaryLightColor,
-                      fontSize: 18,
-                      fontFamily: "Poppins",
-                    ),
-                  ),
-                  TextSpan(
-                    text: "27",
-                    style: TextStyle(
-                      color: textPrimaryLightColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Poppins",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Divider(color: secondaryColor, thickness: 1),
-            ),
-            const TextComponent(
-              text: "Preferences Categories",
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.fade,
-              headerType: HeaderType.h6,
-              softWrap: true,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: itemBackgroundLightColor,
-              ),
-              padding: const EdgeInsets.all(10),
-              child: selectedSubtitles.isNotEmpty
-                  ? Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: selectedSubtitles.map((item) => buildItemContainer(item)).toList()
-                        ..add(
-                          SizedBox(
-                            height: 30,
-                            width: 30,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(100)),
-                              child: Material(
-                                color: textPrimaryDarkColor,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, categoryPreferencesPageRoute);
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(5),
-                                    child: const IconComponent(
-                                      iconData: CustomIconData.plus,
-                                      color: textPrimaryLightColor,
+                  padding: const EdgeInsets.all(10),
+                  child: selectedSubtitles.isNotEmpty
+                      ? Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: selectedSubtitles.map((item) => buildItemContainer(item)).toList()
+                            ..add(
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                  child: Material(
+                                    color: textPrimaryDarkColor,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(context, categoryPreferencesPageRoute);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(5),
+                                        child: const IconComponent(
+                                          iconData: CustomIconData.plus,
+                                          color: textPrimaryLightColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                        )
+                      : const IconComponent(
+                          iconData: CustomIconData.listCheck,
+                          color: primaryColor,
+                          size: 35,
                         ),
-                    )
-                  : const IconComponent(
-                      iconData: CustomIconData.listCheck,
-                      color: primaryColor,
-                      size: 35,
-                    ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            const TextComponent(
-              text: "Projects",
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+            child: TextComponent(
+              text: getTranslated(context, AppKeys.projects),
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
               headerType: HeaderType.h6,
               softWrap: true,
             ),
-            const SizedBox(height: 10),
-            getProjectContainer(),
-            getProjectContainer(),
-            getProjectContainer(),
-          ],
-        )
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.all(10),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 1,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ProjectGridItem(
+                  projectModel: projects[index],
+                  onTap: () {
+                    Navigator.pushNamed(context, projectDetailPageRoute, arguments: projects[index]);
+                  },
+                );
+              },
+              childCount: projects.length,
+            ),
+          ),
+        ),
       ],
-    );
-  }
-
-  Widget getProjectContainer() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: itemBackgroundLightColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: () {
-          Navigator.pushNamed(context, updateProjectPageRoute);
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const TextComponent(
-              text: "Project NameProject NameProject NameProject Name",
-              headerType: HeaderType.h4,
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.bold,
-            ),
-            const TextComponent(
-              text: "Project description is here is here is here is here is here is here is here is here is here is here is here",
-              textAlign: TextAlign.start,
-              headerType: HeaderType.h6,
-            ),
-            const SizedBox(height: 10),
-            const TextComponent(
-              text:
-                  "33% Complete", //"${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% Complete",
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.fade,
-              softWrap: true,
-              headerType: HeaderType.h7,
-            ),
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(50)),
-              child: LinearProgressIndicator(
-                minHeight: 20,
-                value: (0.33).toDouble(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            const TextComponent(
-              text: "created by email@gmail.com",
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.end,
-              overflow: TextOverflow.fade,
-              softWrap: true,
-              headerType: HeaderType.h7,
-            ),
-          ],
-        ),
-      ),
     );
   }
 

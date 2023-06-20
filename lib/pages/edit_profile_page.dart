@@ -183,7 +183,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
               ),
               getFormField(
-                getTranslated(context, AppKeys.bio),
+                getTranslated(context, AppKeys.description),
                 _bioTextEditingController,
                 100,
                 textCapitalization: TextCapitalization.words,
