@@ -64,16 +64,17 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
   # Güncel Sprint Sonu Backlog
 
-![Güncel Backlog](https://github.com/enescerrahoglu/taskmallow/blob/master/image%20(9).png)
-
-![Güncel Backlog](https://github.com/enescerrahoglu/taskmallow/blob/master/image%20(15).png)
+![Güncel Backlog](https://drive.google.com/file/d/1iuiBTLYFU36CtbsCaVaXSZgdXeKK44is/view?usp=drive_link)
+![Güncel Backlog](https://drive.google.com/file/d/1Y_z-ee333uwoJYbB3OecsYPE_9MUwGtI/view?usp=drive_link)
+![Güncel Backlog](https://drive.google.com/file/d/1apu7CbKL0UpPQaTWl9UsfAXQHZDjXJdP/view?usp=drive_link)
 
   # Uygulama Son Durum
 
-  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/1.jpeg)
-  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/4.jpeg)
-  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/7.jpeg)
-  ![Uygulama Son Durum](https://github.com/enescerrahoglu/taskmallow/blob/master/10.jpeg)
+  ![Uygulama Son Durum](https://drive.google.com/file/d/1XqybZv-Kc3-59Pd43i8NVbz8gSF9mywf/view?usp=drive_link)
+  ![Uygulama Son Durum](https://drive.google.com/file/d/1WBNi_5976Q_pgd3BtCStlzUm9z3-W-sO/view?usp=drive_link)
+  ![Uygulama Son Durum](https://drive.google.com/file/d/1etxMj6yDSUgpSTUe7vax9ocDcedMeJWw/view?usp=drive_link)
+  ![Uygulama Son Durum](https://drive.google.com/file/d/1fdlLc58iWZlL3Y6nZIPUyjxVdpHz-9Vt/view?usp=drive_link)
+  ![Uygulama Son Durum](https://drive.google.com/file/d/1-4Tbm--2PzMCrBNI_mMw72GLFOXhYHoh/view?usp=drive_link)
 
   # Sprint Review: Sprint 1
 
