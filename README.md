@@ -63,8 +63,8 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
   [Daily Scrum Chats](https://github.com/enescerrahoglu/taskmallow/blob/master/DailyScrumMeetingNotesSprint1.docx)
 
   # Güncel Sprint Sonu Backlog
-<img src="https://drive.google.com/file/d/1iuiBTLYFU36CtbsCaVaXSZgdXeKK44is/view?usp=drive_link" alt="Alt text" title="Optional title">
-![Güncel Backlog](https://drive.google.com/file/d/1iuiBTLYFU36CtbsCaVaXSZgdXeKK44is/view?usp=drive_link)
+<img src="https://img.freepik.com/free-photo/blossom-floral-bouquet-decoration-colorful-beautiful-flowers-background-garden-flowers-plant-pattern-wallpapers-greeting-cards-postcards-design-wedding-invites_90220-1103.jpg">
+![Güncel Backlog](https://img.freepik.com/free-photo/blossom-floral-bouquet-decoration-colorful-beautiful-flowers-background-garden-flowers-plant-pattern-wallpapers-greeting-cards-postcards-design-wedding-invites_90220-1103.jpg)
 ![Güncel Backlog](https://drive.google.com/file/d/1Y_z-ee333uwoJYbB3OecsYPE_9MUwGtI/view?usp=drive_link)
 ![Güncel Backlog](https://drive.google.com/file/d/1apu7CbKL0UpPQaTWl9UsfAXQHZDjXJdP/view?usp=drive_link)
 
