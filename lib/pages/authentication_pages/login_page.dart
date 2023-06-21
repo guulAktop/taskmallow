@@ -1,32 +1,51 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
+import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
+import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
+import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/authentication_pages/register_page.dart';
+import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/routes/route_constants.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
-  final _loginFormKey = GlobalKey<FormState>();
-  bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
+  final _loginFormKey = GlobalKey<FormState>();
+  UserService userService = UserService();
+  bool _isLoading = false;
 
   @override
   void initState() {
-    _isLoading = false;
     super.initState();
+
+    SharedPreferencesHelper.getString("loggedUser").then((value) {
+      if (value != null) {
+        ref.read(loggedUserProvider.notifier).state = UserModel.fromJson(jsonDecode(value.toString()));
+        Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+      } else {
+        debugPrint("null sp user");
+      }
+    });
   }
 
   @override
@@ -73,6 +92,12 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: getTranslated(context, AppKeys.email),
                   keyboardType: TextInputType.emailAddress,
                   validator: (emailText) {
+                    bool emailValid = AppConstants.emailRegex.hasMatch(emailText!.trim().toLowerCase());
+                    if (emailText.isEmpty || !emailValid) {
+                      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.emailVerificationMessage),
+                          backgroundColor: warningDark, icon: CustomIconData.envelope);
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -87,6 +112,14 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: getTranslated(context, AppKeys.password),
                   keyboardType: TextInputType.visiblePassword,
                   validator: (passwordText) {
+                    bool passwordValid = AppConstants.passwordRegex.hasMatch(passwordText!);
+                    if (passwordText.length < 8 || !passwordValid) {
+                      if (AppConstants.emailRegex.hasMatch(_emailTextEditingController.text.trim().toLowerCase())) {
+                        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkYourInformation),
+                            backgroundColor: warningDark, icon: CustomIconData.lockKeyhole, duration: 3);
+                      }
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -96,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextButton(
                     style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.black12)),
                     onPressed: () {
-                      Navigator.pushNamed(context, forgotPasswordPageRoute);
+                      Navigator.pushNamed(context, forgotPasswordPageRoute, arguments: _emailTextEditingController.text.trim().toLowerCase());
                     },
                     child: Text(
                       getTranslated(context, AppKeys.forgotPassword),
@@ -112,7 +145,6 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          debugPrint(WidgetsBinding.instance.window.viewInsets.bottom.toString());
                           _login();
                         },
                 ),
@@ -197,6 +229,53 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() {
-    Navigator.pushNamed(context, navigationPageRoute);
+    if (_loginFormKey.currentState!.validate()) {
+      debugPrint("true");
+      setState(() {
+        _isLoading = true;
+      });
+      UserModel model = UserModel(email: _emailTextEditingController.text.trim().toLowerCase(), password: _passwordTextEditingController.text);
+      userService.hasProfile(model.email).then((value) {
+        if (value) {
+          userService.login(model).then(
+            (userModel) {
+              if (userModel != null) {
+                UserModel loggedUser = userModel;
+                ref.read(loggedUserProvider.notifier).state = userModel;
+
+                userService.setLoggedUser(loggedUser).then(
+                  (response2) {
+                    if (response2) {
+                      Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
+                    }
+                  },
+                );
+              } else {
+                AppFunctions().showSnackbar(
+                  context,
+                  getTranslated(context, AppKeys.checkYourInformation),
+                  icon: CustomIconData.userCheck,
+                  backgroundColor: warningDark,
+                );
+                setState(
+                  () {
+                    _isLoading = false;
+                  },
+                );
+              }
+            },
+          );
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
+          if (mounted) {
+            AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.nonExistingUser), icon: CustomIconData.userSlash, backgroundColor: dangerDark);
+          }
+        }
+      });
+    } else {
+      debugPrint("false");
+    }
   }
 }

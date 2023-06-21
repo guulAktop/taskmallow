@@ -3,6 +3,7 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/onboarding_pages/content_page.dart';
@@ -77,9 +78,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     padding: const EdgeInsets.all(10),
                     backgroundColor: primaryColor,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (currentPageIndex == 2) {
                       Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+                      await SharedPreferencesHelper.setBool("onboardingPagesShown", true).then((value) {
+                        debugPrint("onboardingPagesShown true");
+                      }).onError((error, stackTrace) {
+                        debugPrint("onboardingPagesShown error");
+                      });
                     } else {
                       _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
                     }

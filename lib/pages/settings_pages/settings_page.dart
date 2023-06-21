@@ -9,6 +9,7 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/language_settings_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/privacy_policy_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/theme_settings_page.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/list_view_widget.dart';
 
@@ -20,6 +21,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  UserService userService = UserService();
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   CupertinoDialogAction(
                     child: Text(getTranslated(context, AppKeys.yes)),
                     onPressed: () {
-                      Navigator.pop(context);
+                      userService.logout(context);
                     },
                   ),
                   CupertinoDialogAction(

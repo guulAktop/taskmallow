@@ -1,16 +1,83 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/firebase_options.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/localization/language_localization.dart';
-import 'package:taskmallow/pages/onboarding_pages/onboarding_page.dart';
+import 'package:taskmallow/pages/indicator_page.dart';
 import 'package:taskmallow/routes/router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint("Handling a background message: ${message.messageId}");
+}
+
+void requestPermission() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings =
+      await messaging.requestPermission(alert: true, announcement: true, badge: true, carPlay: false, criticalAlert: true, provisional: false, sound: true);
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    debugPrint("User granted permission");
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    debugPrint("User granted provisional permission");
+  } else {
+    debugPrint("User declined or has not accepted permission!");
+  }
+}
+
+initInfo() {
+  var androidInitialize = const AndroidInitializationSettings('@mipmap/launcher_icon');
+  var iOSInitialize = const IOSInitializationSettings();
+  var initializationSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onSelectNotification: (payload) async {
+      try {
+        if (payload != null && payload.isNotEmpty) {
+        } else {}
+      } catch (e) {
+        debugPrint("initInfo Error: $e");
+      }
+      return;
+    },
+  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
+      message.notification!.body.toString(),
+      htmlFormatBigText: true,
+      contentTitle: message.notification!.title.toString(),
+      htmlFormatContentTitle: true,
+    );
+    AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      "taskmallow",
+      "taskmallow",
+      importance: Importance.max,
+      styleInformation: bigTextStyleInformation,
+      priority: Priority.max,
+      playSound: true,
+    );
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: const IOSNotificationDetails());
+    await flutterLocalNotificationsPlugin.show(0, message.notification?.title, message.notification?.body, platformChannelSpecifics,
+        payload: message.data['body']);
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await FirebaseMessaging.instance.getInitialMessage();
+  requestPermission();
+  initInfo();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  runApp(const riverpod.ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -84,7 +151,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: "Poppins",
         primarySwatch: primaryMaterialColor,
       ),
-      home: const OnBoardingPage(),
+      home: const IndicatorPage(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

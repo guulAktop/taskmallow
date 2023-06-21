@@ -67,7 +67,14 @@ class _ButtonComponentState extends State<ButtonComponent> {
                   label: Padding(
                     padding: EdgeInsets.all(widget.textPadding),
                     child: widget.isLoading
-                        ? const SizedBox(width: 25, height: 25, child: CircularProgressIndicator())
+                        ? const SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              color: indicatorLightColor,
+                              backgroundColor: indicatorBackgroundColor,
+                            ),
+                          )
                         : SizedBox(
                             height: 25,
                             child: FittedBox(
@@ -101,7 +108,14 @@ class _ButtonComponentState extends State<ButtonComponent> {
                   label: Padding(
                     padding: EdgeInsets.all(widget.textPadding),
                     child: widget.isLoading
-                        ? const SizedBox(width: 25, height: 25, child: CircularProgressIndicator())
+                        ? const SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              color: indicatorLightColor,
+                              backgroundColor: indicatorBackgroundColor,
+                            ),
+                          )
                         : SizedBox(
                             height: 25,
                             child: FittedBox(
@@ -141,7 +155,14 @@ class _ButtonComponentState extends State<ButtonComponent> {
                 label: Padding(
                   padding: EdgeInsets.all(widget.textPadding),
                   child: widget.isLoading
-                      ? const SizedBox(width: 25, height: 25, child: CircularProgressIndicator())
+                      ? const SizedBox(
+                          width: 25,
+                          height: 25,
+                          child: CircularProgressIndicator(
+                            color: indicatorLightColor,
+                            backgroundColor: indicatorBackgroundColor,
+                          ),
+                        )
                       : SizedBox(
                           height: 25,
                           child: FittedBox(

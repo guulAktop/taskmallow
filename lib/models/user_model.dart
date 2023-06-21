@@ -1,35 +1,39 @@
 import 'dart:convert';
 
 class UserModel {
-  final String email;
-  final String? password;
-  final String firstName;
-  final String lastName;
-  final String description;
-  final String profilePhotoURL;
-  final DateTime dateOfBirth;
-  final int gender;
-  final String? linkedinProfileURL;
-  final String? twitterProfileURL;
-  final DateTime joinDate;
-  final List<String>? preferredCategories;
-  final String? notificationToken;
+  String email;
+  String? password;
+  String? firstName;
+  String? lastName;
+  String? description;
+  String? profilePhotoURL;
+  DateTime? dateOfBirth;
+  int? gender;
+  String? linkedinProfileURL;
+  String? twitterProfileURL;
+  String? joinDate;
+  List<String>? preferredCategories;
+  String? notificationToken;
 
   UserModel({
     required this.email,
     this.password,
-    required this.firstName,
-    required this.lastName,
-    required this.description,
-    required this.profilePhotoURL,
-    required this.dateOfBirth,
-    required this.gender,
+    this.firstName,
+    this.lastName,
+    this.description,
+    this.profilePhotoURL,
+    this.dateOfBirth,
+    this.gender,
     this.linkedinProfileURL,
     this.twitterProfileURL,
-    required this.joinDate,
+    this.joinDate,
     this.preferredCategories,
     this.notificationToken,
   });
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -39,11 +43,11 @@ class UserModel {
       'lastName': lastName,
       'description': description,
       'profilePhotoURL': profilePhotoURL,
-      'dateOfBirth': dateOfBirth.millisecondsSinceEpoch,
+      'dateOfBirth': dateOfBirth?.millisecondsSinceEpoch,
       'gender': gender,
       'linkedinProfileURL': linkedinProfileURL,
       'twitterProfileURL': twitterProfileURL,
-      'joinDate': joinDate.millisecondsSinceEpoch,
+      'joinDate': joinDate ?? DateTime.now().toString(),
       'preferredCategories': preferredCategories,
       'notificationToken': notificationToken,
     };
@@ -53,21 +57,17 @@ class UserModel {
     return UserModel(
       email: map['email'] as String,
       password: map['password'] != null ? map['password'] as String : null,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
-      description: map['description'] as String,
-      profilePhotoURL: map['profilePhotoURL'] as String,
-      dateOfBirth: DateTime.fromMillisecondsSinceEpoch(map['dateOfBirth'] as int),
-      gender: map['gender'] as int,
+      firstName: map['firstName'] != null ? map['firstName'] as String : null,
+      lastName: map['lastName'] != null ? map['lastName'] as String : null,
+      description: map['description'] != null ? map['description'] as String : null,
+      profilePhotoURL: map['profilePhotoURL'] != null ? map['profilePhotoURL'] as String : null,
+      dateOfBirth: map['dateOfBirth'] != null ? DateTime.fromMillisecondsSinceEpoch(map['dateOfBirth'] as int) : null,
+      gender: map['gender'] != null ? map['gender'] as int : null,
       linkedinProfileURL: map['linkedinProfileURL'] != null ? map['linkedinProfileURL'] as String : null,
       twitterProfileURL: map['twitterProfileURL'] != null ? map['twitterProfileURL'] as String : null,
-      joinDate: DateTime.fromMillisecondsSinceEpoch(map['joinDate'] as int),
+      joinDate: map['joinDate'] != null ? map['joinDate'] as String : null,
       preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<String>)) : null,
       notificationToken: map['notificationToken'] != null ? map['notificationToken'] as String : null,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

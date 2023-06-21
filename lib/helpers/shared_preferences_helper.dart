@@ -35,5 +35,6 @@ class SharedPreferencesHelper {
     SharedPreferencesConstants.appLanguageCode = await SharedPreferencesHelper.getString("languageCode") ?? locale.languageCode;
     SharedPreferencesConstants.isDarkTheme = await SharedPreferencesHelper.getBool("isDarkTheme") ?? false;
     SharedPreferencesConstants.useDeviceTheme = await SharedPreferencesHelper.getBool("useDeviceTheme") ?? true;
+    SharedPreferencesConstants.onboardingPagesShown = await SharedPreferencesHelper.getBool("onboardingPagesShown") ?? false;
   }
 }
