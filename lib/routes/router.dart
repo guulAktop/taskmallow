@@ -9,11 +9,13 @@ import 'package:taskmallow/pages/collaborators_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
 import 'package:taskmallow/pages/create_task_page.dart';
 import 'package:taskmallow/pages/edit_profile_page.dart';
+import 'package:taskmallow/pages/indicator_page.dart';
 import 'package:taskmallow/pages/navigation_pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/pages/navigation_pages/navigation_page.dart';
 import 'package:taskmallow/pages/navigation_pages/profile_page.dart';
 import 'package:taskmallow/pages/invitations_page.dart';
+import 'package:taskmallow/pages/onboarding_pages/onboarding_page.dart';
 import 'package:taskmallow/pages/profile_screen_page.dart';
 import 'package:taskmallow/pages/project_detail_page.dart';
 import 'package:taskmallow/pages/search_page.dart';
@@ -116,6 +118,10 @@ class RouteGenerator {
         return createRoute(const NavigationPage(), settings);
       case profileScreenPageRoute:
         return createRoute(const ProfileScreenPage(), settings);
+      case indicatorPageRoute:
+        return createRoute(const IndicatorPage(), settings);
+      case onboardingPageRoute:
+        return createRoute(const OnBoardingPage(), settings);
       default:
         return createRoute(const LoginPage(), settings);
     }

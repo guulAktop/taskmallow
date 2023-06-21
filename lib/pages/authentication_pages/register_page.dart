@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
+import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
+import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/routes/route_constants.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import '../../constants/string_constants.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RegisterPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
   final TextEditingController _passwordAgainTextEditingController = TextEditingController();
@@ -23,6 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
+
+  UserService userService = UserService();
 
   @override
   void initState() {
@@ -74,6 +84,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: getTranslated(context, AppKeys.email),
                   keyboardType: TextInputType.emailAddress,
                   validator: (emailText) {
+                    bool emailValid = AppConstants.emailRegex.hasMatch(emailText!);
+                    if (emailText.isEmpty || !emailValid) {
+                      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.emailVerificationMessage),
+                          backgroundColor: warningDark, icon: CustomIconData.envelope);
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -88,6 +104,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   textInputAction: TextInputAction.next,
                   onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode3),
                   validator: (passwordText) {
+                    bool passwordValid = AppConstants.passwordRegex.hasMatch(passwordText!);
+                    if (passwordText.length < 8 || !passwordValid) {
+                      if (AppConstants.emailRegex.hasMatch(_emailTextEditingController.text)) {
+                        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordVerificationMessage),
+                            backgroundColor: warningDark, icon: CustomIconData.lockKeyhole, duration: 3);
+                      }
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -100,6 +124,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: getTranslated(context, AppKeys.passwordAgain),
                   keyboardType: TextInputType.visiblePassword,
                   validator: (passwordText) {
+                    if (_passwordAgainTextEditingController.text != _passwordTextEditingController.text) {
+                      if ((_passwordTextEditingController.text.length >= 8) && AppConstants.passwordRegex.hasMatch(_passwordTextEditingController.text)) {
+                        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordCheckMessage),
+                            backgroundColor: warningDark, icon: CustomIconData.lockKeyhole);
+                      }
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -111,8 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          debugPrint(WidgetsBinding.instance.window.viewInsets.bottom.toString());
-                          _login();
+                          _register();
                         },
                 ),
                 const SizedBox(height: 20),
@@ -195,5 +225,35 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _login() {}
+  void _register() {
+    if (_loginFormKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      UserModel model = UserModel(email: _emailTextEditingController.text.trim().toLowerCase(), password: _passwordTextEditingController.text);
+      userService.hasProfile(model.email).then(
+        (value) async {
+          if (value) {
+            AppFunctions().showSnackbar(context, getTranslated(context, getTranslated(context, AppKeys.currentUser)),
+                backgroundColor: warningDark, icon: CustomIconData.circleUser);
+            setState(() {
+              _isLoading = false;
+            });
+          } else {
+            ref.watch(verificationCodeProvider.notifier).state = AppFunctions().generateCode();
+            AppFunctions().sendVerificationCode(context, model.email, ref.watch(verificationCodeProvider).toString()).then((value) {
+              AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.codeSent), icon: CustomIconData.paperPlane, backgroundColor: infoDark);
+              setState(() {
+                _isLoading = false;
+              });
+              ref.watch(verificationUserProvider.notifier).state = model;
+              Navigator.pushNamed(context, verificationCodePageRoute, arguments: 0);
+            });
+          }
+        },
+      );
+    } else {
+      debugPrint("false");
+    }
+  }
 }

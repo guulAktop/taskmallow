@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "286718968181",
+    "project_id": "taskmallow-app",
+    "storage_bucket": "taskmallow-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286718968181:android:dfd92eb5de99546c01933c",
+        "android_client_info": {
+          "package_name": "com.taskmallow.taskmallow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286718968181-g17pdorlg9kti6rn8k9srk92mqvhcmuf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZXGDZqPC4Uni18ot9Pr0vt7nJQB7EWXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286718968181-g17pdorlg9kti6rn8k9srk92mqvhcmuf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,34 +1,36 @@
-import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
+import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
+import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/routes/route_constants.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
-
 import '../../constants/string_constants.dart';
 import '../../localization/app_localization.dart';
 
-class VerificationCodePage extends StatefulWidget {
+class VerificationCodePage extends ConsumerStatefulWidget {
   const VerificationCodePage({Key? key}) : super(key: key);
 
   @override
-  State<VerificationCodePage> createState() => _VerificationCodePageState();
+  ConsumerState<VerificationCodePage> createState() => _VerificationCodePageState();
 }
 
-class _VerificationCodePageState extends State<VerificationCodePage> {
+class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
   final TextEditingController _textEditingController1 = TextEditingController();
   final TextEditingController _textEditingController2 = TextEditingController();
   final TextEditingController _textEditingController3 = TextEditingController();
   final TextEditingController _textEditingController4 = TextEditingController();
   final TextEditingController _textEditingController5 = TextEditingController();
   final TextEditingController _textEditingController6 = TextEditingController();
-  bool _isLoading = false;
-  late int seconds;
-  String enteredCode = "";
 
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
@@ -37,26 +39,30 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
   final FocusNode _focusNode5 = FocusNode();
   final FocusNode _focusNode6 = FocusNode();
 
-  int verificationType = 0;
-
-  late Timer timer;
+  UserService userService = UserService();
+  UserModel? userModel;
+  bool _isLoading = false;
+  String enteredCode = "";
+  int? verificationType;
 
   @override
   void initState() {
-    _isLoading = false;
     super.initState();
+    _isLoading = false;
+    userModel = ref.read(verificationUserProvider);
   }
 
   @override
   Widget build(BuildContext context) {
+    verificationType = ModalRoute.of(context)!.settings.arguments as int;
     return BaseScaffoldWidget(
       appBarBackgroundColor: Colors.transparent,
-      popScopeFunction: _isLoading ? () async => false : () async => true,
+      popScopeFunction: _isLoading ? () async => false : _showAysForCancelDialog,
       title: getTranslated(context, AppKeys.verificationCode),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft, color: Colors.black),
-        onPressed: () => _isLoading ? null : Navigator.pop(context),
+        icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+        onPressed: _isLoading ? () {} : _showAysForCancelDialog,
       ),
       widgetList: [
         const Spacer(),
@@ -111,7 +117,6 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
           text: getTranslated(context, AppKeys.verify),
           isLoading: _isLoading,
           onPressed: () {
-            Navigator.pushNamed(context, changePasswordPageRoute);
             _verify();
           },
         ),
@@ -129,6 +134,50 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     String digit6 = _textEditingController6.text;
     enteredCode = digit1 + digit2 + digit3 + digit4 + digit5 + digit6;
     debugPrint("code: $enteredCode");
+
+    if (verificationType == 0) {
+      if (userModel != null) {
+        if (enteredCode == ref.watch(verificationCodeProvider).toString()) {
+          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.profileCreating), backgroundColor: success, icon: CustomIconData.circleCheck);
+          setState(() {
+            _isLoading = true;
+          });
+          userService.register(userModel!).then((result) {
+            if (result) {
+              userService.login(userModel!).then((value) {
+                ref.read(loggedUserProvider.notifier).state = value;
+                setState(() {
+                  _isLoading = false;
+                });
+                userService.setLoggedUser(userModel!).then((result2) {
+                  if (result2) {
+                    Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
+                  }
+                });
+              });
+            } else {
+              Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+            }
+          });
+        } else if (enteredCode.isEmpty) {
+          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterCode), backgroundColor: warningDark, icon: CustomIconData.circleExclamation);
+        } else {
+          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkCode), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
+        }
+      } else {
+        Navigator.pop(context);
+      }
+    } else if (verificationType == 1) {
+      if (enteredCode == ref.watch(verificationCodeProvider).toString()) {
+        Navigator.pushReplacementNamed(context, changePasswordPageRoute);
+      } else if (enteredCode.isEmpty) {
+        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterCode), backgroundColor: warningDark, icon: CustomIconData.circleExclamation);
+      } else {
+        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkCode), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
+      }
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   getDigitField(int index, TextEditingController textEditingController, FocusNode focusNode) {
@@ -197,7 +246,28 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
     );
   }
 
-  showAysForCancelDialog() {
-    return true;
+  _showAysForCancelDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: Text(getTranslated(context, AppKeys.processContinues), textAlign: TextAlign.start),
+        content: TextComponent(text: getTranslated(context, AppKeys.aysForCancel), textAlign: TextAlign.start, headerType: HeaderType.h6),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            child: Text(getTranslated(context, AppKeys.yes)),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(getTranslated(context, AppKeys.no)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

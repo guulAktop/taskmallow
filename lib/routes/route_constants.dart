@@ -23,3 +23,5 @@ const String projectMatchPageRoute = "projectMatchPageRoute";
 const String userMatchPageRoute = "userMatchPageRoute";
 const String navigationPageRoute = "navigationPageRoute";
 const String profileScreenPageRoute = "profileScreenPageRoute";
+const String indicatorPageRoute = "indicatorPageRoute";
+const String onboardingPageRoute = "onboardingPageRoute";

@@ -29,9 +29,15 @@ class AppKeys {
   static String links = 'links';
   static String enterFirstName = 'enter_first_name';
   static String enterLastName = 'enter_last_name';
+  static String enterDateOfBirth = 'enter_date_of_birth';
+  static String selectGender = 'select_gender';
   static String male = 'male';
   static String female = 'female';
   static String iDoNotWantToSpecify = 'i_do_not_want_to_specify';
+  static String checkYourInformation = 'check_your_information';
+  static String nonExistingUser = 'non_existing_user';
+  static String passwordUpdated = 'password_updated';
+  static String somethingWentWrong = 'something_went_wrong';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";
@@ -104,6 +110,17 @@ class AppKeys {
   static String updateTask = 'update_task';
   static String deleteTask = 'delete_task';
   static String pleaseSelectCollaborator = 'please_select_collaborator';
+  static String emailVerificationMessage = 'email_verification_message';
+  static String passwordVerificationMessage = 'password_verification_message';
+  static String passwordCheckMessage = 'password_check_message';
+  static String codeSent = 'code_sent';
+  static String checkSpambox = 'check_spambox';
+  static String profileCreating = 'profile_creating';
+  static String currentUser = 'current_user';
+  static String processContinues = 'process_continues';
+  static String aysForCancel = 'ays_for_cancel';
+  static String checkCode = 'check_code';
+  static String enterCode = 'enter_code';
 }
 
 class CategoryKeys {

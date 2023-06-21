@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/routes/route_constants.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
-class ChangePasswordPage extends StatefulWidget {
+class ChangePasswordPage extends ConsumerStatefulWidget {
   const ChangePasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  ConsumerState<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
+class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
+  final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
   final TextEditingController _confirmPasswordTextEditingController = TextEditingController();
-  final _loginFormKey = GlobalKey<FormState>();
-  bool _isLoading = false;
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
+  final _loginFormKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  UserModel? userModel;
+  UserService userService = UserService();
 
   @override
   void initState() {
-    _isLoading = false;
     super.initState();
+    userModel = ref.read(verificationUserProvider);
+    _emailTextEditingController.text = userModel!.email;
   }
 
   @override
@@ -57,6 +66,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 const SizedBox(height: 10),
                 TextFormFieldComponent(
                   context: context,
+                  textEditingController: _emailTextEditingController,
+                  enabled: false,
+                  hintText: getTranslated(context, AppKeys.email),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (emailText) {
+                    bool emailValid = AppConstants.emailRegex.hasMatch(emailText!);
+                    if (emailText.isEmpty || !emailValid) {
+                      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.emailVerificationMessage),
+                          backgroundColor: dangerDark, icon: CustomIconData.envelope);
+                      return "";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormFieldComponent(
+                  context: context,
                   textEditingController: _passwordTextEditingController,
                   focusNode: _focusNode1,
                   onSubmitted: (p0) => FocusScope.of(context).requestFocus(_focusNode2),
@@ -65,6 +91,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   hintText: getTranslated(context, AppKeys.password),
                   keyboardType: TextInputType.visiblePassword,
                   validator: (passwordText) {
+                    bool passwordValid = AppConstants.passwordRegex.hasMatch(passwordText!);
+                    if (passwordText.length < 8 || !passwordValid) {
+                      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordVerificationMessage),
+                          backgroundColor: dangerDark, icon: CustomIconData.lockKeyhole);
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -77,6 +109,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   hintText: getTranslated(context, AppKeys.passwordAgain),
                   keyboardType: TextInputType.visiblePassword,
                   validator: (passwordText) {
+                    if (_confirmPasswordTextEditingController.text != _passwordTextEditingController.text) {
+                      if ((_passwordTextEditingController.text.length >= 8) && AppConstants.passwordRegex.hasMatch(_passwordTextEditingController.text)) {
+                        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordCheckMessage),
+                            backgroundColor: dangerDark, icon: CustomIconData.lockKeyhole);
+                      }
+                      return "";
+                    }
                     return null;
                   },
                 ),
@@ -102,6 +141,25 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   _update() {
-    Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+    if (_loginFormKey.currentState!.validate()) {
+      userModel!.password = _passwordTextEditingController.text;
+      setState(() {
+        _isLoading = true;
+      });
+      userService.updatePassword(userModel!).then((response) {
+        setState(() {
+          _isLoading = false;
+        });
+        if (response) {
+          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordUpdated), backgroundColor: success, icon: CustomIconData.circleCheck);
+          Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+        } else {
+          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.somethingWentWrong), backgroundColor: danger, icon: CustomIconData.circleXmark);
+          Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+        }
+      });
+    } else {
+      debugPrint("false");
+    }
   }
 }

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:math';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -160,6 +162,24 @@ class AppFunctions {
     } catch (e) {
       debugPrint(e.toString());
       return null;
+    }
+  }
+
+  int generateCode() {
+    int randomCode = Random().nextInt(900000) + 100000;
+    return randomCode;
+  }
+
+  Future<bool> sendVerificationCode(BuildContext context, String toMail, String code) async {
+    try {
+      await FirebaseFunctions.instance.httpsCallable('sendVerificationCode').call(<String, dynamic>{'to': toMail, 'code': code});
+      debugPrint("sended");
+      return true;
+    } on FirebaseFunctionsException catch (error) {
+      debugPrint(error.code);
+      debugPrint(error.details);
+      debugPrint(error.message);
+      return false;
     }
   }
 }
