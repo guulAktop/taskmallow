@@ -11,14 +11,14 @@ exports.sendVerificationCode = functions.https.onCall((data, context) => {
         host: 'smtp-mail.outlook.com',
         port: 587,
         auth: {
-            user: 'taskmallow@hotmail.com',
-            pass: 'Marshmallow123//'
+            user: 'email@gmail.com',
+            pass: 'password'
         },
-        from: 'taskmallow@hotmail.com',
+        from: 'email@gmail.com',
     });
 
     const mailOptions = {
-        from: 'Taskmallow <taskmallow@hotmail.com>',
+        from: 'Taskmallow <email@gmail.com>',
         to: data.to,
         subject: 'Taskmallow Verification Code',
         html: `
