@@ -20,14 +20,14 @@ import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
-class EditProfilePage extends ConsumerStatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+class UpdateProfilePage extends ConsumerStatefulWidget {
+  const UpdateProfilePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EditProfilePage> createState() => _EditProfilePageState();
+  ConsumerState<UpdateProfilePage> createState() => _UpdateProfilePageState();
 }
 
-class _EditProfilePageState extends ConsumerState<EditProfilePage> {
+class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
   File? pickedImage;
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _firstNameTextEditingController = TextEditingController();

@@ -1,28 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/language_settings_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/privacy_policy_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/theme_settings_page.dart';
+import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/list_view_widget.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage> {
   UserService userService = UserService();
   bool isLoading = false;
+  late UserModel loggedUser;
+
+  @override
+  void initState() {
+    super.initState();
+    loggedUser = ref.read(loggedUserProvider)!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
@@ -120,7 +132,16 @@ class _SettingsPageState extends State<SettingsPage> {
                       CupertinoDialogAction(
                         child: Text(getTranslated(context, AppKeys.yes)),
                         onPressed: () {
-                          Navigator.pop(context);
+                          setState(() {
+                            isLoading = true;
+                          });
+                          userService.deleteAccount(loggedUser).then((result) {
+                            if (result) {
+                              userService.logout(context);
+                              AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.accountHasBeenDeleted),
+                                  backgroundColor: successDark, icon: CustomIconData.circleCheck);
+                            }
+                          });
                         },
                       ),
                       CupertinoDialogAction(

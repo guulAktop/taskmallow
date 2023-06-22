@@ -15,6 +15,7 @@ class ProjectModel {
   final UserModel userWhoCreated;
   final List<UserModel> collaborators;
   final List<TaskModel> tasks;
+  final bool isDeleted;
 
   ProjectModel({
     required this.id,
@@ -25,6 +26,7 @@ class ProjectModel {
     required this.userWhoCreated,
     required this.collaborators,
     required this.tasks,
+    this.isDeleted = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,6 +39,7 @@ class ProjectModel {
       'userWhoCreated': userWhoCreated.toMap(),
       'collaborators': collaborators.map((x) => x.toMap()).toList(),
       'tasks': tasks.map((x) => x.toMap()).toList(),
+      'isDeleted': isDeleted,
     };
   }
 
@@ -58,6 +61,7 @@ class ProjectModel {
           (x) => TaskModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      isDeleted: map['isDeleted'] as bool,
     );
   }
 

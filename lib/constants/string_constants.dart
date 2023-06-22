@@ -38,6 +38,7 @@ class AppKeys {
   static String nonExistingUser = 'non_existing_user';
   static String passwordUpdated = 'password_updated';
   static String somethingWentWrong = 'something_went_wrong';
+  static String accountHasBeenDeleted = 'account_has_been_deleted';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";
