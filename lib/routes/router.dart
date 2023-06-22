@@ -8,7 +8,7 @@ import 'package:taskmallow/pages/category_preferences_page.dart';
 import 'package:taskmallow/pages/collaborators_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
 import 'package:taskmallow/pages/create_task_page.dart';
-import 'package:taskmallow/pages/edit_profile_page.dart';
+import 'package:taskmallow/pages/update_profile_page.dart';
 import 'package:taskmallow/pages/indicator_page.dart';
 import 'package:taskmallow/pages/navigation_pages/home_page.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
@@ -80,8 +80,8 @@ class RouteGenerator {
         return createRoute(const VerificationCodePage(), settings);
       case homePageRoute:
         return createRoute(const HomePage(), settings);
-      case editProfilePageRoute:
-        return createRoute(const EditProfilePage(), settings);
+      case updateProfilePageRoute:
+        return createRoute(const UpdateProfilePage(), settings);
       case createProjectPageRoute:
         return createRoute(const CreateProjectPage(), settings);
       case updateProjectPageRoute:

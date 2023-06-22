@@ -46,7 +46,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                   if (value) {
                     Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                   } else {
-                    Navigator.pushNamedAndRemoveUntil(context, editProfilePageRoute, (route) => false, arguments: 1);
+                    Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                   }
                 });
               });

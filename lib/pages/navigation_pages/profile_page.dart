@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
           ),
           splashRadius: AppConstants.iconSplashRadius,
           onPressed: () {
-            Navigator.pushNamed(context, editProfilePageRoute);
+            Navigator.pushNamed(context, updateProfilePageRoute);
           },
         ),
         IconButton(

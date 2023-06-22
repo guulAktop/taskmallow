@@ -113,6 +113,7 @@
     "non_existing_user": "Girilen e-posta adresine ait bir kullanıcı bulunamadı!",
     "password_updated": "Şifreniz başarıyla güncellendi.",
     "something_went_wrong": "Bir hata oluştu!",
+    "account_has_been_deleted":"Hesabınız başarıyla silindi.",
 
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",
