@@ -83,4 +83,10 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 
 * İletişim ve koordinasyon konularında daha da güçlenmeliyiz. 
 
+# Sprint 2
+
+*  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
+*  Sprint içinde tamamlanması tahmin edilen puan: 99 puandır.
+*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. Şuan 2 sprint ile beraber 189 toplam puan elde edeceğiz.
+*  Daily Scrum: 
 
