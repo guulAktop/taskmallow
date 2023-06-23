@@ -114,6 +114,7 @@
     "password_updated": "Your password has been successfully updated.",
     "something_went_wrong": "Something went wrong!",
     "account_has_been_deleted":"Your account has been successfully deleted.",
+    "you_must_select_category":"You must select at least one category!",
 
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
