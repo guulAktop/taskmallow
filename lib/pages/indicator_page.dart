@@ -44,7 +44,11 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                 ref.watch(loggedUserProvider.notifier).state = model;
                 userService.userInfoFull(loggedUser!.email).then((value) async {
                   if (value) {
-                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                    if (model.preferredCategories == null || model.preferredCategories!.isEmpty) {
+                      Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                    } else {
+                      Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                    }
                   } else {
                     Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                   }

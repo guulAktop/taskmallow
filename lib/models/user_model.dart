@@ -48,7 +48,7 @@ class UserModel {
       'linkedinProfileURL': linkedinProfileURL,
       'twitterProfileURL': twitterProfileURL,
       'joinDate': joinDate ?? DateTime.now().toString(),
-      'preferredCategories': preferredCategories,
+      'preferredCategories': preferredCategories?.toList() ?? [],
       'notificationToken': notificationToken,
     };
   }
@@ -66,7 +66,7 @@ class UserModel {
       linkedinProfileURL: map['linkedinProfileURL'] != null ? map['linkedinProfileURL'] as String : null,
       twitterProfileURL: map['twitterProfileURL'] != null ? map['twitterProfileURL'] as String : null,
       joinDate: map['joinDate'] != null ? map['joinDate'] as String : null,
-      preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<String>)) : null,
+      preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<dynamic>)) : [],
       notificationToken: map['notificationToken'] != null ? map['notificationToken'] as String : null,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
@@ -13,18 +14,19 @@ import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
 import 'package:taskmallow/widgets/sliver_scaffold_widget.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
+class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderStateMixin {
   bool isLoading = false;
 
-  List<String> selectedSubtitles = ["artificial_intelligence", "mobile_applications", "data_analytics", "cloud_computing", "internet_of_things_iot"];
+  List<String> selectedSubtitles = [];
   UserModel user = users.first;
+
   @override
   void initState() {
     super.initState();
@@ -226,10 +228,20 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                               ),
                             ),
                         )
-                      : const IconComponent(
-                          iconData: CustomIconData.listCheck,
-                          color: primaryColor,
-                          size: 35,
+                      : Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, categoryPreferencesPageRoute);
+                            },
+                            splashRadius: AppConstants.iconSplashRadius,
+                            icon: const IconComponent(
+                              iconData: CustomIconData.circlePlus,
+                              iconWeight: CustomIconWeight.regular,
+                              color: primaryColor,
+                              size: 35,
+                            ),
+                          ),
                         ),
                 ),
               ],

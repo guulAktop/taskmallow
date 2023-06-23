@@ -119,7 +119,10 @@ class RouteGenerator {
       case profileScreenPageRoute:
         return createRoute(const ProfileScreenPage(), settings);
       case indicatorPageRoute:
-        return createRoute(const IndicatorPage(), settings);
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const IndicatorPage(),
+          transitionDuration: Duration.zero,
+        );
       case onboardingPageRoute:
         return createRoute(const OnBoardingPage(), settings);
       default:

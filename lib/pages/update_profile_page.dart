@@ -135,10 +135,14 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                           userService.setLoggedUser(loggedUser).then((result2) {
                             if (result2) {
                               if (arg == 1) {
-                                ref.watch(loggedUserProvider.notifier).state = loggedUser;
-                                Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                if (loggedUser.preferredCategories == null || loggedUser.preferredCategories!.isEmpty) {
+                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                                } else {
+                                  ref.watch(loggedUserProvider.notifier).state = loggedUser;
+                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                }
                               } else {
-                                ref.watch(loggedUserProvider.notifier).state = loggedUser;
+                                ref.read(loggedUserProvider.notifier).state = loggedUser;
                                 Navigator.pop(context);
                               }
                             }

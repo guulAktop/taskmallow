@@ -114,6 +114,7 @@
     "password_updated": "Şifreniz başarıyla güncellendi.",
     "something_went_wrong": "Bir hata oluştu!",
     "account_has_been_deleted":"Hesabınız başarıyla silindi.",
+    "you_must_select_category":"En az bir kategori seçmelisiniz!",
 
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",

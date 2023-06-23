@@ -39,6 +39,7 @@ class AppKeys {
   static String passwordUpdated = 'password_updated';
   static String somethingWentWrong = 'something_went_wrong';
   static String accountHasBeenDeleted = 'account_has_been_deleted';
+  static String youMustSelectCategory = 'you_must_select_category';
 
   static String changePasswordContent = 'change_password_content';
   static String forgotPasswordContent = "forgot_password_content";

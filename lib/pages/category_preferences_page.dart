@@ -1,40 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/routes/route_constants.dart';
+import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
-class CategoryPreferencesPage extends StatefulWidget {
+class CategoryPreferencesPage extends ConsumerStatefulWidget {
   const CategoryPreferencesPage({super.key});
 
   @override
-  State<CategoryPreferencesPage> createState() => _CategoryPreferencesPageState();
+  ConsumerState<CategoryPreferencesPage> createState() => _CategoryPreferencesPageState();
 }
 
-class _CategoryPreferencesPageState extends State<CategoryPreferencesPage> {
+class _CategoryPreferencesPageState extends ConsumerState<CategoryPreferencesPage> {
+  UserService userService = UserService();
   bool isLoading = false;
-
   List<String> selectedSubtitles = [];
+  UserModel? loggedUserModel;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSubtitles = [];
+    loggedUserModel = ref.read(loggedUserProvider);
+    if (loggedUserModel != null) {
+      selectedSubtitles.addAll(loggedUserModel!.preferredCategories!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    int? pageType = ModalRoute.of(context)!.settings.arguments as int?;
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.categories),
-      leadingWidget: IconButton(
-        splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-        onPressed: () => isLoading ? null : Navigator.pop(context),
-      ),
+      leadingWidget: pageType == 0
+          ? null
+          : IconButton(
+              splashRadius: AppConstants.iconSplashRadius,
+              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+              onPressed: () => isLoading ? null : Navigator.pop(context),
+            ),
       actionList: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
           child: TextButton(
-            onPressed: () {},
+            onPressed: isLoading
+                ? null
+                : () async {
+                    if (selectedSubtitles.isEmpty) {
+                      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.youMustSelectCategory),
+                          backgroundColor: warningDark, icon: CustomIconData.listCheck);
+                    } else {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      if (loggedUserModel != null) {
+                        await userService.updateUser(loggedUserModel!..preferredCategories = selectedSubtitles).then((value) {
+                          if (value) {
+                            loggedUserModel!.preferredCategories = selectedSubtitles;
+                            if (pageType == 0) {
+                              Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          }
+                        });
+                      } else {
+                        userService.logout(context);
+                      }
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  },
             child: TextComponent(
               maxLines: 1,
               text: getTranslated(context, AppKeys.done),
