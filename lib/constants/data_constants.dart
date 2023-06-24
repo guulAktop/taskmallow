@@ -1,5 +1,6 @@
 import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
+import 'package:taskmallow/models/user_model.dart';
 
 List<ProjectModel> projects = [
   ProjectModel(
@@ -12,6 +13,8 @@ List<ProjectModel> projects = [
         firstName: "Enes",
         lastName: "Cerrahoğlu",
         description: "Bilgisayar Mühendisi",
+        linkedinProfileURL: "",
+        twitterProfileURL: "",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
     tasks: [],
@@ -27,6 +30,8 @@ List<ProjectModel> projects = [
         firstName: "Enes",
         lastName: "Cerrahoğlu",
         description: "Bilgisayar Mühendisi",
+        linkedinProfileURL: "",
+        twitterProfileURL: "",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
     tasks: [],
@@ -42,6 +47,8 @@ List<ProjectModel> projects = [
         firstName: "Enes",
         lastName: "Cerrahoğlu",
         description: "Bilgisayar Mühendisi",
+        linkedinProfileURL: "",
+        twitterProfileURL: "",
         profilePhotoURL:
             "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
     tasks: [],
@@ -55,6 +62,8 @@ List<UserModel> users = [
       firstName: "Enes",
       lastName: "Cerrahoğlu",
       description: "Bilgisayar Mühendisi",
+      linkedinProfileURL: "",
+      twitterProfileURL: "",
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fenes.jpg?alt=media&token=faac91a0-5467-4c4f-ab33-6f248ba88b75"),
   UserModel(
@@ -62,6 +71,8 @@ List<UserModel> users = [
       firstName: "Gülsüm",
       lastName: "Aktop",
       description: "Bilgisayar Mühendisi",
+      linkedinProfileURL: "",
+      twitterProfileURL: "",
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
   UserModel(
@@ -69,6 +80,8 @@ List<UserModel> users = [
       firstName: "Şevval",
       lastName: "Özdamar",
       description: "Bilgisayar Mühendisi",
+      linkedinProfileURL: "",
+      twitterProfileURL: "",
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2F%C5%9Fevval.jpg?alt=media&token=bafb43ec-1dd3-4233-9619-9b1ed3e26189"),
   UserModel(
@@ -76,6 +89,8 @@ List<UserModel> users = [
       firstName: "İzzet",
       lastName: "Jumaev",
       description: "Bilgisayar Mühendisi",
+      linkedinProfileURL: "",
+      twitterProfileURL: "",
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fizzet.jpg?alt=media&token=4e7aef85-9d1d-4cfd-9e2e-58388b6bbe4e"),
   UserModel(
@@ -83,6 +98,8 @@ List<UserModel> users = [
       firstName: "Muhammed Salih",
       lastName: "Girgin",
       description: "Bilgisayar Mühendisi",
+      linkedinProfileURL: "",
+      twitterProfileURL: "",
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
 ];
@@ -132,20 +149,20 @@ List<TaskModel> tasks = [
   ),
 ];
 
-class UserModel {
-  String email;
-  String firstName;
-  String lastName;
-  String profilePhotoURL;
-  String description;
-  UserModel({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.profilePhotoURL,
-    required this.description,
-  });
-}
+// class UserModel {
+//   String email;
+//   String firstName;
+//   String lastName;
+//   String profilePhotoURL;
+//   String description;
+//   UserModel({
+//     required this.email,
+//     required this.firstName,
+//     required this.lastName,
+//     required this.profilePhotoURL,
+//     required this.description,
+//   });
+// }
 
 class TaskModel {
   String taskId;

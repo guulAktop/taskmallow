@@ -13,7 +13,7 @@ import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pag
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/privacy_policy_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/theme_settings_page.dart';
 import 'package:taskmallow/providers/providers.dart';
-import 'package:taskmallow/services/user_service.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/list_view_widget.dart';
 
@@ -25,18 +25,18 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  UserService userService = UserService();
   bool isLoading = false;
   late UserModel loggedUser;
 
   @override
   void initState() {
     super.initState();
-    loggedUser = ref.read(loggedUserProvider)!;
+    loggedUser = ref.read(userProvider).userModel!;
   }
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.settings),
       leadingWidget: IconButton(
@@ -57,7 +57,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   CupertinoDialogAction(
                     child: Text(getTranslated(context, AppKeys.yes)),
                     onPressed: () {
-                      userService.logout(context);
+                      ref.read(userProvider).logout(context);
                     },
                   ),
                   CupertinoDialogAction(
@@ -135,9 +135,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           setState(() {
                             isLoading = true;
                           });
-                          userService.deleteAccount(loggedUser).then((result) {
-                            if (result) {
-                              userService.logout(context);
+                          userRepository.deleteAccount(loggedUser).then((result) {
+                            if (userRepository.isSucceeded) {
+                              ref.read(userProvider).logout(context);
                               AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.accountHasBeenDeleted),
                                   backgroundColor: successDark, icon: CustomIconData.circleCheck);
                             }

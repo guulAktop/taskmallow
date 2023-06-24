@@ -14,8 +14,8 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/authentication_pages/register_page.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -31,7 +31,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final _loginFormKey = GlobalKey<FormState>();
-  UserService userService = UserService();
   bool _isLoading = false;
 
   @override
@@ -40,7 +39,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     SharedPreferencesHelper.getString("loggedUser").then((value) {
       if (value != null) {
-        ref.read(loggedUserProvider.notifier).state = UserModel.fromJson(jsonDecode(value.toString()));
+        ref.read(userProvider).userModel = UserModel.fromJson(jsonDecode(value.toString()));
         Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
       } else {
         debugPrint("null sp user");
@@ -50,6 +49,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.vertical > 0;
     return BaseScaffoldWidget(
       popScopeFunction: _isLoading ? () async => false : () async => true,
@@ -145,7 +145,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          _login();
+                          _login(userRepository);
                         },
                 ),
                 const SizedBox(height: 20),
@@ -228,24 +228,30 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  void _login() {
+  void _login(UserRepository userRepository) {
     if (_loginFormKey.currentState!.validate()) {
       debugPrint("true");
       setState(() {
         _isLoading = true;
       });
-      UserModel model = UserModel(email: _emailTextEditingController.text.trim().toLowerCase(), password: _passwordTextEditingController.text);
-      userService.hasProfile(model.email).then((value) {
+      UserModel model = UserModel(
+          email: _emailTextEditingController.text.trim().toLowerCase(),
+          password: _passwordTextEditingController.text,
+          firstName: "",
+          lastName: "",
+          description: "",
+          linkedinProfileURL: "",
+          twitterProfileURL: "");
+      userRepository.hasProfile(model.email).then((value) {
         if (value) {
-          userService.login(model).then(
-            (userModel) {
-              if (userModel != null) {
-                UserModel loggedUser = userModel;
-                ref.read(loggedUserProvider.notifier).state = userModel;
+          ref.read(userProvider).login(model).then(
+            (value) {
+              if (userRepository.userModel != null) {
+                ref.read(userProvider).userModel = model;
 
-                userService.setLoggedUser(loggedUser).then(
-                  (response2) {
-                    if (response2) {
+                ref.read(userProvider).setLoggedUser().then(
+                  (value) {
+                    if (ref.read(userProvider).isSucceeded) {
                       Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
                     }
                   },

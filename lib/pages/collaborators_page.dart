@@ -10,6 +10,7 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -24,15 +25,7 @@ class CollaboratorsPage extends StatefulWidget {
 class _CollaboratorsPageState extends State<CollaboratorsPage> {
   bool isLoading = false;
 
-  List<UserModel> invitedUsers = [
-    UserModel(
-        email: "gul.aktopp@gmail.com",
-        firstName: "Gülsüm",
-        lastName: "Aktop",
-        description: "Bilgisayar Mühendisi",
-        profilePhotoURL:
-            "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fg%C3%BCl.jpg?alt=media&token=4d5b013c-30c5-4ce4-a5c7-01a3c7b0ac38"),
-  ];
+  List<UserModel> invitedUsers = [];
 
   List<UserModel> filteredUsers = [];
 

@@ -10,8 +10,8 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/authentication_pages/login_page.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import '../../constants/string_constants.dart';
 
@@ -32,8 +32,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
 
-  UserService userService = UserService();
-
   @override
   void initState() {
     _isLoading = false;
@@ -42,6 +40,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.vertical > 0;
     return BaseScaffoldWidget(
       popScopeFunction: _isLoading ? () async => false : () async => true,
@@ -142,7 +141,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          _register();
+                          _register(userRepository);
                         },
                 ),
                 const SizedBox(height: 20),
@@ -225,13 +224,20 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
-  void _register() {
+  void _register(UserRepository userRepository) {
     if (_loginFormKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-      UserModel model = UserModel(email: _emailTextEditingController.text.trim().toLowerCase(), password: _passwordTextEditingController.text);
-      userService.hasProfile(model.email).then(
+      UserModel model = UserModel(
+          email: _emailTextEditingController.text.trim().toLowerCase(),
+          password: _passwordTextEditingController.text,
+          firstName: "",
+          lastName: "",
+          description: "",
+          linkedinProfileURL: "",
+          twitterProfileURL: "");
+      userRepository.hasProfile(model.email).then(
         (value) async {
           if (value) {
             AppFunctions().showSnackbar(context, getTranslated(context, getTranslated(context, AppKeys.currentUser)),
