@@ -16,8 +16,8 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class UpdateProfilePage extends ConsumerStatefulWidget {
@@ -38,8 +38,6 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
   final TextEditingController _twitterTextEditingController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  UserService userService = UserService();
-  late UserModel loggedUser;
   bool isLoading = false;
   final _loginFormKey = GlobalKey<FormState>();
   int? selectedGender;
@@ -75,15 +73,15 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
   void initState() {
     super.initState();
     pickedImage = null;
-    loggedUser = ref.read(loggedUserProvider)!;
-    _emailTextEditingController.text = loggedUser.email.toString();
-    loggedUser.firstName != null ? _firstNameTextEditingController.text = loggedUser.firstName.toString() : null;
-    loggedUser.lastName != null ? _lastNameTextEditingController.text = loggedUser.lastName.toString() : null;
-    loggedUser.description != null ? _descriptionTextEditingController.text = loggedUser.description.toString() : null;
-    loggedUser.dateOfBirth != null ? selectedDate = loggedUser.dateOfBirth : null;
-    loggedUser.gender != null ? selectedGender = loggedUser.gender : null;
-    loggedUser.linkedinProfileURL != null ? _linkedinTextEditingController.text = loggedUser.linkedinProfileURL.toString() : null;
-    loggedUser.twitterProfileURL != null ? _twitterTextEditingController.text = loggedUser.twitterProfileURL.toString() : null;
+    UserRepository userRepository = ref.read(userProvider);
+    _emailTextEditingController.text = userRepository.userModel!.email.toString();
+    _firstNameTextEditingController.text = userRepository.userModel!.firstName.toString();
+    _lastNameTextEditingController.text = userRepository.userModel!.lastName.toString();
+    _descriptionTextEditingController.text = userRepository.userModel!.description.toString();
+    userRepository.userModel?.dateOfBirth != null ? selectedDate = userRepository.userModel?.dateOfBirth : null;
+    userRepository.userModel?.gender != null ? selectedGender = userRepository.userModel?.gender : null;
+    _linkedinTextEditingController.text = userRepository.userModel!.linkedinProfileURL.toString();
+    _twitterTextEditingController.text = userRepository.userModel!.twitterProfileURL.toString();
     if (selectedDate != null) {
       _dateOfBirthTextEditingController.text =
           '${selectedDate!.day.toString().padLeft(2, '0')}.${selectedDate!.month.toString().padLeft(2, '0')}.${selectedDate!.year}';
@@ -92,6 +90,7 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     int? arg = ModalRoute.of(context)!.settings.arguments as int?;
     return BaseScaffoldWidget(
       key: _scaffoldKey,
@@ -119,35 +118,38 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                         isLoading = true;
                       });
                       if (pickedImage != null) {
-                        loggedUser.profilePhotoURL = await userService.uploadImage(
-                            pickedImage!, "ProfilePhotos/${loggedUser.email}/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg");
+                        userRepository.userModel?.profilePhotoURL = await userRepository.uploadImage(
+                                pickedImage!, "ProfilePhotos/${userRepository.userModel?.email}/${DateTime.now().millisecondsSinceEpoch.toString()}.jpg") ??
+                            ImageAssetKeys.defaultProfilePhotoUrl;
                       }
-                      loggedUser.firstName = _firstNameTextEditingController.text.trim();
-                      loggedUser.lastName = _lastNameTextEditingController.text.trim();
-                      loggedUser.description = _descriptionTextEditingController.text.trim();
-                      loggedUser.dateOfBirth = selectedDate;
-                      loggedUser.gender = selectedGender;
-                      loggedUser.linkedinProfileURL = _linkedinTextEditingController.text.trim();
-                      loggedUser.twitterProfileURL = _twitterTextEditingController.text.trim();
+                      userRepository.userModel?.firstName = _firstNameTextEditingController.text.trim();
+                      userRepository.userModel?.lastName = _lastNameTextEditingController.text.trim();
+                      userRepository.userModel?.description = _descriptionTextEditingController.text.trim();
+                      userRepository.userModel?.dateOfBirth = selectedDate;
+                      userRepository.userModel?.gender = selectedGender;
+                      userRepository.userModel?.linkedinProfileURL = _linkedinTextEditingController.text.trim();
+                      userRepository.userModel?.twitterProfileURL = _twitterTextEditingController.text.trim();
 
-                      userService.updateUser(loggedUser).then((result) {
-                        if (result) {
-                          userService.setLoggedUser(loggedUser).then((result2) {
-                            if (result2) {
-                              if (arg == 1) {
-                                if (loggedUser.preferredCategories == null || loggedUser.preferredCategories!.isEmpty) {
-                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
-                                } else {
-                                  ref.watch(loggedUserProvider.notifier).state = loggedUser;
-                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-                                }
-                              } else {
-                                ref.read(loggedUserProvider.notifier).state = loggedUser;
-                                Navigator.pop(context);
-                              }
+                      UserModel user = userRepository.userModel!;
+
+                      userRepository.update(user).whenComplete(() {
+                        debugPrint(userRepository.isSucceeded.toString());
+                        if (userRepository.isSucceeded) {
+                          if (arg == 1) {
+                            if (userRepository.userModel?.preferredCategories == null || userRepository.userModel!.preferredCategories.isEmpty) {
+                              Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                            } else {
+                              ref.read(userProvider).userModel = userRepository.userModel;
+                              Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                             }
-                          });
+                          } else {
+                            ref.read(userProvider).userModel = user;
+                            Navigator.pop(context);
+                          }
                         }
+                        setState(() {
+                          isLoading = false;
+                        });
                       });
                     }
                   },
@@ -182,7 +184,7 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                 },
                 child: pickedImage == null
                     ? CircularPhotoComponent(
-                        url: loggedUser.profilePhotoURL ?? ImageAssetKeys.defaultProfilePhotoUrl,
+                        url: userRepository.userModel?.profilePhotoURL ?? ImageAssetKeys.defaultProfilePhotoUrl,
                       )
                     : CircularPhotoComponent(
                         image: pickedImage,

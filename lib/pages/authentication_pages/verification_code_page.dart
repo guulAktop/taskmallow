@@ -12,7 +12,6 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import '../../constants/string_constants.dart';
 import '../../localization/app_localization.dart';
@@ -39,7 +38,6 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
   final FocusNode _focusNode5 = FocusNode();
   final FocusNode _focusNode6 = FocusNode();
 
-  UserService userService = UserService();
   UserModel? userModel;
   bool _isLoading = false;
   String enteredCode = "";
@@ -142,15 +140,14 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
           setState(() {
             _isLoading = true;
           });
-          userService.register(userModel!).then((result) {
-            if (result) {
-              userService.login(userModel!).then((value) {
-                ref.read(loggedUserProvider.notifier).state = value;
+          ref.watch(userProvider).register(userModel!).then((result) {
+            if (ref.watch(userProvider).isSucceeded) {
+              ref.watch(userProvider).login(userModel!).then((value) {
                 setState(() {
                   _isLoading = false;
                 });
-                userService.setLoggedUser(userModel!).then((result2) {
-                  if (result2) {
+                ref.watch(userProvider).setLoggedUser().then((value) {
+                  if (ref.watch(userProvider).isSucceeded) {
                     Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
                   }
                 });

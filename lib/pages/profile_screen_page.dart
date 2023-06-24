@@ -8,6 +8,7 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
@@ -81,40 +82,52 @@ class _ProfileScreenPageState extends State<ProfileScreenPage> with TickerProvid
                           ),
                           Row(
                             children: [
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: IconComponent(
-                                    iconData: CustomIconData.linkedin,
-                                    color: Color(0xFF0A66C2),
-                                  ),
-                                ),
-                                onTap: () {},
-                              ),
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: IconComponent(
-                                    iconData: CustomIconData.twitter,
-                                    color: Color(0xFF1DA1F2),
-                                  ),
-                                ),
-                                onTap: () {},
-                              ),
+                              user.linkedinProfileURL.isEmpty
+                                  ? const SizedBox()
+                                  : InkWell(
+                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: IconComponent(
+                                          iconData: CustomIconData.linkedin,
+                                          color: Color(0xFF0A66C2),
+                                        ),
+                                      ),
+                                      onTap: () {},
+                                    ),
+                              user.twitterProfileURL.isEmpty
+                                  ? const SizedBox()
+                                  : InkWell(
+                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: IconComponent(
+                                          iconData: CustomIconData.twitter,
+                                          color: Color(0xFF1DA1F2),
+                                        ),
+                                      ),
+                                      onTap: () {},
+                                    ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                TextComponent(
-                  text: user.description,
-                  headerType: HeaderType.h6,
-                  textAlign: TextAlign.start,
+                Visibility(
+                  visible: user.description.isNotEmpty,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 10),
+                      TextComponent(
+                        text: user.description,
+                        headerType: HeaderType.h6,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
                 RichText(

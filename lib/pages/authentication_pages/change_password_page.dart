@@ -10,8 +10,8 @@ import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
@@ -30,7 +30,6 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   final _loginFormKey = GlobalKey<FormState>();
   bool _isLoading = false;
   UserModel? userModel;
-  UserService userService = UserService();
 
   @override
   void initState() {
@@ -41,6 +40,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
       appBarBackgroundColor: Colors.transparent,
       popScopeFunction: _isLoading ? () async => false : () async => true,
@@ -127,7 +127,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          _update();
+                          _update(userRepository);
                         },
                 ),
                 const SizedBox(height: 20),
@@ -140,17 +140,17 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
     );
   }
 
-  _update() {
+  _update(UserRepository userRepository) {
     if (_loginFormKey.currentState!.validate()) {
       userModel!.password = _passwordTextEditingController.text;
       setState(() {
         _isLoading = true;
       });
-      userService.updatePassword(userModel!).then((response) {
+      userRepository.updatePassword(userModel!).then((response) {
         setState(() {
           _isLoading = false;
         });
-        if (response) {
+        if (userRepository.isSucceeded) {
           AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.passwordUpdated), backgroundColor: success, icon: CustomIconData.circleCheck);
           Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
         } else {

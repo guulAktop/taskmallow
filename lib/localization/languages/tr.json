@@ -156,7 +156,7 @@
     "other": "Diğer",
     "other_category": "Diğer Kategori",
 
-    "to_do":"Yapılacak", 
-    "in_progress":"Devam ediyor", 
-    "done":"Tamamlandı"
+    "to_do":"To Do", 
+    "in_progress":"In Progress", 
+    "done":"Done"
 }

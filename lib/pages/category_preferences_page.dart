@@ -8,10 +8,9 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
@@ -23,23 +22,22 @@ class CategoryPreferencesPage extends ConsumerStatefulWidget {
 }
 
 class _CategoryPreferencesPageState extends ConsumerState<CategoryPreferencesPage> {
-  UserService userService = UserService();
   bool isLoading = false;
   List<String> selectedSubtitles = [];
-  UserModel? loggedUserModel;
 
   @override
   void initState() {
     super.initState();
+    UserRepository userRepository = ref.read(userProvider);
     selectedSubtitles = [];
-    loggedUserModel = ref.read(loggedUserProvider);
-    if (loggedUserModel != null) {
-      selectedSubtitles.addAll(loggedUserModel!.preferredCategories!);
+    if (userRepository.userModel != null) {
+      selectedSubtitles.addAll(userRepository.userModel!.preferredCategories);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     int? pageType = ModalRoute.of(context)!.settings.arguments as int?;
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.categories),
@@ -64,10 +62,10 @@ class _CategoryPreferencesPageState extends ConsumerState<CategoryPreferencesPag
                       setState(() {
                         isLoading = true;
                       });
-                      if (loggedUserModel != null) {
-                        await userService.updateUser(loggedUserModel!..preferredCategories = selectedSubtitles).then((value) {
-                          if (value) {
-                            loggedUserModel!.preferredCategories = selectedSubtitles;
+                      if (userRepository.userModel != null) {
+                        await userRepository.update(userRepository.userModel!..preferredCategories = selectedSubtitles).then((value) {
+                          if (userRepository.isSucceeded) {
+                            userRepository.userModel!.preferredCategories = selectedSubtitles;
                             if (pageType == 0) {
                               Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                             } else {
@@ -76,7 +74,7 @@ class _CategoryPreferencesPageState extends ConsumerState<CategoryPreferencesPag
                           }
                         });
                       } else {
-                        userService.logout(context);
+                        userRepository.logout(context);
                       }
                       setState(() {
                         isLoading = false;

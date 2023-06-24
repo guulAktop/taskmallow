@@ -9,6 +9,8 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
@@ -24,9 +26,6 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderStateMixin {
   bool isLoading = false;
 
-  List<String> selectedSubtitles = [];
-  UserModel user = users.first;
-
   @override
   void initState() {
     super.initState();
@@ -34,6 +33,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return SliverScaffoldWidget(
       title: getTranslated(context, AppKeys.profile),
       actionList: [
@@ -70,7 +70,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                       width: UIHelper.getDeviceWidth(context) / 4,
                       height: UIHelper.getDeviceWidth(context) / 4,
                       child: CircularPhotoComponent(
-                        url: user.profilePhotoURL,
+                        url: userRepository.userModel?.profilePhotoURL,
                         hasBorder: false,
                       ),
                     ),
@@ -82,7 +82,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                         children: [
                           MarqueeWidget(
                             child: TextComponent(
-                              text: "${user.firstName} ${user.lastName}",
+                              text: "${userRepository.userModel?.firstName} ${userRepository.userModel?.lastName}",
                               fontWeight: FontWeight.bold,
                               headerType: HeaderType.h4,
                               textAlign: TextAlign.start,
@@ -90,47 +90,59 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                           ),
                           MarqueeWidget(
                             child: TextComponent(
-                              text: user.email,
+                              text: userRepository.userModel!.email,
                               headerType: HeaderType.h7,
                               textAlign: TextAlign.start,
                             ),
                           ),
                           Row(
                             children: [
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: IconComponent(
-                                    iconData: CustomIconData.linkedin,
-                                    color: Color(0xFF0A66C2),
-                                  ),
-                                ),
-                                onTap: () {},
-                              ),
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: IconComponent(
-                                    iconData: CustomIconData.twitter,
-                                    color: Color(0xFF1DA1F2),
-                                  ),
-                                ),
-                                onTap: () {},
-                              ),
+                              userRepository.userModel!.linkedinProfileURL.isEmpty
+                                  ? const SizedBox()
+                                  : InkWell(
+                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: IconComponent(
+                                          iconData: CustomIconData.linkedin,
+                                          color: Color(0xFF0A66C2),
+                                        ),
+                                      ),
+                                      onTap: () {},
+                                    ),
+                              userRepository.userModel!.twitterProfileURL.isEmpty
+                                  ? const SizedBox()
+                                  : InkWell(
+                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: IconComponent(
+                                          iconData: CustomIconData.twitter,
+                                          color: Color(0xFF1DA1F2),
+                                        ),
+                                      ),
+                                      onTap: () {},
+                                    ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                TextComponent(
-                  text: user.description,
-                  headerType: HeaderType.h6,
-                  textAlign: TextAlign.start,
+                Visibility(
+                  visible: userRepository.userModel!.description.isNotEmpty,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 10),
+                      TextComponent(
+                        text: userRepository.userModel!.description,
+                        headerType: HeaderType.h6,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
                 RichText(
@@ -198,11 +210,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                     color: itemBackgroundLightColor,
                   ),
                   padding: const EdgeInsets.all(10),
-                  child: selectedSubtitles.isNotEmpty
+                  child: userRepository.userModel!.preferredCategories.isNotEmpty
                       ? Wrap(
                           spacing: 10,
                           runSpacing: 10,
-                          children: selectedSubtitles.map((item) => buildItemContainer(item)).toList()
+                          children: userRepository.userModel!.preferredCategories.map((item) => buildItemContainer(item)).toList()
                             ..add(
                               SizedBox(
                                 height: 30,
@@ -216,9 +228,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                                         Navigator.pushNamed(context, categoryPreferencesPageRoute);
                                       },
                                       child: Container(
-                                        padding: const EdgeInsets.all(5),
+                                        padding: const EdgeInsets.all(7),
                                         child: const IconComponent(
-                                          iconData: CustomIconData.plus,
+                                          iconData: CustomIconData.pen,
                                           color: textPrimaryLightColor,
                                         ),
                                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
@@ -8,18 +9,20 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
 import 'package:taskmallow/widgets/sliver_scaffold_widget.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMixin {
   bool isLoading = false;
 
   @override
@@ -29,10 +32,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return SliverScaffoldWidget(
       centerTitle: false,
       leadingWidth: 0,
-      title: "${getTranslated(context, AppKeys.hello)} ${projects[0].userWhoCreated.firstName}",
+      title: "${getTranslated(context, AppKeys.hello)} ${userRepository.userModel!.firstName}",
       actionList: [
         IconButton(
           onPressed: () {
@@ -48,7 +52,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Navigator.pushNamed(context, invitationsPageRoute);
           },
           icon: const IconComponent(
-            iconData: CustomIconData.envelopes,
+            iconData: CustomIconData.bell,
           ),
           splashRadius: AppConstants.iconSplashRadius,
         ),

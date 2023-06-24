@@ -10,8 +10,8 @@ import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
-import 'package:taskmallow/services/user_service.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class ForgotPasswordPage extends ConsumerStatefulWidget {
@@ -24,7 +24,6 @@ class ForgotPasswordPage extends ConsumerStatefulWidget {
 class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   final TextEditingController _emailTextEditingController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
-  UserService userService = UserService();
   bool _isLoading = false;
   String emailArg = "";
 
@@ -43,6 +42,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
         popScopeFunction: _isLoading ? () async => false : () async => true,
         appBarBackgroundColor: Colors.transparent,
@@ -95,7 +95,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              bool hasProfile = await userService.hasProfile(_emailTextEditingController.text);
+                              bool hasProfile = await userRepository.hasProfile(_emailTextEditingController.text);
                               debugPrint(_emailTextEditingController.text);
                               if (hasProfile) {
                                 ref.watch(verificationCodeProvider.notifier).state = AppFunctions().generateCode();
@@ -110,7 +110,13 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                                   });
                                   AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.codeSent),
                                       icon: CustomIconData.paperPlane, backgroundColor: infoDark);
-                                  ref.watch(verificationUserProvider.notifier).state = UserModel(email: _emailTextEditingController.text, password: "");
+                                  ref.watch(verificationUserProvider.notifier).state = UserModel(
+                                      email: _emailTextEditingController.text.trim().toLowerCase(),
+                                      firstName: "",
+                                      lastName: "",
+                                      description: "",
+                                      linkedinProfileURL: "",
+                                      twitterProfileURL: "");
                                   Navigator.pushNamed(context, verificationCodePageRoute, arguments: 1);
                                 });
                               } else {

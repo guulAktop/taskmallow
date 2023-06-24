@@ -1,33 +1,34 @@
 import 'dart:convert';
+import 'package:taskmallow/constants/image_constants.dart';
 
 class UserModel {
   String email;
   String? password;
-  String? firstName;
-  String? lastName;
-  String? description;
-  String? profilePhotoURL;
+  String firstName;
+  String lastName;
+  String description;
+  String profilePhotoURL;
   DateTime? dateOfBirth;
   int? gender;
-  String? linkedinProfileURL;
-  String? twitterProfileURL;
+  String linkedinProfileURL;
+  String twitterProfileURL;
   String? joinDate;
-  List<String>? preferredCategories;
+  List<String> preferredCategories;
   String? notificationToken;
 
   UserModel({
     required this.email,
     this.password,
-    this.firstName,
-    this.lastName,
-    this.description,
-    this.profilePhotoURL,
+    required this.firstName,
+    required this.lastName,
+    required this.description,
+    this.profilePhotoURL = ImageAssetKeys.defaultProfilePhotoUrl,
     this.dateOfBirth,
     this.gender,
-    this.linkedinProfileURL,
-    this.twitterProfileURL,
+    required this.linkedinProfileURL,
+    required this.twitterProfileURL,
     this.joinDate,
-    this.preferredCategories,
+    this.preferredCategories = const [],
     this.notificationToken,
   });
 
@@ -48,7 +49,7 @@ class UserModel {
       'linkedinProfileURL': linkedinProfileURL,
       'twitterProfileURL': twitterProfileURL,
       'joinDate': joinDate ?? DateTime.now().toString(),
-      'preferredCategories': preferredCategories?.toList() ?? [],
+      'preferredCategories': preferredCategories.toList(),
       'notificationToken': notificationToken,
     };
   }
@@ -57,14 +58,14 @@ class UserModel {
     return UserModel(
       email: map['email'] as String,
       password: map['password'] != null ? map['password'] as String : null,
-      firstName: map['firstName'] != null ? map['firstName'] as String : null,
-      lastName: map['lastName'] != null ? map['lastName'] as String : null,
-      description: map['description'] != null ? map['description'] as String : null,
-      profilePhotoURL: map['profilePhotoURL'] != null ? map['profilePhotoURL'] as String : null,
+      firstName: map['firstName'] as String,
+      lastName: map['lastName'] as String,
+      description: map['description'] as String,
+      profilePhotoURL: map['profilePhotoURL'] as String,
       dateOfBirth: map['dateOfBirth'] != null ? DateTime.fromMillisecondsSinceEpoch(map['dateOfBirth'] as int) : null,
       gender: map['gender'] != null ? map['gender'] as int : null,
-      linkedinProfileURL: map['linkedinProfileURL'] != null ? map['linkedinProfileURL'] as String : null,
-      twitterProfileURL: map['twitterProfileURL'] != null ? map['twitterProfileURL'] as String : null,
+      linkedinProfileURL: map['linkedinProfileURL'] as String,
+      twitterProfileURL: map['twitterProfileURL'] as String,
       joinDate: map['joinDate'] != null ? map['joinDate'] as String : null,
       preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<dynamic>)) : [],
       notificationToken: map['notificationToken'] != null ? map['notificationToken'] as String : null,
