@@ -25,7 +25,8 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
     return loggedUser;
   }
 
-  Future<void> getFuture(UserRepository userRepository) async {
+  Future<void> getFuture() async {
+    UserRepository userRepository = ref.read(userProvider);
     getFutureFromSP().then((loggedUserSP) {
       if (loggedUserSP != null && loggedUserSP.toString().isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,22 +36,24 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
               userRepository.getUser(userRepository.userModel!.email).whenComplete(() async {
                 String? token = await getToken();
                 debugPrint('user token: $token');
-                userRepository.updateNotificationToken(token ?? '');
-                userRepository.setLoggedUser();
-                userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
-                  if (mounted) {
-                    if (userRepository.userInfoIsFull) {
-                      if (userRepository.userModel!.preferredCategories.isEmpty) {
-                        Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                userRepository.updateNotificationToken(token ?? '').whenComplete(() {
+                  userRepository.setLoggedUser().whenComplete(() {
+                    userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
+                      if (mounted) {
+                        if (userRepository.userInfoIsFull) {
+                          if (userRepository.userModel!.preferredCategories.isEmpty) {
+                            Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                          }
+                          debugPrint("user info full");
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
+                          debugPrint("user info not full");
+                        }
                       }
-                      debugPrint("user info full");
-                    } else {
-                      Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
-                      debugPrint("user info not full");
-                    }
-                  }
+                    });
+                  });
                 });
               });
             } else {
@@ -80,10 +83,9 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    UserRepository userRepository = ref.watch(userProvider);
     return IgnorePointer(
       child: FutureBuilder(
-        future: getFuture(userRepository),
+        future: getFuture(),
         builder: (context, snapshot) {
           return WillPopScope(
             onWillPop: () async => false,
