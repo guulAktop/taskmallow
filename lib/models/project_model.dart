@@ -1,33 +1,60 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: unused_element, constant_identifier_names
 
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/utils/enum_utils.dart';
 
 class ProjectModel {
-  final String id;
-  final String name;
-  final Category category;
-  final String description;
-  final DateTime? createdDate;
-  final UserModel userWhoCreated;
-  final List<UserModel> collaborators;
-  final List<TaskModel> tasks;
-  final bool isDeleted;
+  String id;
+  String name;
+  Category category;
+  String description;
+  int? createdDate;
+  UserModel userWhoCreated;
+  List<UserModel> collaborators;
+  List<TaskModel> tasks;
+  bool isDeleted;
 
   ProjectModel({
-    required this.id,
+    this.id = "",
     required this.name,
     required this.category,
     required this.description,
     this.createdDate,
     required this.userWhoCreated,
-    required this.collaborators,
-    required this.tasks,
+    this.collaborators = const [],
+    this.tasks = const [],
     this.isDeleted = false,
   });
+
+  ProjectModel copyWith({
+    String? id,
+    String? name,
+    Category? category,
+    String? description,
+    int? createdDate,
+    UserModel? userWhoCreated,
+    List<UserModel>? collaborators,
+    List<TaskModel>? tasks,
+    bool? isDeleted,
+  }) {
+    return ProjectModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      createdDate: createdDate ?? this.createdDate,
+      userWhoCreated: userWhoCreated ?? this.userWhoCreated,
+      collaborators: collaborators ?? this.collaborators,
+      tasks: tasks ?? this.tasks,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -35,7 +62,7 @@ class ProjectModel {
       'name': name,
       'category': describeEnum(category),
       'description': description,
-      'createdDate': createdDate ?? DateTime.now().toString(),
+      'createdDate': createdDate ?? DateTime.now().millisecondsSinceEpoch,
       'userWhoCreated': userWhoCreated.toMap(),
       'collaborators': collaborators.map((x) => x.toMap()).toList(),
       'tasks': tasks.map((x) => x.toMap()).toList(),
@@ -49,15 +76,15 @@ class ProjectModel {
       name: map['name'] as String,
       category: (map['category'] as String).getEnumValue(Category.values) ?? Category.other_category,
       description: map['description'] as String,
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      createdDate: map['createdDate'] != null ? map['createdDate'] as int : null,
       userWhoCreated: UserModel.fromMap(map['userWhoCreated'] as Map<String, dynamic>),
       collaborators: List<UserModel>.from(
-        (map['collaborators'] as List<int>).map<UserModel>(
+        (map['collaborators'] as dynamic).map<UserModel>(
           (x) => UserModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
       tasks: List<TaskModel>.from(
-        (map['tasks'] as List<int>).map<TaskModel>(
+        (map['tasks'] as List<dynamic>).map<TaskModel>(
           (x) => TaskModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
@@ -69,7 +96,7 @@ class ProjectModel {
 
   factory ProjectModel.fromJson(String source) => ProjectModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static Category _getCategoryFromValue(String value) {
+  static Category getCategoryFromValue(String value) {
     switch (value) {
       case 'artificial_intelligence':
         return Category.artificial_intelligence;

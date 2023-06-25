@@ -5,6 +5,7 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class ProjectRowItem extends StatefulWidget {

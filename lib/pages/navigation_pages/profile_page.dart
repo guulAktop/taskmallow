@@ -5,11 +5,11 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -34,6 +34,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return SliverScaffoldWidget(
       title: getTranslated(context, AppKeys.profile),
       actionList: [
@@ -285,13 +286,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return ProjectGridItem(
-                  projectModel: projects[index],
+                  projectModel: projectRepository.allProjectsInvolved[index],
                   onTap: () {
-                    Navigator.pushNamed(context, projectDetailPageRoute, arguments: projects[index]);
+                    Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allProjectsInvolved[index]);
                   },
                 );
               },
-              childCount: projects.length,
+              childCount: projectRepository.allProjectsInvolved.length,
             ),
           ),
         ),

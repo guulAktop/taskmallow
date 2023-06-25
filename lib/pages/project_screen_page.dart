@@ -9,6 +9,7 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -141,6 +142,13 @@ class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProvid
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                TextComponent(
+                  text: projectModel != null ? getTranslated(context, projectModel!.category.name) : "",
+                  textAlign: TextAlign.end,
+                  fontWeight: FontWeight.bold,
+                  headerType: HeaderType.h8,
+                  color: primaryColor,
+                ),
                 TextComponent(
                   text: projectModel != null ? projectModel!.description : "",
                   textAlign: TextAlign.start,

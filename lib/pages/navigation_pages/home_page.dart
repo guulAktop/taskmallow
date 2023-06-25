@@ -5,11 +5,11 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
@@ -33,6 +33,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return SliverScaffoldWidget(
       centerTitle: false,
       leadingWidth: 0,
@@ -93,13 +94,21 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return ProjectGridItem(
-                  projectModel: projects[index],
+                  projectModel: projectRepository.allProjects[index],
                   onTap: () {
-                    Navigator.pushNamed(context, projectScreenPageRoute, arguments: projects[index]);
+                    ref.read(projectProvider).projectModel = projectRepository.allProjects[index];
+                    if (projectRepository.allProjects[index].collaborators
+                        .map((collaborator) => collaborator.email)
+                        .toList()
+                        .contains(userRepository.userModel!.email)) {
+                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allProjects[index]);
+                    } else {
+                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.allProjects[index]);
+                    }
                   },
                 );
               },
-              childCount: projects.length,
+              childCount: projectRepository.allProjects.length,
             ),
           ),
         ),

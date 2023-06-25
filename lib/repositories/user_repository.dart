@@ -83,6 +83,7 @@ class UserRepository extends ChangeNotifier {
       await getUser(user.email);
       user.joinDate = userModel?.joinDate;
       user.notificationToken = userModel?.notificationToken;
+      user.password = userModel?.password;
     } catch (e) {
       debugPrint(e.toString());
     }

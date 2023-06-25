@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -27,6 +27,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
 
   Future<void> getFuture() async {
     UserRepository userRepository = ref.read(userProvider);
+    ProjectRepository projectRepository = ref.read(projectProvider);
     getFutureFromSP().then((loggedUserSP) {
       if (loggedUserSP != null && loggedUserSP.toString().isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -39,19 +40,23 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                 userRepository.updateNotificationToken(token ?? '').whenComplete(() {
                   userRepository.setLoggedUser().whenComplete(() {
                     userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
-                      if (mounted) {
-                        if (userRepository.userInfoIsFull) {
-                          if (userRepository.userModel!.preferredCategories.isEmpty) {
-                            Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
-                          } else {
-                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                      projectRepository.getAllProjects().whenComplete(() {
+                        projectRepository.getAllProjectsInvolved(userRepository.userModel!).whenComplete(() {
+                          if (mounted) {
+                            if (userRepository.userInfoIsFull) {
+                              if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                              } else {
+                                Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                              }
+                              debugPrint("user info full");
+                            } else {
+                              Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
+                              debugPrint("user info not full");
+                            }
                           }
-                          debugPrint("user info full");
-                        } else {
-                          Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
-                          debugPrint("user info not full");
-                        }
-                      }
+                        });
+                      });
                     });
                   });
                 });
@@ -96,12 +101,9 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      color: primaryColor,
-                      child: Image.asset(
-                        ImageAssetKeys.launcherIcon,
-                        width: UIHelper.isDevicePortrait(context) ? UIHelper.getDeviceWidth(context) / 4 : UIHelper.getDeviceHeight(context) / 4,
-                      ),
+                    child: Image.asset(
+                      ImageAssetKeys.launcherIcon,
+                      width: UIHelper.isDevicePortrait(context) ? UIHelper.getDeviceWidth(context) / 4 : UIHelper.getDeviceHeight(context) / 4,
                     ),
                   ),
                 ),

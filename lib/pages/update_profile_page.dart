@@ -132,7 +132,7 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
 
                       UserModel user = userRepository.userModel!;
 
-                      userRepository.update(user).whenComplete(() {
+                      await userRepository.update(user).whenComplete(() {
                         debugPrint(userRepository.isSucceeded.toString());
                         if (userRepository.isSucceeded) {
                           if (arg == 1) {

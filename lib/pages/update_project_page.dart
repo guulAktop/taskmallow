@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
@@ -6,29 +7,29 @@ import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/project_model.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
 
-class UpdateProjectPage extends StatefulWidget {
+class UpdateProjectPage extends ConsumerStatefulWidget {
   const UpdateProjectPage({super.key});
 
   @override
-  State<UpdateProjectPage> createState() => _UpdateProjectPageState();
+  ConsumerState<UpdateProjectPage> createState() => _UpdateProjectPageState();
 }
 
-class _UpdateProjectPageState extends State<UpdateProjectPage> {
-  final _loginFormKey = GlobalKey<FormState>();
+class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
   bool isLoading = false;
-  String? selectedCategory;
-
-  List<DropdownMenuItem<String>> dropdownItems = [];
-  List<Widget> selectedDropdownItems = [];
+  String? _selectedCategory;
   ProjectModel? projectModel;
+  final TextEditingController _projectNameTextEditingController = TextEditingController();
+  final TextEditingController _projectDescriptionTextEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -40,9 +41,9 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
     super.didChangeDependencies();
     projectModel = getProjectModelFromArguments();
     if (projectModel != null) {
-      selectedCategory = projectModel!.category.name;
-      projectNameTextEditingController.text = projectModel!.name;
-      projectDescriptionTextEditingController.text = projectModel!.description;
+      _selectedCategory = projectModel!.category.name;
+      _projectNameTextEditingController.text = projectModel!.name;
+      _projectDescriptionTextEditingController.text = projectModel!.description;
     } else {
       Navigator.pop(context);
     }
@@ -56,9 +57,6 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
     }
     return null;
   }
-
-  TextEditingController projectNameTextEditingController = TextEditingController();
-  TextEditingController projectDescriptionTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +75,8 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
         selectedDropdownItems.add(getDropdownSelectedItem(getTranslated(context, subtitle)));
       }
     }
+
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
       title: getTranslated(context, AppKeys.updateProject),
@@ -91,94 +91,112 @@ class _UpdateProjectPageState extends State<UpdateProjectPage> {
         )
       ],
       widgetList: [
-        Form(
-          key: _loginFormKey,
-          child: Column(
-            children: [
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: projectNameTextEditingController,
-                textCapitalization: TextCapitalization.words,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.projectName),
-                keyboardType: TextInputType.text,
-                maxCharacter: 50,
-                validator: (text) {
-                  return null;
-                },
+        TextFormFieldComponent(
+          context: context,
+          textEditingController: _projectNameTextEditingController,
+          textCapitalization: TextCapitalization.words,
+          enabled: !isLoading,
+          textInputAction: TextInputAction.next,
+          hintText: getTranslated(context, AppKeys.projectName),
+          keyboardType: TextInputType.text,
+          maxCharacter: 50,
+          validator: (text) {
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: itemBackgroundLightColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: DropdownButton<String>(
+              value: _selectedCategory,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategory = newValue;
+                });
+              },
+              autofocus: true,
+              items: dropdownItems,
+              selectedItemBuilder: (context) {
+                return selectedDropdownItems;
+              },
+              underline: Container(),
+              iconEnabledColor: hintTextLightColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              isExpanded: true,
+              icon: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
               ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: itemBackgroundLightColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: DropdownButton<String>(
-                    value: selectedCategory,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCategory = newValue;
-                      });
-                    },
-                    autofocus: true,
-                    items: dropdownItems,
-                    selectedItemBuilder: (context) {
-                      return selectedDropdownItems;
-                    },
-                    underline: Container(),
-                    iconEnabledColor: hintTextLightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    isExpanded: true,
-                    icon: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
-                    ),
-                    hint: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextComponent(
-                          textAlign: TextAlign.center,
-                          text: getTranslated(context, AppKeys.category),
-                          color: hintTextLightColor,
-                        ),
-                      ),
-                    ),
+              hint: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextComponent(
+                    textAlign: TextAlign.center,
+                    text: getTranslated(context, AppKeys.category),
+                    color: hintTextLightColor,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: projectDescriptionTextEditingController,
-                textCapitalization: TextCapitalization.sentences,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.description),
-                keyboardType: TextInputType.text,
-                maxLines: 5,
-                validator: (text) {
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              ButtonComponent(
-                text: getTranslated(context, AppKeys.update),
-                onPressed: () {
-                  AppFunctions().showSnackbar(context, selectedCategory.toString());
-                },
-                isWide: true,
-                color: warningDark,
-              ),
-            ],
+            ),
           ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: TextFormFieldComponent(
+            context: context,
+            textEditingController: _projectDescriptionTextEditingController,
+            textCapitalization: TextCapitalization.sentences,
+            enabled: !isLoading,
+            textInputAction: TextInputAction.newline,
+            hintText: getTranslated(context, AppKeys.description),
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            validator: (text) {
+              return null;
+            },
+          ),
+        ),
+        const SizedBox(height: 10),
+        ButtonComponent(
+          text: getTranslated(context, AppKeys.update),
+          onPressed: () {
+            bool value = _checkInformations();
+            if (value && projectModel != null) {
+              projectModel!.name = _projectNameTextEditingController.text.trim();
+              projectModel!.description = _projectDescriptionTextEditingController.text.trim();
+              projectModel!.category = ProjectModel.getCategoryFromValue(_selectedCategory!);
+              projectRepository.update(projectModel!).whenComplete(() {
+                Navigator.pop(context);
+              });
+            }
+          },
+          isWide: true,
+          color: warningDark,
         ),
       ],
     );
+  }
+
+  bool _checkInformations() {
+    if (_projectNameTextEditingController.text.trim().isEmpty) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterProjectName), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else if (_selectedCategory == null) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.selectCategory), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else if (_projectDescriptionTextEditingController.text.trim().isEmpty) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterDescription), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else {
+      return true;
+    }
   }
 
   DropdownMenuItem<String> getDropdownItem(String label, String value,
