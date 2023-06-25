@@ -15,6 +15,7 @@ class UserRepository extends ChangeNotifier {
   UserModel? userModel;
   bool isSucceeded = false;
   bool userInfoIsFull = false;
+  List<UserModel> allUsers = [];
 
   Future<void> register(UserModel model) async {
     isSucceeded = false;
@@ -65,6 +66,20 @@ class UserRepository extends ChangeNotifier {
   void logout(BuildContext context) {
     SharedPreferencesHelper.remove("loggedUser");
     Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
+  }
+
+  Future<void> getAllUsers() async {
+    try {
+      allUsers.clear();
+      final QuerySnapshot querySnapshot = await users.get();
+      allUsers = querySnapshot.docs.map((doc) {
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return UserModel.fromMap(data);
+      }).toList();
+      notifyListeners();
+    } catch (error) {
+      debugPrint("Projeler çekilirken bir hata oluştu!");
+    }
   }
 
   Future<void> setLoggedUser() async {

@@ -51,6 +51,21 @@ class ProjectRepository extends ChangeNotifier {
     }
   }
 
+  Future<void> delete(ProjectModel project) async {
+    isSucceeded = false;
+    final DocumentReference snapshot = projects.doc(project.id);
+    await snapshot.delete().then((value) {
+      allProjects.removeWhere((element) => element.id == project.id);
+      allProjectsInvolved.removeWhere((element) => element.id == project.id);
+      debugPrint("Project successfully deleted.");
+      isSucceeded = true;
+    }).catchError((error) {
+      debugPrint("An error occurred while deleting the project!");
+      isSucceeded = false;
+    });
+    notifyListeners();
+  }
+
   Future<void> getAllProjects() async {
     try {
       allProjects.clear();
