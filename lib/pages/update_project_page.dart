@@ -87,7 +87,14 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
       ),
       actionList: [
         PopupMenuWidget(
-          menuList: generatePopup(),
+          menuList: generatePopup(() {
+            if (projectModel != null) {
+              projectRepository.delete(projectModel!).whenComplete(() {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              });
+            }
+          }),
         )
       ],
       widgetList: [
@@ -230,7 +237,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
     );
   }
 
-  List<List<PopupMenuWidgetItem>> generatePopup() {
+  List<List<PopupMenuWidgetItem>> generatePopup(Function function) {
     List<List<PopupMenuWidgetItem>> popupMenuList = [];
     popupMenuList.add(
       [
@@ -238,7 +245,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
           title: getTranslated(context, AppKeys.deleteProject),
           prefixIcon: CustomIconData.trashCan,
           color: dangerDark,
-          function: () {},
+          function: function,
         ),
       ],
     );

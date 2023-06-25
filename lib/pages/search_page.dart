@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_row_item.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  ConsumerState<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends ConsumerState<SearchPage> {
   bool isLoading = false;
   final TextEditingController _searchTextEditingController = TextEditingController();
 
@@ -52,7 +53,9 @@ class _SearchPageState extends State<SearchPage> {
                 if (text.isEmpty) {
                   filteredUsers.clear();
                 } else {
-                  filteredUsers = users
+                  filteredUsers = ref
+                      .watch(userProvider)
+                      .allUsers
                       .where((user) =>
                           user.firstName.toLowerCase().contains(text.toLowerCase()) ||
                           user.lastName.toLowerCase().contains(text.toLowerCase()) ||
@@ -60,7 +63,9 @@ class _SearchPageState extends State<SearchPage> {
                           ("${user.firstName} ${user.lastName}").toLowerCase().contains(text.toLowerCase()))
                       .toList();
 
-                  filteredProjects = projects
+                  filteredProjects = ref
+                      .watch(projectProvider)
+                      .allProjects
                       .where((project) =>
                           project.name.toLowerCase().contains(text.toLowerCase()) ||
                           project.description.toLowerCase().contains(text.toLowerCase()) ||
