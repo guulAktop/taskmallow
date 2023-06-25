@@ -1,11 +1,11 @@
-import 'package:taskmallow/constants/category_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
+import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 
 List<ProjectModel> projects = [
   ProjectModel(
     name: "Project 1",
-    category: Categories.mobile_applications,
+    category: Category.mobile_applications,
     description:
         "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
     userWhoCreated: UserModel(
@@ -22,7 +22,7 @@ List<ProjectModel> projects = [
   ),
   ProjectModel(
     name: "Project 2",
-    category: Categories.data_analytics,
+    category: Category.data_analytics,
     description:
         "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
     userWhoCreated: UserModel(
@@ -39,7 +39,7 @@ List<ProjectModel> projects = [
   ),
   ProjectModel(
     name: "Project 3",
-    category: Categories.renewable_energy_sources,
+    category: Category.renewable_energy_sources,
     description:
         "TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulamadır. Projelerinizi yönetmek, görevleri takip etmek, yaratıcı fikirler geliştirmek ve eşleşme özelliğiyle en uygun görevleri bulmak için tasarlanmıştır.",
     userWhoCreated: UserModel(
@@ -180,23 +180,23 @@ class TaskModel {
   });
 }
 
-class ProjectModel {
-  String name;
-  String description;
-  Categories category;
-  UserModel userWhoCreated;
-  List<TaskModel> tasks;
-  List<UserModel> collaborators;
+// class ProjectModel {
+//   String name;
+//   String description;
+//   Categories category;
+//   UserModel userWhoCreated;
+//   List<TaskModel> tasks;
+//   List<UserModel> collaborators;
 
-  ProjectModel({
-    required this.name,
-    required this.description,
-    required this.category,
-    required this.userWhoCreated,
-    required this.tasks,
-    required this.collaborators,
-  });
-}
+//   ProjectModel({
+//     required this.name,
+//     required this.description,
+//     required this.category,
+//     required this.userWhoCreated,
+//     required this.tasks,
+//     required this.collaborators,
+//   });
+// }
 
 class InvitationModel {
   String id;

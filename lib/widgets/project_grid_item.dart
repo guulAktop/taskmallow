@@ -4,6 +4,7 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
+import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class ProjectGridItem extends StatefulWidget {

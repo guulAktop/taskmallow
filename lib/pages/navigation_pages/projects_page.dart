@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/project_row_item.dart';
 
-class ProjectsPage extends StatefulWidget {
+class ProjectsPage extends ConsumerStatefulWidget {
   const ProjectsPage({super.key});
 
   @override
-  State<ProjectsPage> createState() => _ProjectsPageState();
+  ConsumerState<ProjectsPage> createState() => _ProjectsPageState();
 }
 
-class _ProjectsPageState extends State<ProjectsPage> {
+class _ProjectsPageState extends ConsumerState<ProjectsPage> {
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.projects),
       actionList: [
@@ -39,10 +42,11 @@ class _ProjectsPageState extends State<ProjectsPage> {
           Navigator.pushNamed(context, createProjectPageRoute);
         },
       ),
-      widgetList: projects
+      widgetList: projectRepository.allProjectsInvolved
           .map((project) => ProjectRowItem(
                 project: project,
                 onTap: () {
+                  ref.read(projectProvider).projectModel = project;
                   Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
                 },
               ))

@@ -123,6 +123,9 @@ class AppKeys {
   static String aysForCancel = 'ays_for_cancel';
   static String checkCode = 'check_code';
   static String enterCode = 'enter_code';
+  static String enterProjectName = 'enter_project_name';
+  static String enterDescription = 'enter_description';
+  static String selectCategory = 'select_category';
 }
 
 class CategoryKeys {

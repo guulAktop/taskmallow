@@ -115,6 +115,9 @@
     "something_went_wrong": "Something went wrong!",
     "account_has_been_deleted":"Your account has been successfully deleted.",
     "you_must_select_category":"You must select at least one category!",
+    "enter_project_name":"Please enter project name.",
+    "enter_description":"Please enter a description.",
+    "select_category":"Please select a category.",
 
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
