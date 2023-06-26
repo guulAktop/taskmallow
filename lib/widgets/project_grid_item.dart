@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
@@ -65,11 +64,15 @@ class _ProjectGridItemState extends State<ProjectGridItem> {
                       color: widget.indicatorForegroundColor,
                       strokeWidth: 15,
                       backgroundColor: widget.indicatorBackgroundColor,
-                      value: (tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length).toDouble(),
+                      value: widget.projectModel.tasks.isNotEmpty
+                          ? (widget.projectModel.tasks.where((task) => task.situation == TaskSituation.done).length / widget.projectModel.tasks.length)
+                              .toDouble()
+                          : 0,
                     ),
                   ),
                   TextComponent(
-                    text: "${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}%",
+                    text:
+                        "${widget.projectModel.tasks.isNotEmpty ? (widget.projectModel.tasks.where((task) => task.situation == TaskSituation.done).length / widget.projectModel.tasks.length * 100).toStringAsFixed(0) : 0}%",
                     headerType: HeaderType.h6,
                   )
                 ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
@@ -51,7 +50,7 @@ class _ProjectRowItemState extends State<ProjectRowItem> {
             MarqueeWidget(
               child: TextComponent(
                 text:
-                    "${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                    "${widget.project.tasks.isNotEmpty ? (widget.project.tasks.where((task) => task.situation == TaskSituation.done).length / widget.project.tasks.length * 100).toStringAsFixed(0) : 0}% ${getTranslated(context, AppKeys.completed)}",
                 textAlign: TextAlign.start,
                 overflow: TextOverflow.fade,
                 softWrap: true,
@@ -62,7 +61,9 @@ class _ProjectRowItemState extends State<ProjectRowItem> {
               borderRadius: const BorderRadius.all(Radius.circular(50)),
               child: LinearProgressIndicator(
                 minHeight: 20,
-                value: (tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length).toDouble(),
+                value: widget.project.tasks.isNotEmpty
+                    ? (widget.project.tasks.where((task) => task.situation == TaskSituation.done).length / widget.project.tasks.length).toDouble()
+                    : 0,
               ),
             ),
             const SizedBox(height: 10),

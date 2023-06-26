@@ -42,20 +42,22 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                     userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
                       userRepository.getAllUsers().whenComplete(() {
                         projectRepository.getAllProjects().whenComplete(() {
-                          projectRepository.getAllProjectsInvolved(userRepository.userModel!).whenComplete(() {
-                            if (mounted) {
-                              if (userRepository.userInfoIsFull) {
-                                if (userRepository.userModel!.preferredCategories.isEmpty) {
-                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                          projectRepository.getAllPreferredProjects(userRepository.userModel!).whenComplete(() {
+                            projectRepository.getAllProjectsInvolved(userRepository.userModel!).whenComplete(() {
+                              if (mounted) {
+                                if (userRepository.userInfoIsFull) {
+                                  if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                    Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                                  } else {
+                                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  }
+                                  debugPrint("user info full");
                                 } else {
-                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
+                                  debugPrint("user info not full");
                                 }
-                                debugPrint("user info full");
-                              } else {
-                                Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
-                                debugPrint("user info not full");
                               }
-                            }
+                            });
                           });
                         });
                       });

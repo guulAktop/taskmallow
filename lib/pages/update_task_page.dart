@@ -48,7 +48,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       selectedSituation = taskModel!.situation.name;
       projectNameTextEditingController.text = taskModel!.name;
       projectDescriptionTextEditingController.text = taskModel!.description;
-      selectedUser = users.where((element) => element.email == taskModel!.assignedUserMail).first;
     } else {
       Navigator.pop(context);
     }

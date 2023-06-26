@@ -252,7 +252,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
                       child: Text(getTranslated(context, AppKeys.yes)),
                       onPressed: () {
                         if (projectModel != null) {
-                          projectRepository.delete(projectModel!).whenComplete(() {
+                          projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
                             Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                           });
                         }
