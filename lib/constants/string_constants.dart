@@ -126,6 +126,7 @@ class AppKeys {
   static String enterProjectName = 'enter_project_name';
   static String enterDescription = 'enter_description';
   static String selectCategory = 'select_category';
+  static String aysDeleteProject = 'ays_delete_project';
 }
 
 class CategoryKeys {
