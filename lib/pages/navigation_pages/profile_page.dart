@@ -262,15 +262,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
           ),
         ),
         SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-            child: TextComponent(
-              text: getTranslated(context, AppKeys.projects),
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.bold,
-              overflow: TextOverflow.fade,
-              headerType: HeaderType.h6,
-              softWrap: true,
+          child: Visibility(
+            visible: projectRepository.allProjectsInvolved.isNotEmpty,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+              child: TextComponent(
+                text: getTranslated(context, AppKeys.projects),
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+                headerType: HeaderType.h6,
+                softWrap: true,
+              ),
             ),
           ),
         ),

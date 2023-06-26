@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
@@ -42,15 +44,28 @@ class _ProjectsPageState extends ConsumerState<ProjectsPage> {
           Navigator.pushNamed(context, createProjectPageRoute);
         },
       ),
-      widgetList: projectRepository.allProjectsInvolved
-          .map((project) => ProjectRowItem(
-                project: project,
-                onTap: () {
-                  ref.read(projectProvider).projectModel = project;
-                  Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
-                },
-              ))
-          .toList(),
+      widgetList: projectRepository.allProjectsInvolved.isNotEmpty
+          ? projectRepository.allProjectsInvolved
+              .map((project) => ProjectRowItem(
+                    project: project,
+                    onTap: () {
+                      ref.read(projectProvider).projectModel = project;
+                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
+                    },
+                  ))
+              .toList()
+          : [
+              Expanded(
+                child: Center(
+                  child: SizedBox(
+                    width: UIHelper.getDeviceWidth(context) / 3,
+                    child: Image.asset(
+                      ImageAssetKeys.emptyFolder,
+                    ),
+                  ),
+                ),
+              ),
+            ],
     );
   }
 }

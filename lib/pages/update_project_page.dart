@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
@@ -13,6 +14,7 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
+import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -87,14 +89,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
       ),
       actionList: [
         PopupMenuWidget(
-          menuList: generatePopup(() {
-            if (projectModel != null) {
-              projectRepository.delete(projectModel!).whenComplete(() {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              });
-            }
-          }),
+          menuList: generatePopup(projectRepository),
         )
       ],
       widgetList: [
@@ -237,7 +232,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
     );
   }
 
-  List<List<PopupMenuWidgetItem>> generatePopup(Function function) {
+  List<List<PopupMenuWidgetItem>> generatePopup(ProjectRepository projectRepository) {
     List<List<PopupMenuWidgetItem>> popupMenuList = [];
     popupMenuList.add(
       [
@@ -245,7 +240,35 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
           title: getTranslated(context, AppKeys.deleteProject),
           prefixIcon: CustomIconData.trashCan,
           color: dangerDark,
-          function: function,
+          function: () {
+            Future.delayed(
+              const Duration(seconds: 0),
+              () => showDialog(
+                context: context,
+                builder: (BuildContext context) => CupertinoAlertDialog(
+                  content: TextComponent(text: getTranslated(context, AppKeys.aysDeleteProject), textAlign: TextAlign.start, headerType: HeaderType.h5),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text(getTranslated(context, AppKeys.yes)),
+                      onPressed: () {
+                        if (projectModel != null) {
+                          projectRepository.delete(projectModel!).whenComplete(() {
+                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                          });
+                        }
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(getTranslated(context, AppKeys.no)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ],
     );

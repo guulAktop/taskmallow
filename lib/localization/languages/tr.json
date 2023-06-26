@@ -118,6 +118,7 @@
     "enter_project_name":"Lütfen proje adını girin.",
     "enter_description":"Lütfen bir açıklama girin.",
     "select_category":"Lütfen bir kategori seçin.",
+    "ays_delete_project":"Projeyi silmek istediğinizden emin misiniz?",
 
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",
