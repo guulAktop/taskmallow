@@ -9,8 +9,8 @@ class TaskModel {
   final String projectId;
   final String name;
   final String description;
-  final TaskSituation situation;
-  final String assignedUserMail;
+  late final TaskSituation situation;
+  late final String assignedUserMail;
   final DateTime? createdDate;
   final bool isDeleted;
 

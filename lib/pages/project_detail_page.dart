@@ -8,9 +8,9 @@ import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
-import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
+import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
@@ -365,7 +365,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
             Row(
               children: [
                 TextComponent(
-                  text: taskModel.taskId,
+                  text: taskModel.id,
                   color: primaryColor,
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.bold,
@@ -404,7 +404,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                   height: 40,
                   width: 40,
                   child: CircularPhotoComponent(
-                      url: users.where((element) => element.email == taskModel.collaboratorMail).first.profilePhotoURL, hasBorder: false),
+                      url: users.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL, hasBorder: false),
                 ),
               ],
             ),

@@ -1,5 +1,5 @@
-import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/models/project_model.dart';
+import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 
 List<ProjectModel> projects = [
@@ -106,46 +106,52 @@ List<UserModel> users = [
 
 List<TaskModel> tasks = [
   TaskModel(
-    taskId: "T1",
+    id: "T1",
+    projectId: "12345",
     name: "LoginPage UI tasarımı kodlanacak.",
     description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
     situation: TaskSituation.to_do,
-    collaboratorMail: "enescerrahoglu1@gmail.com",
+    assignedUserMail: "enescerrahoglu1@gmail.com",
   ),
   TaskModel(
-    taskId: "T2",
-    name: "RegisterPage UI tasarımı kodlanacak.",
-    description: "RegisterPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
+    id: "T2",
+    projectId: "12345",
+    name: "LoginPage UI tasarımı kodlanacak.",
+    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
     situation: TaskSituation.to_do,
-    collaboratorMail: "gul.aktopp@gmail.com",
+    assignedUserMail: "enescerrahoglu1@gmail.com",
   ),
   TaskModel(
-    taskId: "T3",
-    name: "HomePage UI tasarımı kodlanacak.",
-    description: "HomePage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.done,
-    collaboratorMail: "ozdamarsevval.01@gmail.com",
-  ),
-  TaskModel(
-    taskId: "T4",
-    name: "SettingsPage UI tasarımı kodlanacak.",
-    description: "SettingsPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.done,
-    collaboratorMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    taskId: "T5",
-    name: "ProfilePage UI tasarımı kodlanacak.",
-    description: "ProfilePage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
+    id: "T3",
+    projectId: "12345",
+    name: "LoginPage UI tasarımı kodlanacak.",
+    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
     situation: TaskSituation.to_do,
-    collaboratorMail: "msalihgirgin@gmail.com",
+    assignedUserMail: "enescerrahoglu1@gmail.com",
   ),
   TaskModel(
-    taskId: "T6",
-    name: "ProjectsPage UI tasarımı kodlanacak.",
-    description: "ProjectsPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.in_progress,
-    collaboratorMail: "izzetjmy@gmail.com",
+    id: "T4",
+    projectId: "12345",
+    name: "LoginPage UI tasarımı kodlanacak.",
+    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
+    situation: TaskSituation.to_do,
+    assignedUserMail: "enescerrahoglu1@gmail.com",
+  ),
+  TaskModel(
+    id: "T5",
+    projectId: "12345",
+    name: "LoginPage UI tasarımı kodlanacak.",
+    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
+    situation: TaskSituation.to_do,
+    assignedUserMail: "enescerrahoglu1@gmail.com",
+  ),
+  TaskModel(
+    id: "T6",
+    projectId: "12345",
+    name: "LoginPage UI tasarımı kodlanacak.",
+    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
+    situation: TaskSituation.to_do,
+    assignedUserMail: "enescerrahoglu1@gmail.com",
   ),
 ];
 
@@ -164,21 +170,21 @@ List<TaskModel> tasks = [
 //   });
 // }
 
-class TaskModel {
-  String taskId;
-  String name;
-  String description;
-  TaskSituation situation;
-  String collaboratorMail;
+// class TaskModel {
+//   String taskId;
+//   String name;
+//   String description;
+//   TaskSituation situation;
+//   String collaboratorMail;
 
-  TaskModel({
-    required this.taskId,
-    required this.name,
-    required this.description,
-    required this.situation,
-    required this.collaboratorMail,
-  });
-}
+//   TaskModel({
+//     required this.taskId,
+//     required this.name,
+//     required this.description,
+//     required this.situation,
+//     required this.collaboratorMail,
+//   });
+// }
 
 // class ProjectModel {
 //   String name;

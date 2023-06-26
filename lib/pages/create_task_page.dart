@@ -5,9 +5,9 @@ import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
-import 'package:taskmallow/constants/task_situations_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class CreateTaskPage extends StatefulWidget {
