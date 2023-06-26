@@ -1,5 +1,4 @@
 import 'package:taskmallow/models/project_model.dart';
-import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 
 List<ProjectModel> projects = [
@@ -103,106 +102,6 @@ List<UserModel> users = [
       profilePhotoURL:
           "https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/team%2Fsalih.jpg?alt=media&token=7034fffb-51e0-4dac-9f00-498d9939be4a"),
 ];
-
-List<TaskModel> tasks = [
-  TaskModel(
-    id: "T1",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    id: "T2",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    id: "T3",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    id: "T4",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    id: "T5",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-  TaskModel(
-    id: "T6",
-    projectId: "12345",
-    name: "LoginPage UI tasarımı kodlanacak.",
-    description: "LoginPage UI tasarımı Figma'da yer alan tasarıma uygun şekilde kodlanacak.",
-    situation: TaskSituation.to_do,
-    assignedUserMail: "enescerrahoglu1@gmail.com",
-  ),
-];
-
-// class UserModel {
-//   String email;
-//   String firstName;
-//   String lastName;
-//   String profilePhotoURL;
-//   String description;
-//   UserModel({
-//     required this.email,
-//     required this.firstName,
-//     required this.lastName,
-//     required this.profilePhotoURL,
-//     required this.description,
-//   });
-// }
-
-// class TaskModel {
-//   String taskId;
-//   String name;
-//   String description;
-//   TaskSituation situation;
-//   String collaboratorMail;
-
-//   TaskModel({
-//     required this.taskId,
-//     required this.name,
-//     required this.description,
-//     required this.situation,
-//     required this.collaboratorMail,
-//   });
-// }
-
-// class ProjectModel {
-//   String name;
-//   String description;
-//   Categories category;
-//   UserModel userWhoCreated;
-//   List<TaskModel> tasks;
-//   List<UserModel> collaborators;
-
-//   ProjectModel({
-//     required this.name,
-//     required this.description,
-//     required this.category,
-//     required this.userWhoCreated,
-//     required this.tasks,
-//     required this.collaborators,
-//   });
-// }
 
 class InvitationModel {
   String id;

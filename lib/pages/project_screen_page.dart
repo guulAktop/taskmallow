@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -10,18 +11,20 @@ import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
 
-class ProjectScreenPage extends StatefulWidget {
+class ProjectScreenPage extends ConsumerStatefulWidget {
   const ProjectScreenPage({super.key});
 
   @override
-  State<ProjectScreenPage> createState() => _ProjectScreenPageState();
+  ConsumerState<ProjectScreenPage> createState() => _ProjectScreenPageState();
 }
 
-class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProviderStateMixin {
+class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with TickerProviderStateMixin {
   bool isLoading = false;
 
   bool isExpanded = false;
@@ -96,6 +99,7 @@ class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return BaseScaffoldWidget(
       title: projectModel != null ? projectModel!.name : "",
       leadingWidget: IconButton(
@@ -171,7 +175,7 @@ class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProvid
                 MarqueeWidget(
                   child: TextComponent(
                     text:
-                        "${(tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                        "${projectRepository.projectModel!.tasks.isNotEmpty ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / projectRepository.projectModel!.tasks.length * 100).toStringAsFixed(0) : 0}% ${getTranslated(context, AppKeys.completed)}",
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.fade,
                     softWrap: true,
@@ -182,7 +186,11 @@ class _ProjectScreenPageState extends State<ProjectScreenPage> with TickerProvid
                   borderRadius: const BorderRadius.all(Radius.circular(50)),
                   child: LinearProgressIndicator(
                     minHeight: 20,
-                    value: (tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length).toDouble(),
+                    value: projectRepository.projectModel!.tasks.isNotEmpty
+                        ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length /
+                                projectRepository.projectModel!.tasks.length)
+                            .toDouble()
+                        : 0,
                   ),
                 ),
               ],

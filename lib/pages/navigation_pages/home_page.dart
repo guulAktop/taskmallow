@@ -94,21 +94,21 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return ProjectGridItem(
-                  projectModel: projectRepository.allProjects[index],
+                  projectModel: projectRepository.allPreferredProjects[index],
                   onTap: () {
-                    ref.read(projectProvider).projectModel = projectRepository.allProjects[index];
-                    if (projectRepository.allProjects[index].collaborators
+                    ref.read(projectProvider).projectModel = projectRepository.allPreferredProjects[index];
+                    if (projectRepository.allPreferredProjects[index].collaborators
                         .map((collaborator) => collaborator.email)
                         .toList()
                         .contains(userRepository.userModel!.email)) {
-                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allProjects[index]);
+                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allPreferredProjects[index]);
                     } else {
-                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.allProjects[index]);
+                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.allPreferredProjects[index]);
                     }
                   },
                 );
               },
-              childCount: projectRepository.allProjects.length,
+              childCount: projectRepository.allPreferredProjects.length,
             ),
           ),
         ),

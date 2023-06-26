@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmallow/models/project_model.dart';
+import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 
 class ProjectRepository extends ChangeNotifier {
@@ -9,6 +10,7 @@ class ProjectRepository extends ChangeNotifier {
   ProjectModel? projectModel;
   List<ProjectModel> allProjects = [];
   List<ProjectModel> allProjectsInvolved = [];
+  List<ProjectModel> allPreferredProjects = [];
   bool isSucceeded = false;
   bool isLoading = true;
 
@@ -37,11 +39,19 @@ class ProjectRepository extends ChangeNotifier {
       final String projectId = project.id;
       await projects.doc(projectId).update(project.toMap());
       projectModel = project;
-      allProjects.removeWhere((element) => element.id == project.id);
-      allProjects.add(project);
-      allProjectsInvolved.removeWhere((element) => element.id == project.id);
-      allProjectsInvolved.add(project);
-      allProjectsInvolved.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+      if (project.isDeleted) {
+        allProjects.removeWhere((element) => element.id == project.id);
+        allProjectsInvolved.removeWhere((element) => element.id == project.id);
+        allPreferredProjects.removeWhere((element) => element.id == project.id);
+      } else {
+        allProjects.removeWhere((element) => element.id == project.id);
+        allProjectsInvolved.removeWhere((element) => element.id == project.id);
+        allPreferredProjects.removeWhere((element) => element.id == project.id);
+        allProjects.add(project);
+        allPreferredProjects.add(project);
+        allProjectsInvolved.add(project);
+        allProjectsInvolved.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+      }
       debugPrint('Proje başarıyla güncellendi. Belge Kimliği: $projectId');
       isSucceeded = true;
       notifyListeners();
@@ -70,10 +80,43 @@ class ProjectRepository extends ChangeNotifier {
     try {
       allProjects.clear();
       final QuerySnapshot querySnapshot = await projects.get();
-      allProjects = querySnapshot.docs.map((doc) {
-        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return ProjectModel.fromMap(data);
-      }).toList();
+      allProjects = querySnapshot.docs
+          .map((doc) {
+            final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            final ProjectModel project = ProjectModel.fromMap(data);
+            if (!project.isDeleted) {
+              return ProjectModel.fromMap(data);
+            }
+          })
+          .whereType<ProjectModel>()
+          .toList();
+      notifyListeners();
+    } catch (error) {
+      debugPrint("Projeler çekilirken bir hata oluştu!");
+    }
+  }
+
+  Future<void> getAllPreferredProjects(UserModel userModel) async {
+    try {
+      allPreferredProjects.clear();
+      final QuerySnapshot querySnapshot = await projects.get();
+      final List<ProjectModel> preferredProjects = querySnapshot.docs
+          .map((doc) {
+            final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            final ProjectModel project = ProjectModel.fromMap(data);
+            if (!project.isDeleted) {
+              return ProjectModel.fromMap(data);
+            }
+          })
+          .whereType<ProjectModel>()
+          .toList();
+
+      final List<String> preferredCategories = userModel.preferredCategories;
+      for (final ProjectModel project in preferredProjects) {
+        if (preferredCategories.contains(project.category.name)) {
+          allPreferredProjects.add(project);
+        }
+      }
       notifyListeners();
     } catch (error) {
       debugPrint("Projeler çekilirken bir hata oluştu!");
@@ -134,5 +177,28 @@ class ProjectRepository extends ChangeNotifier {
       debugPrint(error.toString());
     }
     return currentCollaborators;
+  }
+
+  Future<void> addTask(TaskModel task) async {
+    isSucceeded = false;
+    try {
+      if (projectModel != null) {
+        projectModel!.tasks.add(task);
+        await projects.doc(projectModel!.id).update(projectModel!.toMap());
+        allProjects.removeWhere((element) => element.id == projectModel!.id);
+        allProjects.add(projectModel!);
+        allProjectsInvolved.removeWhere((element) => element.id == projectModel!.id);
+        allProjectsInvolved.add(projectModel!);
+        allProjectsInvolved.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+        debugPrint('Task başarıyla eklendi. Belge Kimliği: ${projectModel!.id}');
+        isSucceeded = true;
+        notifyListeners();
+      }
+    } catch (error) {
+      projectModel!.tasks.removeWhere((element) => element.id == task.id);
+      notifyListeners();
+      debugPrint('Task eklenirken hata oluştu: $error');
+      isSucceeded = false;
+    }
   }
 }

@@ -6,7 +6,7 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
+import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
@@ -181,7 +181,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                       MarqueeWidget(
                         child: TextComponent(
                           text:
-                              "${(projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                              "${projectRepository.projectModel!.tasks.isNotEmpty ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / projectRepository.projectModel!.tasks.length * 100).toStringAsFixed(0) : 0}% ${getTranslated(context, AppKeys.completed)}",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.fade,
                           softWrap: true,
@@ -192,7 +192,11 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                         borderRadius: const BorderRadius.all(Radius.circular(50)),
                         child: LinearProgressIndicator(
                           minHeight: 20,
-                          value: (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / tasks.length).toDouble(),
+                          value: projectRepository.projectModel!.tasks.isNotEmpty
+                              ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length /
+                                      projectRepository.projectModel!.tasks.length)
+                                  .toDouble()
+                              : 0,
                         ),
                       ),
                     ],
@@ -319,21 +323,30 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                         return Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
-                            children: tasks.where((element) => element.situation == TaskSituation.to_do).map((e) => getTaskRow(e)).toList(),
+                            children: projectRepository.projectModel!.tasks
+                                .where((element) => element.situation == TaskSituation.to_do)
+                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                .toList(),
                           ),
                         );
                       } else if (_selectedTab == 1) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
-                            children: tasks.where((element) => element.situation == TaskSituation.in_progress).map((e) => getTaskRow(e)).toList(),
+                            children: projectRepository.projectModel!.tasks
+                                .where((element) => element.situation == TaskSituation.in_progress)
+                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                .toList(),
                           ),
                         );
                       } else {
                         return Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
-                            children: tasks.where((element) => element.situation == TaskSituation.done).map((e) => getTaskRow(e)).toList(),
+                            children: projectRepository.projectModel!.tasks
+                                .where((element) => element.situation == TaskSituation.done)
+                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                .toList(),
                           ),
                         );
                       }
@@ -345,7 +358,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
           );
   }
 
-  Widget getTaskRow(TaskModel taskModel) {
+  Widget getTaskRow(TaskModel taskModel, ProjectModel projectModel) {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.only(bottom: 10),
@@ -364,11 +377,13 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
           children: [
             Row(
               children: [
-                TextComponent(
-                  text: taskModel.id,
-                  color: primaryColor,
-                  textAlign: TextAlign.start,
-                  fontWeight: FontWeight.bold,
+                MarqueeWidget(
+                  child: TextComponent(
+                    text: taskModel.viewId,
+                    color: primaryColor,
+                    textAlign: TextAlign.start,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -396,17 +411,24 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               headerType: HeaderType.h6,
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Spacer(),
-                SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: CircularPhotoComponent(
-                      url: users.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL, hasBorder: false),
-                ),
-              ],
+            Visibility(
+              visible: taskModel.assignedUserMail != null,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: CircularPhotoComponent(
+                      url: taskModel.assignedUserMail != null
+                          ? projectModel.collaborators.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL
+                          : ImageAssetKeys.defaultProfilePhotoUrl,
+                      hasBorder: false,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -5,22 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:taskmallow/utils/enum_utils.dart';
 
 class TaskModel {
-  final String id;
-  final String projectId;
-  final String name;
-  final String description;
-  late final TaskSituation situation;
-  late final String assignedUserMail;
-  final DateTime? createdDate;
-  final bool isDeleted;
+  String id;
+  String viewId;
+  String name;
+  String description;
+  TaskSituation situation;
+  String? assignedUserMail;
+  int? createdDate;
+  bool isDeleted;
 
   TaskModel({
-    required this.id,
-    required this.projectId,
+    this.id = "",
+    required this.viewId,
     required this.name,
     required this.description,
     this.situation = TaskSituation.to_do,
-    required this.assignedUserMail,
+    this.assignedUserMail,
     this.createdDate,
     this.isDeleted = false,
   });
@@ -28,12 +28,12 @@ class TaskModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'projectId': projectId,
       'name': name,
+      'viewId': viewId,
       'description': description,
       'situation': describeEnum(situation),
       'assignedUserMail': assignedUserMail,
-      'createdDate': createdDate ?? DateTime.now().toString(),
+      'createdDate': createdDate ?? DateTime.now().millisecondsSinceEpoch,
       'isDeleted': isDeleted,
     };
   }
@@ -41,12 +41,12 @@ class TaskModel {
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     return TaskModel(
       id: map['id'] as String,
-      projectId: map['projectId'] as String,
       name: map['name'] as String,
+      viewId: map['viewId'] as String,
       description: map['description'] as String,
       situation: (map['situation'] as String).getEnumValue(TaskSituation.values) ?? TaskSituation.to_do,
-      assignedUserMail: map['assignedUserMail'] as String,
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      assignedUserMail: map['assignedUserMail'] != null ? map['assignedUserMail'] as String : null,
+      createdDate: map['createdDate'] != null ? map['createdDate'] as int : null,
       isDeleted: map['isDeleted'] as bool,
     );
   }
@@ -55,7 +55,7 @@ class TaskModel {
 
   factory TaskModel.fromJson(String source) => TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  static TaskSituation _getTaskSituationFromValue(String value) {
+  static TaskSituation getTaskSituationFromValue(String value) {
     switch (value) {
       case 'to_do':
         return TaskSituation.to_do;
