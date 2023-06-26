@@ -10,11 +10,11 @@ import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
-import '../constants/task_situations_constants.dart';
 
 class UpdateTaskPage extends StatefulWidget {
   const UpdateTaskPage({super.key});
@@ -48,7 +48,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       selectedSituation = taskModel!.situation.name;
       projectNameTextEditingController.text = taskModel!.name;
       projectDescriptionTextEditingController.text = taskModel!.description;
-      selectedUser = users.where((element) => element.email == taskModel!.collaboratorMail).first;
+      selectedUser = users.where((element) => element.email == taskModel!.assignedUserMail).first;
     } else {
       Navigator.pop(context);
     }
@@ -230,7 +230,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   );
                   if (taskModel != null && selectedUser != null) {
                     setState(() {
-                      taskModel!.collaboratorMail = selectedUser!.email;
+                      taskModel!.assignedUserMail = selectedUser!.email;
                       Navigator.pop(context);
                     });
                   }
