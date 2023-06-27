@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -6,28 +8,29 @@ import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/components/text_form_field_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
+import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
 
-class UpdateTaskPage extends StatefulWidget {
+class UpdateTaskPage extends ConsumerStatefulWidget {
   const UpdateTaskPage({super.key});
 
   @override
-  State<UpdateTaskPage> createState() => _UpdateTaskPageState();
+  ConsumerState<UpdateTaskPage> createState() => _UpdateTaskPageState();
 }
 
-class _UpdateTaskPageState extends State<UpdateTaskPage> {
+class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
   final _loginFormKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String? selectedSituation;
-
+  String? _selectedSituation;
   TaskModel? taskModel;
 
   @override
@@ -35,19 +38,22 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     super.initState();
   }
 
-  TextEditingController projectNameTextEditingController = TextEditingController();
-  TextEditingController projectDescriptionTextEditingController = TextEditingController();
+  final TextEditingController _taskNameTextEditingController = TextEditingController();
+  final TextEditingController _taskDescriptionTextEditingController = TextEditingController();
 
-  UserModel? selectedUser;
+  UserModel? _selectedUser;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     taskModel = getTaskModelFromArguments();
     if (taskModel != null) {
-      selectedSituation = taskModel!.situation.name;
-      projectNameTextEditingController.text = taskModel!.name;
-      projectDescriptionTextEditingController.text = taskModel!.description;
+      _selectedSituation = taskModel!.situation.name;
+      _taskNameTextEditingController.text = taskModel!.name;
+      _taskDescriptionTextEditingController.text = taskModel!.description;
+      if (taskModel!.assignedUserMail != null && taskModel!.assignedUserMail!.isNotEmpty) {
+        _selectedUser = ref.watch(projectProvider).projectModel!.collaborators.firstWhere((element) => element.email == taskModel!.assignedUserMail!);
+      }
     } else {
       Navigator.pop(context);
     }
@@ -78,13 +84,15 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     List<DropdownMenuItem<UserModel>> userDropdownItems = [];
     List<Widget> selectedUserDropdownItems = [];
 
-    for (UserModel user in users) {
+    for (UserModel user in ref.watch(projectProvider).projectModel!.collaborators) {
       userDropdownItems.add(getDropdownUserItem(user.email, user));
     }
 
-    for (UserModel user in users) {
+    for (UserModel user in ref.watch(projectProvider).projectModel!.collaborators) {
       selectedUserDropdownItems.add(getDropdownSelectedUserItem(user));
     }
+
+    ProjectRepository projectRepository = ref.watch(projectProvider);
 
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
@@ -96,7 +104,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       ),
       actionList: [
         PopupMenuWidget(
-          menuList: generatePopup(),
+          menuList: generatePopup(projectRepository, taskModel),
         )
       ],
       widgetList: [
@@ -106,7 +114,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
             children: [
               TextFormFieldComponent(
                 context: context,
-                textEditingController: projectNameTextEditingController,
+                textEditingController: _taskNameTextEditingController,
                 textCapitalization: TextCapitalization.words,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
@@ -127,10 +135,10 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: DropdownButton<String>(
-                    value: selectedSituation,
+                    value: _selectedSituation,
                     onChanged: (String? newValue) {
                       setState(() {
-                        selectedSituation = newValue;
+                        _selectedSituation = newValue;
                       });
                     },
                     autofocus: true,
@@ -163,7 +171,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
               const SizedBox(height: 10),
               TextFormFieldComponent(
                 context: context,
-                textEditingController: projectDescriptionTextEditingController,
+                textEditingController: _taskDescriptionTextEditingController,
                 textCapitalization: TextCapitalization.sentences,
                 enabled: !isLoading,
                 textInputAction: TextInputAction.next,
@@ -184,10 +192,10 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: DropdownButton<UserModel>(
-                    value: selectedUser,
+                    value: _selectedUser,
                     onChanged: (UserModel? newValue) {
                       setState(() {
-                        selectedUser = newValue;
+                        _selectedUser = newValue;
                       });
                     },
                     autofocus: true,
@@ -220,16 +228,14 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
               const SizedBox(height: 10),
               ButtonComponent(
                 text: getTranslated(context, AppKeys.update),
-                onPressed: () {
-                  AppFunctions().showSnackbar(
-                    context,
-                    selectedUser != null ? selectedUser!.email : getTranslated(context, AppKeys.pleaseSelectCollaborator),
-                    icon: CustomIconData.taskmallow,
-                    backgroundColor: primaryColor,
-                  );
-                  if (taskModel != null && selectedUser != null) {
-                    setState(() {
-                      taskModel!.assignedUserMail = selectedUser!.email;
+                onPressed: () async {
+                  bool value = _checkInformations();
+                  if (value && taskModel != null) {
+                    taskModel!.name = _taskNameTextEditingController.text.trim();
+                    taskModel!.situation = TaskModel.getTaskSituationFromValue(_selectedSituation!);
+                    taskModel!.description = _taskDescriptionTextEditingController.text.trim();
+                    taskModel!.assignedUserMail = _selectedUser?.email;
+                    await projectRepository.updateTask(taskModel!).whenComplete(() {
                       Navigator.pop(context);
                     });
                   }
@@ -275,7 +281,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     );
   }
 
-  List<List<PopupMenuWidgetItem>> generatePopup() {
+  List<List<PopupMenuWidgetItem>> generatePopup(ProjectRepository projectRepository, TaskModel? taskModel) {
     List<List<PopupMenuWidgetItem>> popupMenuList = [];
     popupMenuList.add([
       PopupMenuWidgetItem(
@@ -283,16 +289,57 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
           prefixIcon: CustomIconData.trashCan,
           color: dangerDark,
           function: () {
-            AppFunctions().showSnackbar(
-              context,
-              selectedSituation.toString(),
-              icon: CustomIconData.taskmallow,
-              backgroundColor: primaryColor,
+            Future.delayed(
+              const Duration(seconds: 0),
+              () => showDialog(
+                context: context,
+                builder: (BuildContext context) => CupertinoAlertDialog(
+                  content: TextComponent(text: getTranslated(context, AppKeys.aysDeleteTask), textAlign: TextAlign.start, headerType: HeaderType.h5),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: Text(getTranslated(context, AppKeys.yes)),
+                      onPressed: () async {
+                        if (taskModel != null) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          taskModel.isDeleted = true;
+                          await projectRepository.updateTask(taskModel).whenComplete(() {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: projectRepository.projectModel);
+                          });
+                        }
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(getTranslated(context, AppKeys.no)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             );
           })
     ]);
-
     return popupMenuList;
+  }
+
+  bool _checkInformations() {
+    if (_taskNameTextEditingController.text.trim().isEmpty) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterTaskName), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else if (_selectedSituation == null) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.selectSituation), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else if (_taskDescriptionTextEditingController.text.trim().isEmpty) {
+      AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterDescription), backgroundColor: warningDark, icon: CustomIconData.featherPointed);
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
@@ -301,29 +348,30 @@ DropdownMenuItem<UserModel> getDropdownUserItem(
   UserModel user,
 ) {
   return DropdownMenuItem<UserModel>(
-      value: user,
-      child: Row(
-        children: [
-          SizedBox(
-            height: 30,
-            width: 30,
-            child: CircularPhotoComponent(
-              url: user.profilePhotoURL,
-              hasBorder: false,
-            ),
+    value: user,
+    child: Row(
+      children: [
+        SizedBox(
+          height: 30,
+          width: 30,
+          child: CircularPhotoComponent(
+            url: user.profilePhotoURL,
+            hasBorder: false,
           ),
-          const SizedBox(width: 5),
-          Flexible(
-            child: TextComponent(
-              text: user.email,
-              maxLines: 1,
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-            ),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: TextComponent(
+            text: user.email,
+            maxLines: 1,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
           ),
-        ],
-      ));
+        ),
+      ],
+    ),
+  );
 }
 
 Widget getDropdownSelectedUserItem(UserModel user) {

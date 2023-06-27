@@ -72,7 +72,7 @@ class _CreateTaskPageState extends ConsumerState<CreateTaskPage> {
                   isLoading = true;
                 });
                 TaskModel taskModel = TaskModel(
-                  id: uuid.v4(),
+                  id: uuid.v1(),
                   viewId: "T${ref.watch(projectProvider).projectModel!.tasks.length + 1}",
                   name: _taskNameTextEditingController.text.trim(),
                   description: _taskDescriptionTextEditingController.text.trim(),

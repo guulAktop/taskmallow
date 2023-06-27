@@ -201,4 +201,23 @@ class ProjectRepository extends ChangeNotifier {
       isSucceeded = false;
     }
   }
+
+  Future<void> updateTask(TaskModel task) async {
+    isSucceeded = false;
+    try {
+      if (projectModel != null) {
+        final int index = projectModel!.tasks.indexWhere((t) => t.id == task.id);
+        if (index != -1) {
+          await projects.doc(projectModel!.id).update(projectModel!.toMap());
+          if (task.isDeleted) {
+            projectModel!.tasks.removeWhere((t) => t.id == task.id);
+          }
+          notifyListeners();
+        }
+      }
+    } catch (error) {
+      debugPrint('Task güncellenirken hata oluştu: $error');
+      isSucceeded = false;
+    }
+  }
 }

@@ -168,13 +168,19 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
         const SizedBox(height: 10),
         ButtonComponent(
           text: getTranslated(context, AppKeys.update),
-          onPressed: () {
+          onPressed: () async {
             bool value = _checkInformations();
             if (value && projectModel != null) {
+              setState(() {
+                isLoading = true;
+              });
               projectModel!.name = _projectNameTextEditingController.text.trim();
               projectModel!.description = _projectDescriptionTextEditingController.text.trim();
               projectModel!.category = ProjectModel.getCategoryFromValue(_selectedCategory!);
-              projectRepository.update(projectModel!).whenComplete(() {
+              await projectRepository.update(projectModel!).whenComplete(() {
+                setState(() {
+                  isLoading = false;
+                });
                 Navigator.pop(context);
               });
             }
@@ -250,9 +256,9 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
                   actions: <Widget>[
                     CupertinoDialogAction(
                       child: Text(getTranslated(context, AppKeys.yes)),
-                      onPressed: () {
+                      onPressed: () async {
                         if (projectModel != null) {
-                          projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
+                          await projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
                             Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                           });
                         }

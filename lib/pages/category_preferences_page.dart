@@ -67,7 +67,7 @@ class _CategoryPreferencesPageState extends ConsumerState<CategoryPreferencesPag
                           if (userRepository.isSucceeded) {
                             userRepository.userModel!.preferredCategories = selectedSubtitles;
                             if (pageType == 0) {
-                              Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
                             } else {
                               Navigator.pop(context);
                             }
