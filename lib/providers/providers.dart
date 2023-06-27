@@ -12,3 +12,5 @@ final userProvider = ChangeNotifierProvider((ref) {
 final projectProvider = ChangeNotifierProvider((ref) {
   return ProjectRepository();
 });
+
+final selectedPageIndexProvider = StateProvider<int>((ref) => 0);

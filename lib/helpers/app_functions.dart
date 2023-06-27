@@ -43,13 +43,13 @@ class AppFunctions {
   }
 
   showProgressDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
+    AlertDialog alert = const AlertDialog(
       backgroundColor: Colors.transparent,
       elevation: 0,
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           Padding(
             padding: EdgeInsets.all(8.0),
             child: CircularProgressIndicator(),
@@ -170,7 +170,7 @@ class AppFunctions {
     return randomCode;
   }
 
-  Future<bool> sendVerificationCode(BuildContext context, String toMail, String code) async {
+  Future<bool> sendVerificationCode(String toMail, String code) async {
     try {
       await FirebaseFunctions.instance.httpsCallable('sendVerificationCode').call(<String, dynamic>{'to': toMail, 'code': code});
       debugPrint("sended");

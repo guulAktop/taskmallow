@@ -247,7 +247,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             });
           } else {
             ref.watch(verificationCodeProvider.notifier).state = AppFunctions().generateCode();
-            AppFunctions().sendVerificationCode(context, model.email, ref.watch(verificationCodeProvider).toString()).then((value) {
+            AppFunctions().sendVerificationCode(model.email, ref.watch(verificationCodeProvider).toString()).then((value) {
               AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.codeSent), icon: CustomIconData.paperPlane, backgroundColor: infoDark);
               setState(() {
                 _isLoading = false;

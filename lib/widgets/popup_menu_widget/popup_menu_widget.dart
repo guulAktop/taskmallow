@@ -14,8 +14,8 @@ class PopupMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<PopupMenuEntry> popupMenuEntryList = [];
-
     int counter = 0;
+
     for (List<PopupMenuWidgetItem> list in menuList) {
       for (PopupMenuWidgetItem listItem in list) {
         popupMenuEntryList.add(PopupMenuItem(
@@ -40,8 +40,9 @@ class PopupMenuWidget extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
-          bodyText2: TextStyle(color: Colors.black),
+          bodySmall: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: Colors.black),
+          bodyLarge: TextStyle(color: Colors.black),
         ).apply(bodyColor: Colors.black),
       ),
       child: TooltipVisibility(

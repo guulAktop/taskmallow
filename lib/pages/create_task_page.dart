@@ -22,7 +22,6 @@ class CreateTaskPage extends ConsumerStatefulWidget {
 }
 
 class _CreateTaskPageState extends ConsumerState<CreateTaskPage> {
-  final _loginFormKey = GlobalKey<FormState>();
   bool isLoading = false;
   String? _selectedSituation;
 
@@ -95,81 +94,76 @@ class _CreateTaskPageState extends ConsumerState<CreateTaskPage> {
         ),
       ],
       widgetList: [
-        Form(
-          key: _loginFormKey,
-          child: Column(
-            children: [
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _taskNameTextEditingController,
-                textCapitalization: TextCapitalization.words,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.taskName),
-                keyboardType: TextInputType.text,
-                maxCharacter: 50,
-                validator: (text) {
-                  return null;
-                },
+        TextFormFieldComponent(
+          context: context,
+          textEditingController: _taskNameTextEditingController,
+          textCapitalization: TextCapitalization.words,
+          enabled: !isLoading,
+          textInputAction: TextInputAction.next,
+          hintText: getTranslated(context, AppKeys.taskName),
+          keyboardType: TextInputType.text,
+          maxCharacter: 50,
+          validator: (text) {
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: itemBackgroundLightColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: DropdownButton<String>(
+              value: _selectedSituation,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedSituation = newValue;
+                });
+              },
+              autofocus: true,
+              items: dropdownItems,
+              selectedItemBuilder: (context) {
+                return selectedDropdownItems;
+              },
+              underline: Container(),
+              iconEnabledColor: hintTextLightColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              isExpanded: true,
+              icon: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
               ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: itemBackgroundLightColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: DropdownButton<String>(
-                    value: _selectedSituation,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedSituation = newValue;
-                      });
-                    },
-                    autofocus: true,
-                    items: dropdownItems,
-                    selectedItemBuilder: (context) {
-                      return selectedDropdownItems;
-                    },
-                    underline: Container(),
-                    iconEnabledColor: hintTextLightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    isExpanded: true,
-                    icon: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
-                    ),
-                    hint: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextComponent(
-                          textAlign: TextAlign.center,
-                          text: getTranslated(context, AppKeys.situation),
-                          color: hintTextLightColor,
-                        ),
-                      ),
-                    ),
+              hint: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextComponent(
+                    textAlign: TextAlign.center,
+                    text: getTranslated(context, AppKeys.situation),
+                    color: hintTextLightColor,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _taskDescriptionTextEditingController,
-                textCapitalization: TextCapitalization.sentences,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.description),
-                keyboardType: TextInputType.text,
-                maxLines: 5,
-                validator: (text) {
-                  return null;
-                },
-              ),
-            ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: TextFormFieldComponent(
+            context: context,
+            textEditingController: _taskDescriptionTextEditingController,
+            textCapitalization: TextCapitalization.sentences,
+            enabled: !isLoading,
+            textInputAction: TextInputAction.newline,
+            hintText: getTranslated(context, AppKeys.description),
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            validator: (text) {
+              return null;
+            },
           ),
         ),
       ],

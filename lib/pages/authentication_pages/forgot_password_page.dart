@@ -102,8 +102,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
 
                                 if (mounted) {}
                                 AppFunctions()
-                                    .sendVerificationCode(
-                                        context, _emailTextEditingController.text.replaceAll(" ", ""), ref.watch(verificationCodeProvider).toString())
+                                    .sendVerificationCode(_emailTextEditingController.text.replaceAll(" ", ""), ref.watch(verificationCodeProvider).toString())
                                     .then((value) {
                                   setState(() {
                                     _isLoading = false;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/firebase_options.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
@@ -69,15 +70,24 @@ initInfo() {
   });
 }
 
+Locale? _locale;
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseMessaging.instance.getInitialMessage();
   requestPermission();
   initInfo();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await getLocale().then((locale) {
+    _locale = locale;
+  });
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   runApp(const riverpod.ProviderScope(child: MyApp()));
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatefulWidget {
@@ -96,10 +106,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SharedPreferencesHelper(WidgetsBinding.instance.window.locale).getSettingsSharedPreferencesValues();
   }
 
-  Locale? _locale;
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -108,25 +116,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  void didChangeDependencies() {
-    SharedPreferencesHelper(WidgetsBinding.instance.window.locale).getSettingsSharedPreferencesValues();
-    getLocale().then((locale) {
-      setState(() {
-        _locale = locale;
-        debugPrint(locale.languageCode.toString());
-      });
-    });
+  void didChangeDependencies() async {
+    SharedPreferencesHelper(View.of(context).platformDispatcher.locale).getSettingsSharedPreferencesValues();
+
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("LOCALE: $_locale");
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
-      locale: _locale,
+      locale: _locale ?? View.of(context).platformDispatcher.locale,
       supportedLocales: const [
         Locale("en", "US"),
         Locale("tr", "TR"),

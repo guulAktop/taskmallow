@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/shared_preferences_constants.dart';
+import 'package:taskmallow/constants/shared_preferences_keys.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
@@ -37,8 +37,8 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
           ListViewItem(
             onTap: () {
               setState(() {
-                setUseDeviceTheme(!SharedPreferencesConstants.useDeviceTheme);
-                SharedPreferencesConstants.useDeviceTheme = !SharedPreferencesConstants.useDeviceTheme;
+                setUseDeviceTheme(!SharedPreferencesKeys.useDeviceTheme);
+                SharedPreferencesKeys.useDeviceTheme = !SharedPreferencesKeys.useDeviceTheme;
               });
             },
             title: getTranslated(context, AppKeys.useDeviceTheme),
@@ -46,22 +46,22 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
               scale: 0.7,
               child: CupertinoSwitch(
                 activeColor: primaryColor,
-                value: SharedPreferencesConstants.useDeviceTheme,
+                value: SharedPreferencesKeys.useDeviceTheme,
                 onChanged: (value) {
                   setState(() {
-                    setUseDeviceTheme(!SharedPreferencesConstants.useDeviceTheme);
-                    SharedPreferencesConstants.useDeviceTheme = !SharedPreferencesConstants.useDeviceTheme;
+                    setUseDeviceTheme(!SharedPreferencesKeys.useDeviceTheme);
+                    SharedPreferencesKeys.useDeviceTheme = !SharedPreferencesKeys.useDeviceTheme;
                   });
                 },
               ),
             ),
           ),
-          SharedPreferencesConstants.useDeviceTheme == false
+          SharedPreferencesKeys.useDeviceTheme == false
               ? ListViewItem(
                   onTap: () {
                     setState(() {
-                      setDarkTheme(!SharedPreferencesConstants.isDarkTheme);
-                      SharedPreferencesConstants.isDarkTheme = !SharedPreferencesConstants.isDarkTheme;
+                      setDarkTheme(!SharedPreferencesKeys.isDarkTheme);
+                      SharedPreferencesKeys.isDarkTheme = !SharedPreferencesKeys.isDarkTheme;
                     });
                   },
                   title: getTranslated(context, AppKeys.darkTheme),
@@ -69,11 +69,11 @@ class _ThemeSettingsPageState extends State<ThemeSettingsPage> {
                     scale: 0.7,
                     child: CupertinoSwitch(
                       activeColor: primaryColor,
-                      value: SharedPreferencesConstants.isDarkTheme,
+                      value: SharedPreferencesKeys.isDarkTheme,
                       onChanged: (value) {
                         setState(() {
-                          setDarkTheme(!SharedPreferencesConstants.isDarkTheme);
-                          SharedPreferencesConstants.isDarkTheme = !SharedPreferencesConstants.isDarkTheme;
+                          setDarkTheme(!SharedPreferencesKeys.isDarkTheme);
+                          SharedPreferencesKeys.isDarkTheme = !SharedPreferencesKeys.isDarkTheme;
                         });
                       },
                     ),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taskmallow/constants/shared_preferences_constants.dart';
+import 'package:taskmallow/constants/shared_preferences_keys.dart';
 
 class SharedPreferencesHelper {
   static Future<void> setString(String key, String value) async {
@@ -32,9 +32,8 @@ class SharedPreferencesHelper {
   SharedPreferencesHelper(this.locale);
 
   getSettingsSharedPreferencesValues() async {
-    SharedPreferencesConstants.appLanguageCode = await SharedPreferencesHelper.getString("languageCode") ?? locale.languageCode;
-    SharedPreferencesConstants.isDarkTheme = await SharedPreferencesHelper.getBool("isDarkTheme") ?? false;
-    SharedPreferencesConstants.useDeviceTheme = await SharedPreferencesHelper.getBool("useDeviceTheme") ?? true;
-    SharedPreferencesConstants.onboardingPagesShown = await SharedPreferencesHelper.getBool("onboardingPagesShown") ?? false;
+    SharedPreferencesKeys.isDarkTheme = await SharedPreferencesHelper.getBool("isDarkTheme") ?? false;
+    SharedPreferencesKeys.useDeviceTheme = await SharedPreferencesHelper.getBool("useDeviceTheme") ?? true;
+    SharedPreferencesKeys.onboardingPagesShown = await SharedPreferencesHelper.getBool("onboardingPagesShown") ?? false;
   }
 }
