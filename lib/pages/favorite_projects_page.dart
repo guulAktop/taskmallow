@@ -34,9 +34,9 @@ class _FavoriteProjectsPageState extends State<FavoriteProjectsPage> with Ticker
         onPressed: () => isLoading ? null : Navigator.pop(context),
       ),
       widgetList: [
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Column(
-            children: const [
+            children: [
               SizedBox(),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
@@ -6,22 +7,22 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/navigation_pages/home_page.dart';
 import 'package:taskmallow/pages/navigation_pages/projects_page.dart';
 import 'package:taskmallow/pages/navigation_pages/profile_page.dart';
+import 'package:taskmallow/providers/providers.dart';
 
-class NavigationPage extends StatefulWidget {
+class NavigationPage extends ConsumerStatefulWidget {
   const NavigationPage({super.key});
 
   @override
-  State<NavigationPage> createState() => _NavigationPageState();
+  ConsumerState<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> {
-  int _selectedIndex = 0;
-
+class _NavigationPageState extends ConsumerState<NavigationPage> {
   @override
   Widget build(BuildContext context) {
+    int selectedIndex = ref.watch(selectedPageIndexProvider);
     return Scaffold(
       body: IndexedStack(
-        index: _selectedIndex,
+        index: selectedIndex,
         children: const <Widget>[
           HomePage(),
           ProjectsPage(),
@@ -38,8 +39,8 @@ class _NavigationPageState extends State<NavigationPage> {
             icon: IconComponent(
               iconData: CustomIconData.house,
               size: 24,
-              iconWeight: _selectedIndex == 0 ? CustomIconWeight.solid : CustomIconWeight.regular,
-              color: _selectedIndex == 0 ? primaryColor : secondaryColor,
+              iconWeight: selectedIndex == 0 ? CustomIconWeight.solid : CustomIconWeight.regular,
+              color: selectedIndex == 0 ? primaryColor : secondaryColor,
             ),
             label: getTranslated(context, AppKeys.home),
           ),
@@ -47,8 +48,8 @@ class _NavigationPageState extends State<NavigationPage> {
             icon: IconComponent(
               iconData: CustomIconData.rectangleHistory,
               size: 24,
-              iconWeight: _selectedIndex == 1 ? CustomIconWeight.solid : CustomIconWeight.regular,
-              color: _selectedIndex == 1 ? primaryColor : secondaryColor,
+              iconWeight: selectedIndex == 1 ? CustomIconWeight.solid : CustomIconWeight.regular,
+              color: selectedIndex == 1 ? primaryColor : secondaryColor,
             ),
             label: getTranslated(context, AppKeys.projects),
           ),
@@ -56,17 +57,15 @@ class _NavigationPageState extends State<NavigationPage> {
             icon: IconComponent(
               iconData: CustomIconData.user,
               size: 24,
-              iconWeight: _selectedIndex == 2 ? CustomIconWeight.solid : CustomIconWeight.regular,
-              color: _selectedIndex == 2 ? primaryColor : secondaryColor,
+              iconWeight: selectedIndex == 2 ? CustomIconWeight.solid : CustomIconWeight.regular,
+              color: selectedIndex == 2 ? primaryColor : secondaryColor,
             ),
             label: getTranslated(context, AppKeys.profile),
           )
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          ref.read(selectedPageIndexProvider.notifier).state = index;
         },
       ),
     );

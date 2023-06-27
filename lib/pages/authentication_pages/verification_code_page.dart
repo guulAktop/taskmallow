@@ -183,7 +183,6 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
       child: SizedBox(
         width: UIHelper.getDeviceWidth(context) / 9,
         child: TextFormField(
-          toolbarOptions: const ToolbarOptions(copy: false, cut: false, paste: false, selectAll: false),
           enableInteractiveSelection: false,
           showCursor: false,
           focusNode: focusNode,

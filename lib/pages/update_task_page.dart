@@ -28,7 +28,6 @@ class UpdateTaskPage extends ConsumerStatefulWidget {
 }
 
 class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
-  final _loginFormKey = GlobalKey<FormState>();
   bool isLoading = false;
   String? _selectedSituation;
   TaskModel? taskModel;
@@ -108,143 +107,138 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
         )
       ],
       widgetList: [
-        Form(
-          key: _loginFormKey,
-          child: Column(
-            children: [
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _taskNameTextEditingController,
-                textCapitalization: TextCapitalization.words,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.taskName),
-                keyboardType: TextInputType.text,
-                maxCharacter: 50,
-                validator: (text) {
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: itemBackgroundLightColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: DropdownButton<String>(
-                    value: _selectedSituation,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedSituation = newValue;
-                      });
-                    },
-                    autofocus: true,
-                    items: situationDropdownItems,
-                    selectedItemBuilder: (context) {
-                      return selectedSituationDropdownItems;
-                    },
-                    underline: Container(),
-                    iconEnabledColor: hintTextLightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    isExpanded: true,
-                    icon: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
-                    ),
-                    hint: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextComponent(
-                          textAlign: TextAlign.center,
-                          text: getTranslated(context, AppKeys.situation),
-                          color: hintTextLightColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextFormFieldComponent(
-                context: context,
-                textEditingController: _taskDescriptionTextEditingController,
-                textCapitalization: TextCapitalization.sentences,
-                enabled: !isLoading,
-                textInputAction: TextInputAction.next,
-                hintText: getTranslated(context, AppKeys.description),
-                keyboardType: TextInputType.text,
-                maxLines: 5,
-                validator: (text) {
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: itemBackgroundLightColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: DropdownButton<UserModel>(
-                    value: _selectedUser,
-                    onChanged: (UserModel? newValue) {
-                      setState(() {
-                        _selectedUser = newValue;
-                      });
-                    },
-                    autofocus: true,
-                    items: userDropdownItems,
-                    selectedItemBuilder: (context) {
-                      return selectedUserDropdownItems;
-                    },
-                    underline: Container(),
-                    iconEnabledColor: hintTextLightColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    isExpanded: true,
-                    icon: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
-                    ),
-                    hint: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextComponent(
-                          textAlign: TextAlign.center,
-                          text: getTranslated(context, AppKeys.collaborators),
-                          color: hintTextLightColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ButtonComponent(
-                text: getTranslated(context, AppKeys.update),
-                onPressed: () async {
-                  bool value = _checkInformations();
-                  if (value && taskModel != null) {
-                    taskModel!.name = _taskNameTextEditingController.text.trim();
-                    taskModel!.situation = TaskModel.getTaskSituationFromValue(_selectedSituation!);
-                    taskModel!.description = _taskDescriptionTextEditingController.text.trim();
-                    taskModel!.assignedUserMail = _selectedUser?.email;
-                    await projectRepository.updateTask(taskModel!).whenComplete(() {
-                      Navigator.pop(context);
-                    });
-                  }
-                },
-                isWide: true,
-                color: warningDark,
-              ),
-            ],
+        TextFormFieldComponent(
+          context: context,
+          textEditingController: _taskNameTextEditingController,
+          textCapitalization: TextCapitalization.words,
+          enabled: !isLoading,
+          textInputAction: TextInputAction.next,
+          hintText: getTranslated(context, AppKeys.taskName),
+          keyboardType: TextInputType.text,
+          maxCharacter: 50,
+          validator: (text) {
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: itemBackgroundLightColor,
+            borderRadius: BorderRadius.circular(10.0),
           ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: DropdownButton<String>(
+              value: _selectedSituation,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedSituation = newValue;
+                });
+              },
+              autofocus: true,
+              items: situationDropdownItems,
+              selectedItemBuilder: (context) {
+                return selectedSituationDropdownItems;
+              },
+              underline: Container(),
+              iconEnabledColor: hintTextLightColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              isExpanded: true,
+              icon: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
+              ),
+              hint: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextComponent(
+                    textAlign: TextAlign.center,
+                    text: getTranslated(context, AppKeys.situation),
+                    color: hintTextLightColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: TextFormFieldComponent(
+            context: context,
+            textEditingController: _taskDescriptionTextEditingController,
+            textCapitalization: TextCapitalization.sentences,
+            enabled: !isLoading,
+            textInputAction: TextInputAction.newline,
+            hintText: getTranslated(context, AppKeys.description),
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            validator: (text) {
+              return null;
+            },
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: itemBackgroundLightColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: DropdownButton<UserModel>(
+              value: _selectedUser,
+              onChanged: (UserModel? newValue) {
+                setState(() {
+                  _selectedUser = newValue;
+                });
+              },
+              autofocus: true,
+              items: userDropdownItems,
+              selectedItemBuilder: (context) {
+                return selectedUserDropdownItems;
+              },
+              underline: Container(),
+              iconEnabledColor: hintTextLightColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              isExpanded: true,
+              icon: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: IconComponent(iconData: CustomIconData.caretDown, color: primaryColor),
+              ),
+              hint: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextComponent(
+                    textAlign: TextAlign.center,
+                    text: getTranslated(context, AppKeys.collaborators),
+                    color: hintTextLightColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        ButtonComponent(
+          text: getTranslated(context, AppKeys.update),
+          onPressed: () async {
+            bool value = _checkInformations();
+            if (value && taskModel != null) {
+              taskModel!.name = _taskNameTextEditingController.text.trim();
+              taskModel!.situation = TaskModel.getTaskSituationFromValue(_selectedSituation!);
+              taskModel!.description = _taskDescriptionTextEditingController.text.trim();
+              taskModel!.assignedUserMail = _selectedUser?.email;
+              await projectRepository.updateTask(taskModel!).whenComplete(() {
+                Navigator.pop(context);
+              });
+            }
+          },
+          isWide: true,
+          color: warningDark,
         ),
       ],
     );
@@ -305,9 +299,8 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
                           });
                           taskModel.isDeleted = true;
                           await projectRepository.updateTask(taskModel).whenComplete(() {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: projectRepository.projectModel);
+                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                            Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.projectModel);
                           });
                         }
                       },

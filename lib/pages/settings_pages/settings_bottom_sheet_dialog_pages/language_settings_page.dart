@@ -17,7 +17,6 @@ class LanguageSettingsPage extends StatefulWidget {
 class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
   Language? selectedLanguage;
   List<Language>? languages;
-  Language? lang;
 
   @override
   void initState() {
@@ -28,8 +27,9 @@ class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
   void _changeLanguage(Language language) async {
     Locale locale = await setLocale(language.languageCode);
 
-    if (mounted) {}
-    MyApp.setLocale(context, locale);
+    if (mounted) {
+      MyApp.setLocale(context, locale);
+    }
   }
 
   _setSelectedLang(Language lang) {
@@ -38,14 +38,21 @@ class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
     });
   }
 
-  Locale? _locale = const Locale("en");
+  Locale? _locale;
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
-      setState(() {
-        _locale = locale;
-        selectedLanguage = languages!.firstWhere((element) => element.languageCode == _locale!.languageCode);
-      });
+      if (locale == null) {
+        setState(() {
+          _locale = View.of(context).platformDispatcher.locale;
+          selectedLanguage = languages!.firstWhere((element) => element.languageCode == _locale!.languageCode);
+        });
+      } else {
+        setState(() {
+          _locale = locale;
+          selectedLanguage = languages!.firstWhere((element) => element.languageCode == _locale!.languageCode);
+        });
+      }
     });
     super.didChangeDependencies();
   }
