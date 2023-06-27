@@ -6,7 +6,6 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
@@ -324,7 +323,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
                             children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.to_do)
+                                .where((element) => element.situation == TaskSituation.to_do && !element.isDeleted)
                                 .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
                                 .toList(),
                           ),
@@ -334,7 +333,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
                             children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.in_progress)
+                                .where((element) => element.situation == TaskSituation.in_progress && !element.isDeleted)
                                 .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
                                 .toList(),
                           ),
@@ -344,7 +343,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                           padding: const EdgeInsets.only(top: 20),
                           child: Column(
                             children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.done)
+                                .where((element) => element.situation == TaskSituation.done && !element.isDeleted)
                                 .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
                                 .toList(),
                           ),
@@ -410,26 +409,27 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               textAlign: TextAlign.start,
               headerType: HeaderType.h6,
             ),
-            const SizedBox(height: 10),
-            Visibility(
-              visible: taskModel.assignedUserMail != null,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: CircularPhotoComponent(
-                      url: taskModel.assignedUserMail != null
-                          ? projectModel.collaborators.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL
-                          : ImageAssetKeys.defaultProfilePhotoUrl,
-                      hasBorder: false,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            taskModel.assignedUserMail != null
+                ? Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: 40,
+                            child: CircularPhotoComponent(
+                              url: projectModel.collaborators.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL,
+                              hasBorder: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
           ],
         ),
       ),
