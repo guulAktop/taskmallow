@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  debugPrint("Handling a background message: ${message.messageId}");
 }
 
 void requestPermission() async {
@@ -33,7 +32,7 @@ void requestPermission() async {
 }
 
 initInfo() {
-  var androidInitialize = const AndroidInitializationSettings('@mipmap/launcher_icon');
+  var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
   var iOSInitialize = const IOSInitializationSettings();
   var initializationSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -124,7 +123,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("LOCALE: $_locale");
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

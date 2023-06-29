@@ -58,6 +58,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     child: Text(getTranslated(context, AppKeys.yes)),
                     onPressed: () {
                       ref.read(userProvider).logout(context);
+                      ref.read(selectedPageIndexProvider.notifier).state = 0;
                     },
                   ),
                   CupertinoDialogAction(

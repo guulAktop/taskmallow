@@ -97,7 +97,7 @@ class _CreateTaskPageState extends ConsumerState<CreateTaskPage> {
         TextFormFieldComponent(
           context: context,
           textEditingController: _taskNameTextEditingController,
-          textCapitalization: TextCapitalization.words,
+          textCapitalization: TextCapitalization.sentences,
           enabled: !isLoading,
           textInputAction: TextInputAction.next,
           hintText: getTranslated(context, AppKeys.taskName),

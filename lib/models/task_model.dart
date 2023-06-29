@@ -11,7 +11,7 @@ class TaskModel {
   String description;
   TaskSituation situation;
   String? assignedUserMail;
-  int? createdDate;
+  int? lastTransactionDate;
   bool isDeleted;
 
   TaskModel({
@@ -21,7 +21,7 @@ class TaskModel {
     required this.description,
     this.situation = TaskSituation.to_do,
     this.assignedUserMail,
-    this.createdDate,
+    this.lastTransactionDate,
     this.isDeleted = false,
   });
 
@@ -33,7 +33,7 @@ class TaskModel {
       'description': description,
       'situation': describeEnum(situation),
       'assignedUserMail': assignedUserMail,
-      'createdDate': createdDate ?? DateTime.now().millisecondsSinceEpoch,
+      'lastTransactionDate': lastTransactionDate ?? DateTime.now().millisecondsSinceEpoch,
       'isDeleted': isDeleted,
     };
   }
@@ -46,7 +46,7 @@ class TaskModel {
       description: map['description'] as String,
       situation: (map['situation'] as String).getEnumValue(TaskSituation.values) ?? TaskSituation.to_do,
       assignedUserMail: map['assignedUserMail'] != null ? map['assignedUserMail'] as String : null,
-      createdDate: map['createdDate'] != null ? map['createdDate'] as int : null,
+      lastTransactionDate: map['lastTransactionDate'] != null ? map['lastTransactionDate'] as int : null,
       isDeleted: map['isDeleted'] as bool,
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
+import 'package:taskmallow/models/project_model.dart';
+import 'package:taskmallow/models/task_model.dart';
 
 class AppFunctions {
   void showSnackbar(BuildContext context, String text, {Color? backgroundColor, CustomIconData? icon, int duration = 2}) {
@@ -118,9 +121,18 @@ class AppFunctions {
   }
 
   Future<File?> pickImageFromGallery() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
     try {
-      await Permission.storage.request();
-      var permissionStatus = await Permission.storage.status;
+      PermissionStatus permissionStatus = PermissionStatus.denied;
+      if (int.parse(androidInfo.version.release) >= 12) {
+        await Permission.photos.request();
+        permissionStatus = await Permission.photos.status;
+      } else {
+        await Permission.storage.request();
+        permissionStatus = await Permission.storage.status;
+      }
       if (permissionStatus.isGranted) {
         try {
           final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 75, maxWidth: 1000);
@@ -181,5 +193,19 @@ class AppFunctions {
       debugPrint(error.message);
       return false;
     }
+  }
+
+  double getPercentageOfCompletion(ProjectModel projectModel) {
+    int taskLength = 0;
+    int doneLength = 0;
+    for (var task in projectModel.tasks) {
+      if (!task.isDeleted) {
+        taskLength++;
+        if (task.situation == TaskSituation.done) {
+          doneLength++;
+        }
+      }
+    }
+    return taskLength == 0 ? 0 : (doneLength / taskLength).toDouble();
   }
 }

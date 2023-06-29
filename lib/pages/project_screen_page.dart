@@ -6,8 +6,8 @@ import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/constants/data_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
@@ -30,14 +30,19 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
   bool isExpanded = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
-
-  List<ProjectModel> favoriteProjects = [];
-
-  ProjectModel? projectModel;
+  List<String> favoriteProjects = [];
 
   @override
   void initState() {
     super.initState();
+
+    ref.read(projectProvider).isLoading = true;
+    Future.delayed(Duration.zero, () async {
+      ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
+      await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
+        ref.read(projectProvider).isLoading = false;
+      });
+    });
 
     _animationController = AnimationController(
       vsync: this,
@@ -56,27 +61,6 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
         _animationController.reverse();
       }
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    var arg = _getProjectModelFromArguments();
-    if (arg != null) {
-      projectModel = arg;
-    }
-  }
-
-  ProjectModel? _getProjectModelFromArguments() {
-    ModalRoute? route = ModalRoute.of(context);
-    dynamic arguments = route?.settings.arguments;
-    if (arguments is ProjectModel) {
-      return arguments;
-    } else {
-      Navigator.pop(context);
-    }
-    return null;
   }
 
   @override
@@ -100,152 +84,161 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
   @override
   Widget build(BuildContext context) {
     ProjectRepository projectRepository = ref.watch(projectProvider);
-    return BaseScaffoldWidget(
-      title: projectModel != null ? projectModel!.name : "",
-      leadingWidget: IconButton(
-        splashRadius: AppConstants.iconSplashRadius,
-        icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-        onPressed: () => isLoading ? null : Navigator.pop(context),
-      ),
-      actionList: [
-        IconButton(
-          onPressed: () {
-            handleButtonTap();
-            if (projectModel != null) {
-              if (!favoriteProjects.contains(projectModel)) {
-                setState(() {
-                  favoriteProjects.add(projectModel!);
-                });
-              } else {
-                setState(() {
-                  favoriteProjects.remove(projectModel);
-                });
-              }
-            }
-          },
-          splashRadius: AppConstants.iconSplashRadius,
-          icon: AnimatedBuilder(
-            animation: _animation,
-            builder: (BuildContext context, Widget? child) {
-              return Transform.scale(
-                scale: isExpanded ? _animation.value : 1.0,
-                child: IconComponent(
-                  iconData: CustomIconData.star,
-                  color: primaryColor,
-                  iconWeight: favoriteProjects.contains(projectModel) ? CustomIconWeight.solid : CustomIconWeight.regular,
+    return projectRepository.isLoading
+        ? const BaseScaffoldWidget(
+            widgetList: [
+              Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
-          ),
-        ),
-      ],
-      widgetList: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextComponent(
-                  text: projectModel != null ? getTranslated(context, projectModel!.category.name) : "",
-                  textAlign: TextAlign.end,
-                  fontWeight: FontWeight.bold,
-                  headerType: HeaderType.h8,
-                  color: primaryColor,
-                ),
-                TextComponent(
-                  text: projectModel != null ? projectModel!.description : "",
-                  textAlign: TextAlign.start,
-                  headerType: HeaderType.h6,
-                ),
-                TextComponent(
-                  text: projectModel != null ? projectModel!.userWhoCreated.email : "",
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.end,
-                  overflow: TextOverflow.fade,
-                  softWrap: true,
-                  headerType: HeaderType.h7,
-                ),
-              ],
+              ),
+            ],
+          )
+        : BaseScaffoldWidget(
+            title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
+            leadingWidget: IconButton(
+              splashRadius: AppConstants.iconSplashRadius,
+              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+              onPressed: () => isLoading ? null : Navigator.pop(context),
             ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                MarqueeWidget(
-                  child: TextComponent(
-                    text:
-                        "${projectRepository.projectModel!.tasks.isNotEmpty ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / projectRepository.projectModel!.tasks.length * 100).toStringAsFixed(0) : 0}% ${getTranslated(context, AppKeys.completed)}",
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.fade,
-                    softWrap: true,
-                    headerType: HeaderType.h7,
+            actionList: [
+              IconButton(
+                onPressed: () {
+                  debugPrint(favoriteProjects.length.toString());
+                  handleButtonTap();
+                  if (projectRepository.projectModel != null) {
+                    if (!favoriteProjects.contains(projectRepository.projectModel!.id)) {
+                      setState(() {
+                        favoriteProjects.add(projectRepository.projectModel!.id);
+                      });
+                    } else {
+                      setState(() {
+                        favoriteProjects.remove(projectRepository.projectModel!.id);
+                      });
+                    }
+                  }
+                },
+                splashRadius: AppConstants.iconSplashRadius,
+                icon: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (BuildContext context, Widget? child) {
+                    return Transform.scale(
+                      scale: isExpanded ? _animation.value : 1.0,
+                      child: IconComponent(
+                        iconData: CustomIconData.star,
+                        color: primaryColor,
+                        iconWeight: favoriteProjects.contains(projectRepository.projectModel!.id) ? CustomIconWeight.solid : CustomIconWeight.regular,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+            widgetList: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextComponent(
+                        text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
+                        textAlign: TextAlign.end,
+                        fontWeight: FontWeight.bold,
+                        headerType: HeaderType.h8,
+                        color: primaryColor,
+                      ),
+                      TextComponent(
+                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
+                        textAlign: TextAlign.start,
+                        headerType: HeaderType.h6,
+                      ),
+                      TextComponent(
+                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
+                        fontWeight: FontWeight.bold,
+                        textAlign: TextAlign.end,
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                        headerType: HeaderType.h7,
+                      ),
+                    ],
                   ),
-                ),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                  child: LinearProgressIndicator(
-                    minHeight: 20,
-                    value: projectRepository.projectModel!.tasks.isNotEmpty
-                        ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length /
-                                projectRepository.projectModel!.tasks.length)
-                            .toDouble()
-                        : 0,
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      MarqueeWidget(
+                        child: TextComponent(
+                          text:
+                              "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                          headerType: HeaderType.h7,
+                        ),
+                      ),
+                      ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(50)),
+                        child: LinearProgressIndicator(
+                          minHeight: 20,
+                          value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextComponent(
-                  text: getTranslated(context, AppKeys.collaborators),
-                  textAlign: TextAlign.start,
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.fade,
-                  softWrap: true,
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: users
-                        .map((user) => Container(
-                              padding: const EdgeInsets.all(5),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
-                                  ),
-                                  TextComponent(
-                                    text: user.firstName[0] + user.lastName[0],
-                                    headerType: HeaderType.h6,
-                                  )
-                                ],
-                              ),
-                            ))
-                        .toList(),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextComponent(
+                        text: getTranslated(context, AppKeys.collaborators),
+                        textAlign: TextAlign.start,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: ref
+                                .watch(projectProvider)
+                                .projectModel!
+                                .collaborators
+                                .map((user) => Container(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                            width: 50,
+                                            child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
+                                          ),
+                                          TextComponent(
+                                            text: user.firstName[0] + user.lastName[0],
+                                            headerType: HeaderType.h6,
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                                .toList()),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Divider(color: secondaryColor, thickness: 1),
-            ),
-            ButtonComponent(
-              text: getTranslated(context, AppKeys.sendJoinRequest),
-              isOutLined: true,
-              onPressed: () {},
-            )
-          ],
-        ),
-      ],
-    );
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(color: secondaryColor, thickness: 1),
+                  ),
+                  ButtonComponent(
+                    text: getTranslated(context, AppKeys.sendJoinRequest),
+                    isOutLined: true,
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            ],
+          );
   }
 
   List<List<PopupMenuWidgetItem>> generatePopup(TaskModel taskModel) {

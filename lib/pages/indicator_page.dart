@@ -20,45 +20,33 @@ class IndicatorPage extends ConsumerStatefulWidget {
 }
 
 class _IndicatorPageState extends ConsumerState<IndicatorPage> {
-  Future<String?> getFutureFromSP() async {
-    String? loggedUser = await SharedPreferencesHelper.getString("loggedUser");
-    return loggedUser;
-  }
-
   Future<void> getFuture() async {
     UserRepository userRepository = ref.read(userProvider);
     ProjectRepository projectRepository = ref.read(projectProvider);
-    getFutureFromSP().then((loggedUserSP) {
+    await SharedPreferencesHelper.getString("loggedUser").then((loggedUserSP) {
       if (loggedUserSP != null && loggedUserSP.toString().isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           userRepository.userModel = UserModel.fromJson(jsonDecode(loggedUserSP.toString()));
           userRepository.hasProfile(userRepository.userModel!.email).then((value) {
             if (value) {
               userRepository.getUser(userRepository.userModel!.email).whenComplete(() async {
-                String? token = await getToken();
-                debugPrint('user token: $token');
+                String? token = await FirebaseMessaging.instance.getToken();
                 userRepository.updateNotificationToken(token ?? '').whenComplete(() {
                   userRepository.setLoggedUser().whenComplete(() {
                     userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
-                      userRepository.getAllUsers().whenComplete(() {
-                        projectRepository.getAllProjects().whenComplete(() {
-                          projectRepository.getAllPreferredProjects(userRepository.userModel!).whenComplete(() {
-                            projectRepository.getAllProjectsInvolved(userRepository.userModel!).whenComplete(() {
-                              if (mounted) {
-                                if (userRepository.userInfoIsFull) {
-                                  if (userRepository.userModel!.preferredCategories.isEmpty) {
-                                    Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
-                                  } else {
-                                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-                                  }
-                                  debugPrint("user info full");
-                                } else {
-                                  Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
-                                  debugPrint("user info not full");
-                                }
+                      projectRepository.getAllPreferredProjects(userRepository.userModel!).whenComplete(() {
+                        projectRepository.getAllProjectsInvolved(userRepository.userModel!).whenComplete(() {
+                          if (mounted) {
+                            if (userRepository.userInfoIsFull) {
+                              if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                              } else {
+                                Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                               }
-                            });
-                          });
+                            } else {
+                              Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
+                            }
+                          }
                         });
                       });
                     });
@@ -85,11 +73,6 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
     });
   }
 
-  Future<String?> getToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    return token;
-  }
-
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -107,7 +90,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
                       ImageAssetKeys.launcherIcon,
-                      width: UIHelper.isDevicePortrait(context) ? UIHelper.getDeviceWidth(context) / 4 : UIHelper.getDeviceHeight(context) / 4,
+                      width: UIHelper.isDevicePortrait(context) ? UIHelper.getDeviceWidth(context) / 2.6 : UIHelper.getDeviceHeight(context) / 2.6,
                     ),
                   ),
                 ),
