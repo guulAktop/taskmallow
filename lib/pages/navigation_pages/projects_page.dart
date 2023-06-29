@@ -9,6 +9,7 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/project_row_item.dart';
@@ -26,6 +27,7 @@ class _ProjectsPageState extends ConsumerState<ProjectsPage> {
   @override
   Widget build(BuildContext context) {
     ProjectRepository projectRepository = ref.watch(projectProvider);
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.projects),
       actionList: [
@@ -47,10 +49,14 @@ class _ProjectsPageState extends ConsumerState<ProjectsPage> {
       widgetList: projectRepository.allProjectsInvolved.isNotEmpty
           ? projectRepository.allProjectsInvolved
               .map((project) => ProjectRowItem(
-                    project: project,
+                    projectModel: project,
                     onTap: () {
                       ref.read(projectProvider).projectModel = project;
-                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
+                      if (project.collaborators.map((collaborator) => collaborator.email).toList().contains(userRepository.userModel!.email)) {
+                        Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
+                      } else {
+                        Navigator.pushNamed(context, projectScreenPageRoute, arguments: project);
+                      }
                     },
                   ))
               .toList()

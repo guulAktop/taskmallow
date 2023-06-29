@@ -4,18 +4,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
+import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 
 class UserRepository extends ChangeNotifier {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference projects = FirebaseFirestore.instance.collection('projects');
   CollectionReference images = FirebaseFirestore.instance.collection('images');
   CollectionReference notificationTokens = FirebaseFirestore.instance.collection('notificationTokens');
   UserModel? userModel;
+  UserModel? selectedUserModel;
   bool isSucceeded = false;
   bool userInfoIsFull = false;
-  List<UserModel> allUsers = [];
+  bool isLoading = false;
+  List<ProjectModel> selectedUserProjects = [];
+  List<ProjectModel> filteredProjects = [];
+  List<UserModel> filteredUsers = [];
 
   Future<void> register(UserModel model) async {
     isSucceeded = false;
@@ -66,20 +72,6 @@ class UserRepository extends ChangeNotifier {
   void logout(BuildContext context) {
     SharedPreferencesHelper.remove("loggedUser");
     Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
-  }
-
-  Future<void> getAllUsers() async {
-    try {
-      allUsers.clear();
-      final QuerySnapshot querySnapshot = await users.get();
-      allUsers = querySnapshot.docs.map((doc) {
-        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return UserModel.fromMap(data);
-      }).toList();
-      notifyListeners();
-    } catch (error) {
-      debugPrint("Projeler çekilirken bir hata oluştu!");
-    }
   }
 
   Future<void> setLoggedUser() async {
@@ -162,6 +154,27 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getSelectedUserByEmail(String email) async {
+    DocumentSnapshot snapshot = await users.doc(email).get();
+    selectedUserModel = UserModel.fromJson(json.encode(snapshot.data()));
+    notifyListeners();
+  }
+
+  Future<void> getSelectedUserProjects() async {
+    try {
+      selectedUserProjects.clear();
+      final QuerySnapshot querySnapshot = await projects.get();
+      final List<ProjectModel> projectsList = querySnapshot.docs.map((doc) => ProjectModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+      final String selectedUserEmail = selectedUserModel!.email;
+      final List<ProjectModel> matchingProjects =
+          projectsList.where((project) => !project.isDeleted && project.collaborators.any((user) => user.email == selectedUserEmail)).toList();
+      selectedUserProjects.addAll(matchingProjects);
+      notifyListeners();
+    } catch (error) {
+      debugPrint("Projeler çekilirken bir hata oluştu!");
+    }
+  }
+
   Future<bool> hasProfile(String email) async {
     QuerySnapshot snapshot = await users.where("email", isEqualTo: email).get();
     if (snapshot.docs.isEmpty) {
@@ -227,5 +240,47 @@ class UserRepository extends ChangeNotifier {
       debugPrint(e.message);
       return null;
     }
+  }
+
+  Future<void> searchUserAndProject(String searchText) async {
+    filteredUsers.clear();
+    filteredProjects.clear();
+    notifyListeners();
+
+    if (searchText.length > 2) {
+      isLoading = true;
+      await FirebaseFirestore.instance.collection('users').get().then((snapshot) {
+        for (var doc in snapshot.docs) {
+          UserModel searchedUserModel = UserModel.fromMap(doc.data());
+          if (filteredUsers.where((element) => element.email == searchedUserModel.email).isEmpty) {
+            if (searchedUserModel.email.toLowerCase().split("@")[0].contains(searchText) ||
+                searchedUserModel.firstName.toLowerCase().contains(searchText) ||
+                searchedUserModel.lastName.toLowerCase().contains(searchText) ||
+                ("${searchedUserModel.firstName} ${searchedUserModel.lastName}").toLowerCase().contains(searchText)) {
+              filteredUsers.add(searchedUserModel);
+            }
+          }
+        }
+        notifyListeners();
+      });
+
+      await FirebaseFirestore.instance.collection('projects').get().then((snapshot) {
+        for (var doc in snapshot.docs) {
+          ProjectModel searchedProjectModel = ProjectModel.fromMap(doc.data());
+          if (filteredProjects.where((element) => element.name == searchedProjectModel.name).isEmpty && !searchedProjectModel.isDeleted) {
+            if (searchedProjectModel.name.toLowerCase().contains(searchText) ||
+                searchedProjectModel.description.toLowerCase().contains(searchText) ||
+                searchedProjectModel.userWhoCreated.email.toLowerCase().contains(searchText) ||
+                searchedProjectModel.userWhoCreated.firstName.toLowerCase().contains(searchText) ||
+                searchedProjectModel.userWhoCreated.lastName.toLowerCase().contains(searchText) ||
+                ("${searchedProjectModel.userWhoCreated.firstName} ${searchedProjectModel.userWhoCreated.lastName}").toLowerCase().contains(searchText)) {
+              filteredProjects.add(ProjectModel.fromMap(doc.data()));
+            }
+          }
+        }
+        notifyListeners();
+      });
+    }
+    isLoading = false;
   }
 }

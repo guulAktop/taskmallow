@@ -110,7 +110,7 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
         TextFormFieldComponent(
           context: context,
           textEditingController: _taskNameTextEditingController,
-          textCapitalization: TextCapitalization.words,
+          textCapitalization: TextCapitalization.sentences,
           enabled: !isLoading,
           textInputAction: TextInputAction.next,
           hintText: getTranslated(context, AppKeys.taskName),
@@ -286,32 +286,40 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
             Future.delayed(
               const Duration(seconds: 0),
               () => showDialog(
+                barrierDismissible: !isLoading,
                 context: context,
-                builder: (BuildContext context) => CupertinoAlertDialog(
-                  content: TextComponent(text: getTranslated(context, AppKeys.aysDeleteTask), textAlign: TextAlign.start, headerType: HeaderType.h5),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      child: Text(getTranslated(context, AppKeys.yes)),
-                      onPressed: () async {
-                        if (taskModel != null) {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          taskModel.isDeleted = true;
-                          await projectRepository.updateTask(taskModel).whenComplete(() {
-                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-                            Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.projectModel);
-                          });
-                        }
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: Text(getTranslated(context, AppKeys.no)),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                builder: (BuildContext context) => StatefulBuilder(
+                  builder: (context, setState) => WillPopScope(
+                    onWillPop: () async => !isLoading,
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : CupertinoAlertDialog(
+                            content: TextComponent(text: getTranslated(context, AppKeys.aysDeleteTask), textAlign: TextAlign.start, headerType: HeaderType.h5),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text(getTranslated(context, AppKeys.yes)),
+                                onPressed: () async {
+                                  if (taskModel != null) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    taskModel.isDeleted = true;
+                                    await projectRepository.updateTask(taskModel).whenComplete(() {
+                                      Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.projectModel);
+                                    });
+                                  }
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: Text(getTranslated(context, AppKeys.no)),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
             );

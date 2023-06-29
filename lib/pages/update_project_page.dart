@@ -250,27 +250,39 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
             Future.delayed(
               const Duration(seconds: 0),
               () => showDialog(
+                barrierDismissible: !isLoading,
                 context: context,
-                builder: (BuildContext context) => CupertinoAlertDialog(
-                  content: TextComponent(text: getTranslated(context, AppKeys.aysDeleteProject), textAlign: TextAlign.start, headerType: HeaderType.h5),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                      child: Text(getTranslated(context, AppKeys.yes)),
-                      onPressed: () async {
-                        if (projectModel != null) {
-                          await projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
-                            Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-                          });
-                        }
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: Text(getTranslated(context, AppKeys.no)),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                builder: (BuildContext context) => StatefulBuilder(
+                  builder: (context, setState) => WillPopScope(
+                    onWillPop: () async => !isLoading,
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : CupertinoAlertDialog(
+                            content:
+                                TextComponent(text: getTranslated(context, AppKeys.aysDeleteProject), textAlign: TextAlign.start, headerType: HeaderType.h5),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text(getTranslated(context, AppKeys.yes)),
+                                onPressed: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  if (projectModel != null) {
+                                    await projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
+                                      Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                    });
+                                  }
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: Text(getTranslated(context, AppKeys.no)),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
             );
@@ -278,7 +290,6 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
         ),
       ],
     );
-
     return popupMenuList;
   }
 }

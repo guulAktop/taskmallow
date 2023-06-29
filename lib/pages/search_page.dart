@@ -9,9 +9,9 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -28,11 +28,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   bool isLoading = false;
   final TextEditingController _searchTextEditingController = TextEditingController();
 
-  List<UserModel> filteredUsers = [];
-  List<ProjectModel> filteredProjects = [];
-
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.searchUserOrProject),
       leadingWidget: IconButton(
@@ -48,93 +46,84 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           iconData: CustomIconData.magnifyingGlass,
           hintText: getTranslated(context, AppKeys.search),
           onChanged: (text) {
-            setState(
-              () {
-                if (text.isEmpty) {
-                  filteredUsers.clear();
-                } else {
-                  filteredUsers = ref
-                      .watch(userProvider)
-                      .allUsers
-                      .where((user) =>
-                          user.firstName.toLowerCase().contains(text.toLowerCase()) ||
-                          user.lastName.toLowerCase().contains(text.toLowerCase()) ||
-                          user.email.toLowerCase().contains(text.toLowerCase()) ||
-                          ("${user.firstName} ${user.lastName}").toLowerCase().contains(text.toLowerCase()))
-                      .toList();
-
-                  filteredProjects = ref
-                      .watch(projectProvider)
-                      .allProjects
-                      .where((project) =>
-                          project.name.toLowerCase().contains(text.toLowerCase()) ||
-                          project.description.toLowerCase().contains(text.toLowerCase()) ||
-                          project.userWhoCreated.email.toLowerCase().contains(text.toLowerCase()) ||
-                          project.userWhoCreated.firstName.toLowerCase().contains(text.toLowerCase()) ||
-                          project.userWhoCreated.lastName.toLowerCase().contains(text.toLowerCase()) ||
-                          ("${project.userWhoCreated.firstName} ${project.userWhoCreated.lastName}").toLowerCase().contains(text.toLowerCase()))
-                      .toList();
-                }
-              },
-            );
+            userRepository.searchUserAndProject(text.trim().toLowerCase());
           },
         ),
-        Visibility(
-          visible: _searchTextEditingController.text.isNotEmpty,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 20),
-              TextComponent(
-                text: filteredUsers.isNotEmpty ? getTranslated(context, AppKeys.users) : getTranslated(context, AppKeys.userNotFound),
-                color: filteredUsers.isNotEmpty ? textPrimaryLightColor : danger,
-                textAlign: TextAlign.start,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-                softWrap: true,
+        userRepository.isLoading
+            ? const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: LinearProgressIndicator(),
+                ),
+              )
+            : Column(
+                children: [
+                  Visibility(
+                    visible: _searchTextEditingController.text.length > 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20),
+                        TextComponent(
+                          text: userRepository.filteredUsers.isNotEmpty ? getTranslated(context, AppKeys.users) : getTranslated(context, AppKeys.userNotFound),
+                          color: userRepository.filteredUsers.isNotEmpty ? textPrimaryLightColor : danger,
+                          textAlign: TextAlign.start,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                        ),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: userRepository.filteredUsers.map((user) => getUserRow(user)).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: _searchTextEditingController.text.length > 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 10),
+                        TextComponent(
+                          text: userRepository.filteredProjects.isNotEmpty
+                              ? getTranslated(context, AppKeys.projects)
+                              : getTranslated(context, AppKeys.projectNotFound),
+                          color: userRepository.filteredProjects.isNotEmpty ? textPrimaryLightColor : danger,
+                          textAlign: TextAlign.start,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                        ),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: ref
+                              .watch(userProvider)
+                              .filteredProjects
+                              .map(
+                                (project) => ProjectRowItem(
+                                  projectModel: project,
+                                  onTap: () {
+                                    if (project.collaborators.map((collaborator) => collaborator.email).toList().contains(userRepository.userModel!.email)) {
+                                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: project);
+                                    } else {
+                                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: project);
+                                    }
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Column(
-                children: filteredUsers.map((user) => getUserRow(user)).toList(),
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: _searchTextEditingController.text.isNotEmpty,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 10),
-              TextComponent(
-                text: filteredProjects.isNotEmpty ? getTranslated(context, AppKeys.projects) : getTranslated(context, AppKeys.projectNotFound),
-                color: filteredProjects.isNotEmpty ? textPrimaryLightColor : danger,
-                textAlign: TextAlign.start,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-                softWrap: true,
-              ),
-              const SizedBox(height: 10),
-              Column(
-                children: filteredProjects
-                    .map(
-                      (project) => ProjectRowItem(
-                        project: project,
-                        onTap: () {
-                          Navigator.pushNamed(context, projectScreenPageRoute, arguments: project);
-                        },
-                      ),
-                    )
-                    .toList(),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
 
-  Widget getUserRow(UserModel user) {
+  Widget getUserRow(UserModel userModel) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -148,7 +137,11 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
-          Navigator.pushNamed(context, profileScreenPageRoute);
+          if (userModel.email == ref.watch(userProvider).userModel!.email) {
+            Navigator.pushNamed(context, profilePageRoute, arguments: userModel);
+          } else {
+            Navigator.pushNamed(context, profileScreenPageRoute, arguments: userModel);
+          }
         },
         child: Row(
           children: [
@@ -156,7 +149,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               width: UIHelper.getDeviceWidth(context) / 7,
               height: UIHelper.getDeviceWidth(context) / 7,
               child: CircularPhotoComponent(
-                url: user.profilePhotoURL,
+                url: userModel.profilePhotoURL,
                 hasBorder: false,
               ),
             ),
@@ -167,7 +160,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 children: [
                   MarqueeWidget(
                     child: TextComponent(
-                      text: "${user.firstName} ${user.lastName}",
+                      text: "${userModel.firstName} ${userModel.lastName}",
                       fontWeight: FontWeight.bold,
                       headerType: HeaderType.h4,
                       textAlign: TextAlign.start,
@@ -176,7 +169,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   ),
                   MarqueeWidget(
                     child: TextComponent(
-                      text: user.email,
+                      text: userModel.email,
                       headerType: HeaderType.h7,
                       textAlign: TextAlign.start,
                       maxLines: 1,

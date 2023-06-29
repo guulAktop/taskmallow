@@ -8,6 +8,8 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/task_model.dart';
+import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
@@ -35,8 +37,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
     ProjectRepository projectRepository = ref.watch(projectProvider);
+    UserModel? userArg = ModalRoute.of(context)!.settings.arguments as UserModel?;
+
     return SliverScaffoldWidget(
       title: getTranslated(context, AppKeys.profile),
+      leadingWidget: userArg == null
+          ? null
+          : IconButton(
+              splashRadius: AppConstants.iconSplashRadius,
+              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+              onPressed: () => isLoading ? null : Navigator.pop(context),
+            ),
       actionList: [
         IconButton(
           icon: const IconComponent(
@@ -85,7 +96,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                             child: TextComponent(
                               text: "${userRepository.userModel?.firstName} ${userRepository.userModel?.lastName}",
                               fontWeight: FontWeight.bold,
-                              headerType: HeaderType.h4,
+                              headerType: HeaderType.h3,
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -145,51 +156,42 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: getTranslated(context, AppKeys.projectsInvolved),
-                        style: const TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                      const TextSpan(
-                        text: "3",
-                        style: TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: itemBackgroundLightColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                   ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: getTranslated(context, AppKeys.completedTasks),
-                        style: const TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontFamily: "Poppins",
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: getTranslated(context, AppKeys.completedTasks),
+                          style: const TextStyle(
+                            color: textPrimaryLightColor,
+                            fontSize: 18,
+                            fontFamily: "Poppins",
+                          ),
                         ),
-                      ),
-                      const TextSpan(
-                        text: "27",
-                        style: TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
+                        TextSpan(
+                          text: projectRepository.allProjectsInvolved
+                              .expand((project) => project.tasks)
+                              .where(
+                                  (task) => !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.userModel!.email)
+                              .length
+                              .toString(),
+                          style: const TextStyle(
+                            color: textPrimaryLightColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Poppins",
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const Padding(
@@ -262,18 +264,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
           ),
         ),
         SliverToBoxAdapter(
-          child: Visibility(
-            visible: projectRepository.allProjectsInvolved.isNotEmpty,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-              child: TextComponent(
-                text: getTranslated(context, AppKeys.projects),
-                textAlign: TextAlign.start,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-                headerType: HeaderType.h6,
-                softWrap: true,
-              ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+            child: TextComponent(
+              text: "${getTranslated(context, AppKeys.projects)} (${projectRepository.allProjectsInvolved.length})",
+              textAlign: TextAlign.start,
+              fontWeight: FontWeight.bold,
+              overflow: TextOverflow.fade,
+              headerType: HeaderType.h6,
+              softWrap: true,
             ),
           ),
         ),

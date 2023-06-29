@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/project_model.dart';
-import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class ProjectGridItem extends StatefulWidget {
@@ -64,15 +64,11 @@ class _ProjectGridItemState extends State<ProjectGridItem> {
                       color: widget.indicatorForegroundColor,
                       strokeWidth: 15,
                       backgroundColor: widget.indicatorBackgroundColor,
-                      value: widget.projectModel.tasks.isNotEmpty
-                          ? (widget.projectModel.tasks.where((task) => task.situation == TaskSituation.done).length / widget.projectModel.tasks.length)
-                              .toDouble()
-                          : 0,
+                      value: AppFunctions().getPercentageOfCompletion(widget.projectModel),
                     ),
                   ),
                   TextComponent(
-                    text:
-                        "${widget.projectModel.tasks.isNotEmpty ? (widget.projectModel.tasks.where((task) => task.situation == TaskSituation.done).length / widget.projectModel.tasks.length * 100).toStringAsFixed(0) : 0}%",
+                    text: "${(AppFunctions().getPercentageOfCompletion(widget.projectModel) * 100).toStringAsFixed(0)}%",
                     headerType: HeaderType.h6,
                   )
                 ],

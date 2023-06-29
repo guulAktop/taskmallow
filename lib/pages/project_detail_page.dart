@@ -7,6 +7,7 @@ import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
@@ -37,6 +38,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
   @override
   void initState() {
     super.initState();
+
     ref.read(projectProvider).isLoading = true;
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
@@ -180,7 +182,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                       MarqueeWidget(
                         child: TextComponent(
                           text:
-                              "${projectRepository.projectModel!.tasks.isNotEmpty ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length / projectRepository.projectModel!.tasks.length * 100).toStringAsFixed(0) : 0}% ${getTranslated(context, AppKeys.completed)}",
+                              "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.fade,
                           softWrap: true,
@@ -191,11 +193,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                         borderRadius: const BorderRadius.all(Radius.circular(50)),
                         child: LinearProgressIndicator(
                           minHeight: 20,
-                          value: projectRepository.projectModel!.tasks.isNotEmpty
-                              ? (projectRepository.projectModel!.tasks.where((task) => task.situation == TaskSituation.done).length /
-                                      projectRepository.projectModel!.tasks.length)
-                                  .toDouble()
-                              : 0,
+                          value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
                         ),
                       ),
                     ],
@@ -447,9 +445,13 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               prefixIcon: CustomIconData.list,
               color: primaryColor,
               function: () {
-                setState(() {
+                if (ref.watch(projectProvider).projectModel != null) {
+                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.to_do;
                   taskModel.situation = TaskSituation.to_do;
-                });
+                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
+                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
+                  });
+                }
               },
             ),
           )
@@ -462,9 +464,13 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               prefixIcon: CustomIconData.spinner,
               color: warningDark,
               function: () {
-                setState(() {
+                if (ref.watch(projectProvider).projectModel != null) {
+                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.in_progress;
                   taskModel.situation = TaskSituation.in_progress;
-                });
+                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
+                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
+                  });
+                }
               },
             ),
           )
@@ -477,9 +483,13 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               prefixIcon: CustomIconData.circleCheck,
               color: success,
               function: () {
-                setState(() {
+                if (ref.watch(projectProvider).projectModel != null) {
+                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.done;
                   taskModel.situation = TaskSituation.done;
-                });
+                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
+                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
+                  });
+                }
               },
             ),
           )
