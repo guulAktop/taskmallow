@@ -178,6 +178,11 @@ class ProjectRepository extends ChangeNotifier {
         return;
       }
 
+      int latestIndex = latestProjects.indexWhere((item) => item.id == projectModel!.id);
+      if (latestIndex != -1 && !projectModel!.isDeleted) {
+        latestProjects[latestIndex] = projectModel!;
+      }
+
       int involvedIndex = allRelatedProjects.indexWhere((item) => item.id == projectModel!.id);
       if (involvedIndex != -1 && !projectModel!.isDeleted) {
         allRelatedProjects[involvedIndex] = projectModel!;
