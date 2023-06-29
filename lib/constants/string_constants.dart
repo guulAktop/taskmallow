@@ -67,7 +67,7 @@ class AppKeys {
   static String accept = 'accept';
   static String reject = 'reject';
   static String hello = 'hello';
-  static String someProjects = 'some_projects';
+  static String latestProjects = 'latest_projects';
   static String startMatch = 'start_match';
   static String projectMatchContext = 'project_match_context';
   static String home = 'home';
@@ -130,6 +130,10 @@ class AppKeys {
   static String enterTaskName = 'enter_task_name';
   static String selectSituation = 'select_situation';
   static String aysDeleteTask = 'ays_delete_task';
+  static String goodMorning = 'good_morning';
+  static String goodAfternoon = 'good_afternoon';
+  static String goodEvening = 'good_evening';
+  static String goodNight = 'good_night';
 }
 
 class CategoryKeys {

@@ -25,6 +25,21 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMixin {
   bool isLoading = false;
 
+  String greeting() {
+    int hour = DateTime.now().hour;
+    if (hour >= 6 && hour < 12) {
+      return getTranslated(context, AppKeys.goodMorning);
+    } else if (hour >= 12 && hour < 18) {
+      return getTranslated(context, AppKeys.goodAfternoon);
+    } else if (hour >= 18 && hour < 22) {
+      return getTranslated(context, AppKeys.goodEvening);
+    } else if (hour >= 22) {
+      return getTranslated(context, AppKeys.goodNight);
+    } else {
+      return getTranslated(context, AppKeys.goodNight);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
     return SliverScaffoldWidget(
       centerTitle: false,
       leadingWidth: 0,
-      title: "${getTranslated(context, AppKeys.hello)} ${userRepository.userModel!.firstName}",
+      title: "${greeting()} ${userRepository.userModel!.firstName}",
       actionList: [
         IconButton(
           onPressed: () {
@@ -74,7 +89,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
           child: Padding(
             padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
             child: TextComponent(
-              text: getTranslated(context, AppKeys.someProjects),
+              text: getTranslated(context, AppKeys.latestProjects),
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
@@ -94,21 +109,21 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return ProjectGridItem(
-                  projectModel: projectRepository.allPreferredProjects[index],
+                  projectModel: projectRepository.latestProjects[index],
                   onTap: () {
-                    ref.read(projectProvider).projectModel = projectRepository.allPreferredProjects[index];
-                    if (projectRepository.allPreferredProjects[index].collaborators
+                    ref.read(projectProvider).projectModel = projectRepository.latestProjects[index];
+                    if (projectRepository.latestProjects[index].collaborators
                         .map((collaborator) => collaborator.email)
                         .toList()
                         .contains(userRepository.userModel!.email)) {
-                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allPreferredProjects[index]);
+                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.latestProjects[index]);
                     } else {
-                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.allPreferredProjects[index]);
+                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.latestProjects[index]);
                     }
                   },
                 );
               },
-              childCount: projectRepository.allPreferredProjects.length,
+              childCount: projectRepository.latestProjects.length,
             ),
           ),
         ),
