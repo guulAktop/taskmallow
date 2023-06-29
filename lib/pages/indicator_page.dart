@@ -77,6 +77,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.read(selectedPageIndexProvider.notifier).state = 0;
     return IgnorePointer(
       child: FutureBuilder(
         future: getFuture(),
