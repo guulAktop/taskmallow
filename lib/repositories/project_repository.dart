@@ -23,6 +23,7 @@ class ProjectRepository extends ChangeNotifier {
       await projects.doc(projectId).set((project).toMap()).whenComplete(() {
         projectModel = project;
         allRelatedProjects.insert(0, project);
+        latestProjects.insert(0, project);
         if (project.userWhoCreated.preferredCategories.contains(project.category.name)) {
           allPreferredProjects.add(project);
         }
