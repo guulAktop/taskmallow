@@ -151,7 +151,7 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                       TextComponent(
                         text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
                         textAlign: TextAlign.start,
-                        headerType: HeaderType.h6,
+                        headerType: HeaderType.h5,
                       ),
                       TextComponent(
                         text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
@@ -159,7 +159,7 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                         textAlign: TextAlign.end,
                         overflow: TextOverflow.fade,
                         softWrap: true,
-                        headerType: HeaderType.h7,
+                        headerType: HeaderType.h8,
                       ),
                     ],
                   ),

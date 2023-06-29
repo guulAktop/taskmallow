@@ -91,7 +91,7 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                               children: [
                                 MarqueeWidget(
                                   child: TextComponent(
-                                    text: "${userRepository.selectedUserModel!.firstName} ${userRepository.selectedUserModel!.lastName}",
+                                    text: "${userRepository.selectedUserModel?.firstName} ${userRepository.selectedUserModel?.lastName}",
                                     fontWeight: FontWeight.bold,
                                     headerType: HeaderType.h3,
                                     textAlign: TextAlign.start,

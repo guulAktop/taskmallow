@@ -29,6 +29,13 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   final TextEditingController _searchTextEditingController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    ref.read(userProvider).filteredUsers.clear();
+    ref.read(userProvider).filteredProjects.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(
@@ -52,7 +59,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         userRepository.isLoading
             ? const Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(vertical: 5),
                   child: LinearProgressIndicator(),
                 ),
               )

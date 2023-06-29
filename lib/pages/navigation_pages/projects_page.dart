@@ -46,8 +46,8 @@ class _ProjectsPageState extends ConsumerState<ProjectsPage> {
           Navigator.pushNamed(context, createProjectPageRoute);
         },
       ),
-      widgetList: projectRepository.allProjectsInvolved.isNotEmpty
-          ? projectRepository.allProjectsInvolved
+      widgetList: projectRepository.allRelatedProjects.isNotEmpty
+          ? projectRepository.allRelatedProjects
               .map((project) => ProjectRowItem(
                     projectModel: project,
                     onTap: () {

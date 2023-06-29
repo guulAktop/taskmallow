@@ -177,7 +177,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                           ),
                         ),
                         TextSpan(
-                          text: projectRepository.allProjectsInvolved
+                          text: projectRepository.allRelatedProjects
                               .expand((project) => project.tasks)
                               .where(
                                   (task) => !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.userModel!.email)
@@ -267,7 +267,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
           child: Padding(
             padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
             child: TextComponent(
-              text: "${getTranslated(context, AppKeys.projects)} (${projectRepository.allProjectsInvolved.length})",
+              text: "${getTranslated(context, AppKeys.projects)} (${projectRepository.allRelatedProjects.length})",
               textAlign: TextAlign.start,
               fontWeight: FontWeight.bold,
               overflow: TextOverflow.fade,
@@ -288,13 +288,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return ProjectGridItem(
-                  projectModel: projectRepository.allProjectsInvolved[index],
+                  projectModel: projectRepository.allRelatedProjects[index],
                   onTap: () {
-                    Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allProjectsInvolved[index]);
+                    Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allRelatedProjects[index]);
                   },
                 );
               },
-              childCount: projectRepository.allProjectsInvolved.length,
+              childCount: projectRepository.allRelatedProjects.length,
             ),
           ),
         ),

@@ -43,7 +43,11 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
       await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
-        ref.read(projectProvider).isLoading = false;
+        if (ref.read(projectProvider).projectModel != null && ref.read(projectProvider).projectModel!.isDeleted) {
+          Navigator.pop(context);
+        } else {
+          ref.read(projectProvider).isLoading = false;
+        }
       });
     });
 
@@ -163,7 +167,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                       TextComponent(
                         text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
                         textAlign: TextAlign.start,
-                        headerType: HeaderType.h6,
+                        headerType: HeaderType.h5,
                       ),
                       TextComponent(
                         text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
@@ -171,7 +175,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                         textAlign: TextAlign.end,
                         overflow: TextOverflow.fade,
                         softWrap: true,
-                        headerType: HeaderType.h7,
+                        headerType: HeaderType.h8,
                       ),
                     ],
                   ),

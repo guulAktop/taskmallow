@@ -8,8 +8,9 @@ class ProjectRepository extends ChangeNotifier {
   CollectionReference projects = FirebaseFirestore.instance.collection('projects');
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   ProjectModel? projectModel;
-  List<ProjectModel> allProjectsInvolved = [];
+  List<ProjectModel> allRelatedProjects = [];
   List<ProjectModel> allPreferredProjects = [];
+  List<ProjectModel> latestProjects = [];
   bool isSucceeded = false;
   bool isLoading = false;
 
@@ -21,7 +22,7 @@ class ProjectRepository extends ChangeNotifier {
       project = (project..id = projectId);
       await projects.doc(projectId).set((project).toMap()).whenComplete(() {
         projectModel = project;
-        allProjectsInvolved.insert(0, project);
+        allRelatedProjects.insert(0, project);
         if (project.userWhoCreated.preferredCategories.contains(project.category.name)) {
           allPreferredProjects.add(project);
         }
@@ -49,7 +50,7 @@ class ProjectRepository extends ChangeNotifier {
   Future<void> getAllPreferredProjects(UserModel userModel) async {
     try {
       allPreferredProjects.clear();
-      final QuerySnapshot querySnapshot = await projects.get();
+      final QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).orderBy('createdDate', descending: true).get();
       final List<ProjectModel> preferredProjects = querySnapshot.docs
           .map((doc) {
             final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -73,11 +74,11 @@ class ProjectRepository extends ChangeNotifier {
     }
   }
 
-  Future<void> getAllProjectsInvolved(UserModel userModel) async {
+  Future<void> getAllRelatedProjects(UserModel userModel) async {
     try {
-      allProjectsInvolved.clear();
-      final QuerySnapshot querySnapshot = await projects.get();
-      allProjectsInvolved = querySnapshot.docs
+      allRelatedProjects.clear();
+      final QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).orderBy('createdDate', descending: true).get();
+      allRelatedProjects = querySnapshot.docs
           .map((doc) {
             final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             final ProjectModel project = ProjectModel.fromMap(data);
@@ -100,11 +101,10 @@ class ProjectRepository extends ChangeNotifier {
       final DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
       if (projectSnapshot.exists) {
         final ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
-        final String userEmail = project.userWhoCreated.email;
-        final DocumentSnapshot userSnapshot = await users.doc(userEmail).get();
+        final DocumentSnapshot userSnapshot = await users.doc(project.userWhoCreated.email).get();
 
         if (userSnapshot.exists) {
-          final UserModel user = UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>);
+          final UserModel user = UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>)..password = null;
           final List<UserModel> collaborators = await _fetchCollaborators(project.collaborators);
           projectModel = project.copyWith(
             userWhoCreated: user,
@@ -125,8 +125,8 @@ class ProjectRepository extends ChangeNotifier {
       for (final UserModel collaborator in collaborators) {
         final DocumentSnapshot collaboratorSnapshot = await users.doc(collaborator.email).get();
         if (collaboratorSnapshot.exists) {
-          final UserModel currentCollaborator = UserModel.fromMap(collaboratorSnapshot.data() as Map<String, dynamic>);
-          currentCollaborators.add(currentCollaborator..password = null);
+          final UserModel currentCollaborator = UserModel.fromMap(collaboratorSnapshot.data() as Map<String, dynamic>)..password = null;
+          currentCollaborators.add(currentCollaborator);
         }
       }
     } catch (error) {
@@ -172,14 +172,15 @@ class ProjectRepository extends ChangeNotifier {
   updateProjectInAllLists() {
     if (projectModel != null) {
       if (projectModel!.isDeleted) {
-        allProjectsInvolved.removeWhere((element) => element.id == projectModel!.id);
+        latestProjects.removeWhere((element) => element.id == projectModel!.id);
+        allRelatedProjects.removeWhere((element) => element.id == projectModel!.id);
         allPreferredProjects.removeWhere((element) => element.id == projectModel!.id);
         return;
       }
 
-      int involvedIndex = allProjectsInvolved.indexWhere((item) => item.id == projectModel!.id);
+      int involvedIndex = allRelatedProjects.indexWhere((item) => item.id == projectModel!.id);
       if (involvedIndex != -1 && !projectModel!.isDeleted) {
-        allProjectsInvolved[involvedIndex] = projectModel!;
+        allRelatedProjects[involvedIndex] = projectModel!;
       }
 
       int preferredIndex = allPreferredProjects.indexWhere((item) => item.id == projectModel!.id);
@@ -187,7 +188,19 @@ class ProjectRepository extends ChangeNotifier {
         allPreferredProjects[preferredIndex] = projectModel!;
       }
     }
-    allProjectsInvolved.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
     notifyListeners();
+  }
+
+  Future<void> getLatestProjects() async {
+    latestProjects.clear();
+    try {
+      QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).orderBy('createdDate', descending: true).limit(20).get();
+      for (var doc in querySnapshot.docs) {
+        ProjectModel project = ProjectModel.fromMap(doc.data() as Map<String, dynamic>);
+        latestProjects.add(project);
+      }
+    } catch (e) {
+      debugPrint('Error fetching latest projects: $e');
+    }
   }
 }
