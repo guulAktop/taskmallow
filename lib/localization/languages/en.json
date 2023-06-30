@@ -126,6 +126,10 @@
     "good_afternoon":"Good afternoon,",
     "good_evening":"Good evening,",
     "good_night":"Good night,",
+    "operation_successful":"The operation is successful.",
+    "operation_failed":"The operation failed.",
+    "project_added_favorites":"Project successfully added to favorites.",
+    "project_removed_favorites":"The project has been successfully removed from favourites.",
 
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",

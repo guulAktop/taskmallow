@@ -134,6 +134,10 @@ class AppKeys {
   static String goodAfternoon = 'good_afternoon';
   static String goodEvening = 'good_evening';
   static String goodNight = 'good_night';
+  static String operationSuccessful = 'operation_successful';
+  static String operationFailed = 'operation_failed';
+  static String projectAddedFavorites = 'project_added_favorites';
+  static String projectRemovedFavorites = 'project_removed_favorites';
 }
 
 class CategoryKeys {

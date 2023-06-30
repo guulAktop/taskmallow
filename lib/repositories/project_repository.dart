@@ -11,6 +11,7 @@ class ProjectRepository extends ChangeNotifier {
   List<ProjectModel> allRelatedProjects = [];
   List<ProjectModel> allPreferredProjects = [];
   List<ProjectModel> latestProjects = [];
+  List<ProjectModel> favoriteProjects = [];
   bool isSucceeded = false;
   bool isLoading = false;
 
@@ -39,10 +40,11 @@ class ProjectRepository extends ChangeNotifier {
     isSucceeded = false;
     try {
       final String projectId = project.id;
-      await projects.doc(projectId).update(project.toMap());
-      projectModel = project;
-      updateProjectInAllLists();
-      isSucceeded = true;
+      await projects.doc(projectId).update(project.toMap()).whenComplete(() {
+        projectModel = project;
+        updateProjectInAllLists();
+        isSucceeded = true;
+      });
     } catch (error) {
       isSucceeded = false;
     }
@@ -173,6 +175,7 @@ class ProjectRepository extends ChangeNotifier {
   updateProjectInAllLists() {
     if (projectModel != null) {
       if (projectModel!.isDeleted) {
+        favoriteProjects.removeWhere((element) => element.id == projectModel!.id);
         latestProjects.removeWhere((element) => element.id == projectModel!.id);
         allRelatedProjects.removeWhere((element) => element.id == projectModel!.id);
         allPreferredProjects.removeWhere((element) => element.id == projectModel!.id);
@@ -193,6 +196,11 @@ class ProjectRepository extends ChangeNotifier {
       if (preferredIndex != -1 && !projectModel!.isDeleted) {
         allPreferredProjects[preferredIndex] = projectModel!;
       }
+
+      int favoriteIndex = favoriteProjects.indexWhere((item) => item.id == projectModel!.id);
+      if (favoriteIndex != -1 && !projectModel!.isDeleted) {
+        favoriteProjects[favoriteIndex] = projectModel!;
+      }
     }
     notifyListeners();
   }
@@ -207,6 +215,23 @@ class ProjectRepository extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Error fetching latest projects: $e');
+    }
+  }
+
+  Future<void> getFavoriteProjects(UserModel user) async {
+    try {
+      for (String projectId in user.favoriteProjects) {
+        DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
+        if (projectSnapshot.exists) {
+          ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
+          if (!project.isDeleted) {
+            favoriteProjects.add(project);
+          }
+        }
+        notifyListeners();
+      }
+    } catch (error) {
+      debugPrint("Favori projeler çekilirken bir hata oluştu!");
     }
   }
 }
