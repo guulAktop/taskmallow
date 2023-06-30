@@ -126,6 +126,10 @@
     "good_afternoon":"Tünaydın,",
     "good_evening":"İyi akşamlar,",
     "good_night":"İyi geceler,",
+    "operation_successful":"İşlem başarılı.",
+    "operation_failed":"İşlem başarısız.",
+    "project_added_favorites":"Proje başarıyla favorilere eklendi.",
+    "project_removed_favorites":"Proje başarıyla favorilerden kaldırıldı.",
 
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",

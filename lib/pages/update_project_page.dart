@@ -269,6 +269,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
                                   });
                                   if (projectModel != null) {
                                     await projectRepository.update(projectModel!..isDeleted = true).whenComplete(() {
+                                      projectRepository.updateProjectInAllLists();
                                       Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                                     });
                                   }

@@ -37,17 +37,19 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                       projectRepository.getAllPreferredProjects(userRepository.userModel!).whenComplete(() {
                         projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
                           projectRepository.getLatestProjects().whenComplete(() {
-                            if (mounted) {
-                              if (userRepository.userInfoIsFull) {
-                                if (userRepository.userModel!.preferredCategories.isEmpty) {
-                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                            projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
+                              if (mounted) {
+                                if (userRepository.userInfoIsFull) {
+                                  if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                    Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                                  } else {
+                                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  }
                                 } else {
-                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                                 }
-                              } else {
-                                Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                               }
-                            }
+                            });
                           });
                         });
                       });

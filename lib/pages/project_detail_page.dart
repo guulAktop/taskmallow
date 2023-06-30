@@ -13,6 +13,7 @@ import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
@@ -33,7 +34,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
   bool isExpanded = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  List<String> favoriteProjects = [];
 
   @override
   void initState() {
@@ -93,6 +93,45 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
   @override
   Widget build(BuildContext context) {
     ProjectRepository projectRepository = ref.watch(projectProvider);
+    UserRepository userRepository = ref.watch(userProvider);
+
+    checkFavoriteStatus() async {
+      if (projectRepository.projectModel != null) {
+        setState(() {
+          isLoading = true;
+        });
+        if (!projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)) {
+          ref.read(projectProvider).favoriteProjects.add(projectRepository.projectModel!);
+          await userRepository
+              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .whenComplete(() {
+            AppFunctions()
+                .showSnackbar(context, getTranslated(context, AppKeys.projectAddedFavorites), backgroundColor: successDark, icon: CustomIconData.circlePlus);
+          }).onError((error, stackTrace) {
+            ref.read(projectProvider).favoriteProjects.removeWhere((element) => element.id == projectRepository.projectModel!.id);
+            AppFunctions()
+                .showSnackbar(context, getTranslated(context, AppKeys.operationFailed), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
+          });
+        } else {
+          ref.read(projectProvider).favoriteProjects.removeWhere((element) => element.id == projectRepository.projectModel!.id);
+          await userRepository
+              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .whenComplete(() {
+            AppFunctions()
+                .showSnackbar(context, getTranslated(context, AppKeys.projectRemovedFavorites), backgroundColor: successDark, icon: CustomIconData.circleMinus);
+          }).onError((error, stackTrace) {
+            ref.read(projectProvider).favoriteProjects.add(projectRepository.projectModel!);
+            AppFunctions()
+                .showSnackbar(context, getTranslated(context, AppKeys.operationFailed), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
+          });
+        }
+      }
+      projectRepository.updateProjectInAllLists();
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     return projectRepository.isLoading
         ? const BaseScaffoldWidget(
             widgetList: [
@@ -104,6 +143,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
             ],
           )
         : BaseScaffoldWidget(
+            popScopeFunction: isLoading ? () async => false : () async => true,
             title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
             leadingWidget: IconButton(
               splashRadius: AppConstants.iconSplashRadius,
@@ -112,20 +152,9 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
             ),
             actionList: [
               IconButton(
-                onPressed: () {
-                  debugPrint(favoriteProjects.length.toString());
+                onPressed: () async {
                   handleButtonTap();
-                  if (projectRepository.projectModel != null) {
-                    if (!favoriteProjects.contains(projectRepository.projectModel!.id)) {
-                      setState(() {
-                        favoriteProjects.add(projectRepository.projectModel!.id);
-                      });
-                    } else {
-                      setState(() {
-                        favoriteProjects.remove(projectRepository.projectModel!.id);
-                      });
-                    }
-                  }
+                  checkFavoriteStatus();
                 },
                 splashRadius: AppConstants.iconSplashRadius,
                 icon: AnimatedBuilder(
@@ -136,7 +165,9 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                       child: IconComponent(
                         iconData: CustomIconData.star,
                         color: primaryColor,
-                        iconWeight: favoriteProjects.contains(projectRepository.projectModel!.id) ? CustomIconWeight.solid : CustomIconWeight.regular,
+                        iconWeight: projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)
+                            ? CustomIconWeight.solid
+                            : CustomIconWeight.regular,
                       ),
                     );
                   },

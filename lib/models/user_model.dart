@@ -14,6 +14,7 @@ class UserModel {
   String twitterProfileURL;
   String? joinDate;
   List<String> preferredCategories;
+  List<String> favoriteProjects;
   String? notificationToken;
 
   UserModel({
@@ -29,6 +30,7 @@ class UserModel {
     required this.twitterProfileURL,
     this.joinDate,
     this.preferredCategories = const [],
+    this.favoriteProjects = const [],
     this.notificationToken,
   });
 
@@ -50,6 +52,7 @@ class UserModel {
       'twitterProfileURL': twitterProfileURL,
       'joinDate': joinDate ?? DateTime.now().toString(),
       'preferredCategories': preferredCategories.toList(),
+      'favoriteProjects': favoriteProjects.toList(),
       'notificationToken': notificationToken,
     };
   }
@@ -68,6 +71,7 @@ class UserModel {
       twitterProfileURL: map['twitterProfileURL'] as String,
       joinDate: map['joinDate'] != null ? map['joinDate'] as String : null,
       preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<dynamic>)) : [],
+      favoriteProjects: map['favoriteProjects'] != null ? List<String>.from((map['favoriteProjects'] as List<dynamic>)) : [],
       notificationToken: map['notificationToken'] != null ? map['notificationToken'] as String : null,
     );
   }
