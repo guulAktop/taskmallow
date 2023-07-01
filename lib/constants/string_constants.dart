@@ -99,7 +99,7 @@ class AppKeys {
   static String completed = 'completed';
   static String yourMatches = 'your_matches';
   static String hereAreTheProjects = 'here_are_the_projects';
-  static String hereAreTheCollaborators = 'here_are_the_collaborators';
+  static String hereAreTheUsers = 'here_are_the_users';
   static String takeALook = 'take_a_look';
   static String sendJoinRequest = 'send_join_request';
   static String searchUserOrProject = 'search_user_or_project';
@@ -138,6 +138,8 @@ class AppKeys {
   static String operationFailed = 'operation_failed';
   static String projectAddedFavorites = 'project_added_favorites';
   static String projectRemovedFavorites = 'project_removed_favorites';
+  static String noProjectMatching = 'no_project_matching';
+  static String noUserMatching = 'no_user_matching';
 }
 
 class CategoryKeys {

@@ -14,3 +14,4 @@ final projectProvider = ChangeNotifierProvider((ref) {
 });
 
 final selectedPageIndexProvider = StateProvider<int>((ref) => 0);
+final appVersionProvider = StateProvider<String>((ref) => "");

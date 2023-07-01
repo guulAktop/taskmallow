@@ -185,7 +185,7 @@ class AppFunctions {
   Future<bool> sendVerificationCode(String toMail, String code) async {
     try {
       await FirebaseFunctions.instance.httpsCallable('sendVerificationCode').call(<String, dynamic>{'to': toMail, 'code': code});
-      debugPrint("sended");
+      debugPrint("sended: $code");
       return true;
     } on FirebaseFunctionsException catch (error) {
       debugPrint(error.code);

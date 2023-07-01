@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
@@ -30,6 +31,8 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: const TextStyle(fontSize: 0),
+        unselectedLabelStyle: const TextStyle(fontSize: 0),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         backgroundColor: appBackgroundLightColor,
@@ -54,11 +57,19 @@ class _NavigationPageState extends ConsumerState<NavigationPage> {
             label: getTranslated(context, AppKeys.projects),
           ),
           BottomNavigationBarItem(
-            icon: IconComponent(
-              iconData: CustomIconData.user,
-              size: 24,
-              iconWeight: selectedIndex == 2 ? CustomIconWeight.solid : CustomIconWeight.regular,
-              color: selectedIndex == 2 ? primaryColor : secondaryColor,
+            // icon: IconComponent(
+            //   iconData: CustomIconData.user,
+            //   size: 24,
+            //   iconWeight: selectedIndex == 2 ? CustomIconWeight.solid : CustomIconWeight.regular,
+            //   color: selectedIndex == 2 ? primaryColor : secondaryColor,
+            // ),
+            icon: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularPhotoComponent(
+                url: ref.watch(userProvider).userModel!.profilePhotoURL,
+                hasBorder: selectedIndex == 2 ? true : false,
+              ),
             ),
             label: getTranslated(context, AppKeys.profile),
           )

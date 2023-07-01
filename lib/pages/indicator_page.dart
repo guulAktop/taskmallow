@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
@@ -21,6 +22,11 @@ class IndicatorPage extends ConsumerStatefulWidget {
 
 class _IndicatorPageState extends ConsumerState<IndicatorPage> {
   Future<void> getFuture() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(selectedPageIndexProvider.notifier).state = 0;
+    });
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    ref.read(appVersionProvider.notifier).state = packageInfo.version;
     UserRepository userRepository = ref.read(userProvider);
     ProjectRepository projectRepository = ref.read(projectProvider);
     await SharedPreferencesHelper.getString("loggedUser").then((loggedUserSP) {
@@ -34,22 +40,20 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                 userRepository.updateNotificationToken(token ?? '').whenComplete(() {
                   userRepository.setLoggedUser().whenComplete(() {
                     userRepository.userInfoFull(userRepository.userModel!.email).whenComplete(() {
-                      projectRepository.getAllPreferredProjects(userRepository.userModel!).whenComplete(() {
-                        projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
-                          projectRepository.getLatestProjects().whenComplete(() {
-                            projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
-                              if (mounted) {
-                                if (userRepository.userInfoIsFull) {
-                                  if (userRepository.userModel!.preferredCategories.isEmpty) {
-                                    Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
-                                  } else {
-                                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-                                  }
+                      projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
+                        projectRepository.getLatestProjects().whenComplete(() {
+                          projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
+                            if (mounted) {
+                              if (userRepository.userInfoIsFull) {
+                                if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
                                 } else {
-                                  Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
+                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
                                 }
+                              } else {
+                                Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                               }
-                            });
+                            }
                           });
                         });
                       });
@@ -79,7 +83,6 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.read(selectedPageIndexProvider.notifier).state = 0;
     return IgnorePointer(
       child: FutureBuilder(
         future: getFuture(),
