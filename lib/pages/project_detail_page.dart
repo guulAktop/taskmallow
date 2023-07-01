@@ -101,7 +101,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
           isLoading = true;
         });
         if (!projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)) {
-          ref.read(projectProvider).favoriteProjects.add(projectRepository.projectModel!);
+          ref.read(projectProvider).favoriteProjects.insert(0, projectRepository.projectModel!);
           await userRepository
               .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
               .whenComplete(() {
@@ -120,13 +120,12 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.projectRemovedFavorites), backgroundColor: successDark, icon: CustomIconData.circleMinus);
           }).onError((error, stackTrace) {
-            ref.read(projectProvider).favoriteProjects.add(projectRepository.projectModel!);
+            ref.read(projectProvider).favoriteProjects.insert(0, projectRepository.projectModel!);
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.operationFailed), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
           });
         }
       }
-      projectRepository.updateProjectInAllLists();
       setState(() {
         isLoading = false;
       });

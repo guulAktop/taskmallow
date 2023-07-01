@@ -12,6 +12,7 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -39,6 +40,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
   @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
+    ProjectRepository projectRepository = ref.watch(projectProvider);
     return BaseScaffoldWidget(
       title: getTranslated(context, AppKeys.collaborators),
       leadingWidget: IconButton(
@@ -192,7 +194,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
                 softWrap: true,
               ),
               Column(
-                children: invitedUsers.map((user) => getUserRow(user)).toList(),
+                children: invitedUsers.map((user) => getUserRow(user, projectRepository)).toList(),
               ),
             ],
           ),
@@ -224,7 +226,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
             : Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
-                  children: userRepository.filteredUsers.map((user) => getUserRow(user)).toList(),
+                  children: userRepository.filteredUsers.map((user) => getUserRow(user, projectRepository)).toList(),
                 ),
               ),
         const SizedBox(height: 10),
@@ -232,17 +234,17 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
         Row(
           children: [
             const Expanded(
-              child: Divider(color: secondaryColor, thickness: 1),
+              child: Divider(color: matchSecondaryColor, thickness: 1),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextComponent(
                 text: getTranslated(context, AppKeys.or),
-                color: secondaryColor,
+                color: matchSecondaryColor,
               ),
             ),
             const Expanded(
-              child: Divider(color: secondaryColor, thickness: 1),
+              child: Divider(color: matchSecondaryColor, thickness: 1),
             ),
           ],
         ),
@@ -260,7 +262,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
     );
   }
 
-  Widget getUserRow(UserModel user) {
+  Widget getUserRow(UserModel user, ProjectRepository projectRepository) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -316,32 +318,34 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
                 ],
               ),
             ),
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(50)),
-              child: Material(
-                color: Colors.transparent,
-                child: IconButton(
-                  tooltip: !invitedUsers.any((element) => element.email == user.email)
-                      ? getTranslated(context, AppKeys.invite)
-                      : getTranslated(context, AppKeys.removeInvite),
-                  onPressed: () {
-                    if (!invitedUsers.any((element) => element.email == user.email)) {
-                      setState(() {
-                        invitedUsers.add(user);
-                      });
-                    } else {
-                      setState(() {
-                        invitedUsers.removeWhere((element) => element.email == user.email);
-                      });
-                    }
-                  },
-                  icon: IconComponent(
-                    iconData: !invitedUsers.any((element) => element.email == user.email) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
-                    color: !invitedUsers.any((element) => element.email == user.email) ? primaryColor : dangerDark,
+            projectRepository.projectModel!.collaborators.any((element) => element.email == user.email)
+                ? const SizedBox()
+                : ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        tooltip: !invitedUsers.any((element) => element.email == user.email)
+                            ? getTranslated(context, AppKeys.invite)
+                            : getTranslated(context, AppKeys.removeInvite),
+                        onPressed: () {
+                          if (!invitedUsers.any((element) => element.email == user.email)) {
+                            setState(() {
+                              invitedUsers.add(user);
+                            });
+                          } else {
+                            setState(() {
+                              invitedUsers.removeWhere((element) => element.email == user.email);
+                            });
+                          }
+                        },
+                        icon: IconComponent(
+                          iconData: !invitedUsers.any((element) => element.email == user.email) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
+                          color: !invitedUsers.any((element) => element.email == user.email) ? primaryColor : dangerDark,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

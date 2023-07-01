@@ -9,9 +9,10 @@ class ProjectRepository extends ChangeNotifier {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   ProjectModel? projectModel;
   List<ProjectModel> allRelatedProjects = [];
-  List<ProjectModel> allPreferredProjects = [];
   List<ProjectModel> latestProjects = [];
   List<ProjectModel> favoriteProjects = [];
+  List<ProjectModel> matchingProjects = [];
+  List<UserModel> matchingUsers = [];
   bool isSucceeded = false;
   bool isLoading = false;
 
@@ -26,13 +27,14 @@ class ProjectRepository extends ChangeNotifier {
         allRelatedProjects.insert(0, project);
         latestProjects.insert(0, project);
         if (project.userWhoCreated.preferredCategories.contains(project.category.name)) {
-          allPreferredProjects.add(project);
+          matchingProjects.add(project);
         }
         notifyListeners();
       });
       isSucceeded = true;
     } catch (error) {
       isSucceeded = false;
+      debugPrint("ERROR: ProjectRepository.add()\n$error");
     }
   }
 
@@ -47,34 +49,102 @@ class ProjectRepository extends ChangeNotifier {
       });
     } catch (error) {
       isSucceeded = false;
+      debugPrint("ERROR: ProjectRepository.update()\n$error");
     }
   }
 
-  Future<void> getAllPreferredProjects(UserModel userModel) async {
+  Future<void> getMatchingProjects(UserModel userModel) async {
     try {
-      allPreferredProjects.clear();
-      final QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).orderBy('createdDate', descending: true).get();
-      final List<ProjectModel> preferredProjects = querySnapshot.docs
+      matchingProjects.clear();
+      final QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).get();
+      final List<ProjectModel> allProjects = querySnapshot.docs
           .map((doc) {
             final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             final ProjectModel project = ProjectModel.fromMap(data);
-            if (!project.isDeleted) {
-              return ProjectModel.fromMap(data);
+            if (!project.isDeleted &&
+                project.collaborators.any((element) => element.email != userModel.email) &&
+                project.tasks.where((task) => task.isDeleted == false).where((element) => element.situation == TaskSituation.done).length !=
+                    project.tasks.where((task) => task.isDeleted == false).length) {
+              return project;
             }
           })
           .whereType<ProjectModel>()
           .toList();
 
       final List<String> preferredCategories = userModel.preferredCategories;
-      for (final ProjectModel project in preferredProjects) {
+      for (final project in allProjects) {
         if (preferredCategories.contains(project.category.name)) {
-          allPreferredProjects.add(project);
+          matchingProjects.add(project);
+        }
+      }
+      matchingProjects = matchingProjects.getRange(0, matchingProjects.length > 5 ? 5 : matchingProjects.length).toList();
+      notifyListeners();
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getMatchingProjects()\n$error");
+    }
+  }
+
+  Future<void> getMatchingUsers() async {
+    try {
+      matchingUsers.clear();
+      List<Map<String, dynamic>> analyticUsers = [];
+      if (projectModel != null) {
+        final QuerySnapshot querySnapshot = await users.where('preferredCategories', arrayContains: projectModel!.category.name).get();
+        final List<UserModel> preferredUsers = querySnapshot.docs
+            .map((doc) {
+              final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+              final UserModel user = UserModel.fromMap(data);
+              return user;
+            })
+            .whereType<UserModel>()
+            .toList();
+
+        for (final user in preferredUsers) {
+          if (!projectModel!.collaborators.any((element) => element.email == user.email)) {
+            var result = await getUserAnalytics(user);
+            analyticUsers.add({"user": user, "score": ((result["relatedProjects"] as int) * (result["completedTasks"] as int))});
+          }
+        }
+
+        analyticUsers.sort((a, b) => b["score"].compareTo(a["score"]));
+        for (var i = 0; i < analyticUsers.length && i < 5; i++) {
+          UserModel user = analyticUsers[i]["user"];
+          matchingUsers.add(user);
         }
       }
       notifyListeners();
     } catch (error) {
-      debugPrint("Projeler çekilirken bir hata oluştu!");
+      debugPrint("ERROR: ProjectRepository.getMatchingUsers()\n$error");
     }
+  }
+
+  Future<Map<String, dynamic>> getUserAnalytics(UserModel userModel) async {
+    List<ProjectModel> userRelatedProjects = [];
+    try {
+      userRelatedProjects.clear();
+      final QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).get();
+      userRelatedProjects = querySnapshot.docs
+          .map((doc) {
+            final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            final ProjectModel project = ProjectModel.fromMap(data);
+
+            final List<String> collaboratorEmails = project.collaborators.map((collaborator) => collaborator.email).toList();
+            if (!project.isDeleted && collaboratorEmails.contains(userModel.email)) {
+              return project;
+            }
+          })
+          .whereType<ProjectModel>()
+          .toList();
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getUserAnalytics()\n$error");
+    }
+    return {
+      "relatedProjects": userRelatedProjects.length,
+      "completedTasks": userRelatedProjects
+          .expand((project) => project.tasks)
+          .where((task) => !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userModel.email)
+          .length,
+    };
   }
 
   Future<void> getAllRelatedProjects(UserModel userModel) async {
@@ -95,7 +165,7 @@ class ProjectRepository extends ChangeNotifier {
           .toList();
       updateProjectInAllLists();
     } catch (error) {
-      debugPrint("Dahil olunan projeler çekilirken bir hata oluştu!");
+      debugPrint("ERROR: ProjectRepository.getAllRelatedProjects()\n$error");
     }
   }
 
@@ -113,11 +183,10 @@ class ProjectRepository extends ChangeNotifier {
             userWhoCreated: user,
             collaborators: collaborators,
           );
-          debugPrint('Collaborator bilgileri güncellendi.');
         }
       }
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
     }
     notifyListeners();
   }
@@ -150,7 +219,7 @@ class ProjectRepository extends ChangeNotifier {
       }
     } catch (error) {
       updateProjectInAllLists();
-      debugPrint('Task eklenirken hata oluştu: $error');
+      debugPrint("ERROR: ProjectRepository.addTask()\n$error");
       isSucceeded = false;
     }
   }
@@ -167,7 +236,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint('Task güncellenirken hata oluştu: $error');
+      debugPrint("ERROR: ProjectRepository.updateTask()\n$error");
       isSucceeded = false;
     }
   }
@@ -178,7 +247,7 @@ class ProjectRepository extends ChangeNotifier {
         favoriteProjects.removeWhere((element) => element.id == projectModel!.id);
         latestProjects.removeWhere((element) => element.id == projectModel!.id);
         allRelatedProjects.removeWhere((element) => element.id == projectModel!.id);
-        allPreferredProjects.removeWhere((element) => element.id == projectModel!.id);
+        matchingProjects.removeWhere((element) => element.id == projectModel!.id);
         return;
       }
 
@@ -192,9 +261,9 @@ class ProjectRepository extends ChangeNotifier {
         allRelatedProjects[involvedIndex] = projectModel!;
       }
 
-      int preferredIndex = allPreferredProjects.indexWhere((item) => item.id == projectModel!.id);
+      int preferredIndex = matchingProjects.indexWhere((item) => item.id == projectModel!.id);
       if (preferredIndex != -1 && !projectModel!.isDeleted) {
-        allPreferredProjects[preferredIndex] = projectModel!;
+        matchingProjects[preferredIndex] = projectModel!;
       }
 
       int favoriteIndex = favoriteProjects.indexWhere((item) => item.id == projectModel!.id);
@@ -213,8 +282,8 @@ class ProjectRepository extends ChangeNotifier {
         ProjectModel project = ProjectModel.fromMap(doc.data() as Map<String, dynamic>);
         latestProjects.add(project);
       }
-    } catch (e) {
-      debugPrint('Error fetching latest projects: $e');
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getLatestProjects()\n$error");
     }
   }
 
@@ -231,7 +300,7 @@ class ProjectRepository extends ChangeNotifier {
         notifyListeners();
       }
     } catch (error) {
-      debugPrint("Favori projeler çekilirken bir hata oluştu!");
+      debugPrint("ERROR: ProjectRepository.getFavoriteProjects()\n$error");
     }
   }
 }

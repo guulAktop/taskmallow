@@ -20,15 +20,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  NotificationSettings settings =
-      await messaging.requestPermission(alert: true, announcement: true, badge: true, carPlay: false, criticalAlert: true, provisional: false, sound: true);
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    debugPrint("User granted permission");
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    debugPrint("User granted provisional permission");
-  } else {
-    debugPrint("User declined or has not accepted permission!");
-  }
+  await messaging.requestPermission(alert: true, announcement: true, badge: true, carPlay: false, criticalAlert: true, provisional: false, sound: true);
 }
 
 initInfo() {

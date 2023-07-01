@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -27,6 +28,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderStateMixin {
   bool isLoading = false;
+  bool showPreview = false;
 
   @override
   void initState() {
@@ -78,12 +80,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: UIHelper.getDeviceWidth(context) / 4,
-                      height: UIHelper.getDeviceWidth(context) / 4,
-                      child: CircularPhotoComponent(
-                        url: userRepository.userModel?.profilePhotoURL,
-                        hasBorder: false,
+                    GestureDetector(
+                      onLongPress: () {
+                        HapticFeedback.vibrate();
+                        setState(() {
+                          showPreview = true;
+                        });
+                      },
+                      onLongPressEnd: (details) {
+                        HapticFeedback.vibrate();
+                        setState(() {
+                          showPreview = false;
+                        });
+                      },
+                      child: SizedBox(
+                        width: UIHelper.getDeviceWidth(context) / 4,
+                        height: UIHelper.getDeviceWidth(context) / 4,
+                        child: CircularPhotoComponent(
+                          url: userRepository.userModel?.profilePhotoURL,
+                          hasBorder: false,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),

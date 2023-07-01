@@ -35,11 +35,10 @@ class UserRepository extends ChangeNotifier {
           isSucceeded = true;
           userModel = model;
         }).catchError((error) {
-          debugPrint("An error occurred while adding the user!");
+          debugPrint("ERROR: UserRepository.register()\n$error");
           isSucceeded = false;
         });
       } else {
-        debugPrint("Current user!");
         isSucceeded = false;
       }
     });
@@ -48,9 +47,7 @@ class UserRepository extends ChangeNotifier {
 
   Future<void> login(UserModel model) async {
     await users.where('email', isEqualTo: model.email).get().then((value) async {
-      if (value.docs.isEmpty) {
-        debugPrint("Non existing user!");
-      } else {
+      if (value.docs.isNotEmpty) {
         await FirebaseFirestore.instance
             .collection('users')
             .where('email', isEqualTo: model.email)
@@ -79,6 +76,7 @@ class UserRepository extends ChangeNotifier {
     await SharedPreferencesHelper.setString("loggedUser", jsonEncode(userModel!.toJson())).then((value) {
       isSucceeded = true;
     }).onError((error, stackTrace) {
+      debugPrint("ERROR: UserRepository.register()\n$error");
       isSucceeded = false;
     });
     notifyListeners();
@@ -91,22 +89,18 @@ class UserRepository extends ChangeNotifier {
       user.joinDate = userModel?.joinDate;
       user.notificationToken = userModel?.notificationToken;
       user.password = userModel?.password;
-    } catch (e) {
-      debugPrint(e.toString());
+    } catch (error) {
+      debugPrint("ERROR: UserRepository.update().getUser()\n$error");
     }
     await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: user.email).get().then((value) async {
       if (value.docs.isNotEmpty) {
         await users.doc(user.email).update(user.toMap()).then((value1) {
-          debugPrint("Profile updated.");
           isSucceeded = true;
           userModel = user;
         }).catchError((error) {
-          debugPrint("An error occurred while updating the profile!");
+          debugPrint("ERROR: UserRepository.update()\n$error");
           isSucceeded = false;
         });
-      } else {
-        debugPrint("Non existing user!");
-        isSucceeded = false;
       }
     });
     notifyListeners();
@@ -116,11 +110,10 @@ class UserRepository extends ChangeNotifier {
     isSucceeded = false;
     final DocumentReference snapshot = users.doc(user.email);
     await snapshot.delete().then((value) {
-      debugPrint("User successfully deleted.");
       isSucceeded = true;
       userModel = user;
     }).catchError((error) {
-      debugPrint("An error occurred while deleting the User!");
+      debugPrint("ERROR: UserRepository.deleteAccount()\n$error");
       isSucceeded = false;
     });
     notifyListeners();
@@ -133,16 +126,12 @@ class UserRepository extends ChangeNotifier {
         await value.docs.first.reference.update({
           "password": user.password,
         }).then((value1) {
-          debugPrint("Password updated.");
           isSucceeded = true;
           userModel = user;
         }).catchError((error) {
-          debugPrint("An error occurred while updating the profile!");
+          debugPrint("ERROR: UserRepository.updatePassword()\n$error");
           isSucceeded = false;
         });
-      } else {
-        debugPrint("Non existing user!");
-        isSucceeded = false;
       }
     });
     notifyListeners();
@@ -171,18 +160,16 @@ class UserRepository extends ChangeNotifier {
       selectedUserProjects.addAll(matchingProjects);
       notifyListeners();
     } catch (error) {
-      debugPrint("Projeler çekilirken bir hata oluştu!");
+      debugPrint("ERROR: UserRepository.getSelectedUserProjects()\n$error");
     }
   }
 
   Future<bool> hasProfile(String email) async {
     QuerySnapshot snapshot = await users.where("email", isEqualTo: email).get();
     if (snapshot.docs.isEmpty) {
-      debugPrint("no user");
       notifyListeners();
       return false;
     } else {
-      debugPrint(snapshot.docs.first.data().toString());
       notifyListeners();
       return true;
     }
@@ -200,10 +187,8 @@ class UserRepository extends ChangeNotifier {
         (lastName == null || lastName.toString().isEmpty) ||
         (dateOfBirth == null || dateOfBirth.toString().isEmpty) ||
         (gender == null || gender.toString().isEmpty)) {
-      debugPrint("null info");
       userInfoIsFull = false;
     } else {
-      debugPrint("not null info");
       userInfoIsFull = true;
     }
     notifyListeners();
@@ -217,15 +202,11 @@ class UserRepository extends ChangeNotifier {
         await users.doc(userModel!.email).update({
           "notificationToken": notificationToken,
         }).then((value1) {
-          debugPrint("Notification Token updated.");
           isSucceeded = true;
         }).catchError((error) {
-          debugPrint("An error occurred while updating the Notification Token!");
+          debugPrint("ERROR: UserRepository.updateNotificationToken()\n$error");
           isSucceeded = false;
         });
-      } else {
-        debugPrint("Non existing user!");
-        isSucceeded = false;
       }
     });
     notifyListeners();
@@ -236,8 +217,8 @@ class UserRepository extends ChangeNotifier {
     try {
       TaskSnapshot snapshot = await storageRef.child(child).putFile(image);
       return await snapshot.ref.getDownloadURL();
-    } on FirebaseException catch (e) {
-      debugPrint(e.message);
+    } on FirebaseException catch (error) {
+      debugPrint("ERROR: UserRepository.updateNotificationToken()\n${error.message}");
       return null;
     }
   }

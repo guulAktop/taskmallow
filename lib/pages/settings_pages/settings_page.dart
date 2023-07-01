@@ -31,7 +31,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    loggedUser = ref.read(userProvider).userModel!;
   }
 
   @override
@@ -163,7 +162,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           itemList: [
             ListViewItem(
               prefixWidget: const IconComponent(iconData: CustomIconData.code),
-              title: "v.1.0.0",
+              title: ref.watch(appVersionProvider),
             )
           ],
         ),

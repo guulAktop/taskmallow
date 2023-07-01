@@ -40,6 +40,7 @@ class _ProjectsPageState extends ConsumerState<ProjectsPage> {
         ),
       ],
       floatingActionButton: FloatingActionButton(
+        elevation: 0,
         backgroundColor: primaryColor,
         child: const IconComponent(iconData: CustomIconData.plus, color: textPrimaryDarkColor),
         onPressed: () {

@@ -11,7 +11,6 @@ import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
-import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -47,7 +46,6 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
   @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
-    ProjectRepository projectRepository = ref.watch(projectProvider);
     return userRepository.isLoading
         ? const BaseScaffoldWidget(
             widgetList: [
@@ -254,13 +252,13 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                       return ProjectGridItem(
                         projectModel: userRepository.selectedUserProjects[index],
                         onTap: () {
-                          if (projectRepository.allPreferredProjects[index].collaborators
+                          if (userRepository.selectedUserProjects[index].collaborators
                               .map((collaborator) => collaborator.email)
                               .toList()
                               .contains(userRepository.userModel!.email)) {
-                            Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.allPreferredProjects[index]);
+                            Navigator.pushNamed(context, projectDetailPageRoute, arguments: userRepository.selectedUserProjects[index]);
                           } else {
-                            Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.allPreferredProjects[index]);
+                            Navigator.pushNamed(context, projectScreenPageRoute, arguments: userRepository.selectedUserProjects[index]);
                           }
                         },
                       );

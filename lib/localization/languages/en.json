@@ -85,7 +85,7 @@
     "completed":" completed",
     "your_matches":"Your Matches",
     "here_are_the_projects":"Here are a few projects for you.",
-    "here_are_the_collaborators":"Here are a few collaborators for your project.",
+    "here_are_the_users":"Here are a few users for your project.",
     "take_a_look":"Take a look!",
     "send_join_request":"Send join request",
     "search_user_or_project":"Search User or Project",
@@ -130,6 +130,8 @@
     "operation_failed":"The operation failed.",
     "project_added_favorites":"Project successfully added to favorites.",
     "project_removed_favorites":"The project has been successfully removed from favourites.",
+    "no_project_matching":"Unfortunately, no project matching your criteria was found!",
+    "no_user_matching":"Unfortunately, no user matching your project was found!",
 
     "onboarding_title1": "An Arena for Ideas Beyond Boundaries!",
     "onboarding_title2": "Capture the Magic Moment of Progress",
