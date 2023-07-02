@@ -89,4 +89,4 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 *  Sprint içinde tamamlanması tahmin edilen puan: 96 puandır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. 
 *  Daily Scrum: 
-
+[Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
