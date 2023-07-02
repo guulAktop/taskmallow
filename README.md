@@ -60,7 +60,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 *  Sprint içinde tamamlanması tahmin edilen puan: 90 puandır ve tamamlanmıştır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. İlk sprinte 90 backlog puanı ile başlama kararı aldık ve tamamladık.
 *  Daily Scrum: Gün içerisinde en az 2 saat toplantı yaptık ve eşzamanlı hareket ettiğimiz için bazı günler yazılı olarak bildiri yapamadık. Discordda bulunan daily kanalını toplantıyı uzun tutmadığımız günlerde kullandık.
-[Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
+[Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fdailyscrumchats.docx?alt=media&token=7f5c5925-80bf-4c39-8fd7-2cb47d66b2cc)
 
   # Güncel Sprint Sonu Backlog
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d">
@@ -69,11 +69,11 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
   # Uygulama Son Durum
 
-[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fapp_usage.mp4?alt=media&token=f6ec8c09-a123-4b81-8a70-a3cbeb904204)
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F1.jpg?alt=media&token=fb1c1e9d-4d02-4f16-a6a2-09084769df8b">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F3.jpg?alt=media&token=0d75aae4-8ae0-4a12-b4c9-03c507874fee">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F8.jpg?alt=media&token=1b0a6787-a95f-442d-adb8-18e5188ed999">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F10.jpg?alt=media&token=8fe65810-2444-4297-804f-ed19f90c5dc7">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F1.jpeg?alt=media&token=021be679-1221-4fd0-b158-645873ba6b15">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F5.jpeg?alt=media&token=fdb0bf47-0622-4e7a-831b-15bddbde003d">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F9.jpeg?alt=media&token=1017c002-1af1-4264-8358-64f7fb187ab4">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F10.jpeg?alt=media&token=2ab3a69d-aa70-40c8-8ff4-e49a4eab41cc">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F13.jpeg?alt=media&token=39df7245-2190-4569-bfcc-aa39aabd7b91">
 
   # Sprint Review: Sprint 1
 
@@ -83,10 +83,4 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 
 * İletişim ve koordinasyon konularında daha da güçlenmeliyiz. 
 
-# Sprint 2
-
-*  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
-*  Sprint içinde tamamlanması tahmin edilen puan: 96 puandır.
-*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. 
-*  Daily Scrum: 
 
