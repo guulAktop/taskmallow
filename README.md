@@ -90,3 +90,11 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. 
 *  Daily Scrum: 
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
+
+ # Uygulama Son Durum
+
+[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fapp_usage.mp4?alt=media&token=f6ec8c09-a123-4b81-8a70-a3cbeb904204)
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F1.jpg?alt=media&token=fb1c1e9d-4d02-4f16-a6a2-09084769df8b">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F3.jpg?alt=media&token=0d75aae4-8ae0-4a12-b4c9-03c507874fee">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F8.jpg?alt=media&token=1b0a6787-a95f-442d-adb8-18e5188ed999">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F10.jpg?alt=media&token=8fe65810-2444-4297-804f-ed19f90c5dc7">
