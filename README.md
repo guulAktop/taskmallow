@@ -86,9 +86,9 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 # Sprint 2
 
 *  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
-*  Sprint içinde tamamlanması tahmin edilen puan: 96 puandır.
+*  Sprint içinde tamamlanması tahmin edilen puan: 93 puandır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. 
-*  Daily Scrum: 
+*  Daily Scrum: Task'ları tamamlama sırası belirlenerek öncelikli olarak çalışıldı. Her bir task için tahmini tamamlama süresi belirlendi ve bu sürelere göre atanan task'ın bitmesi öngörüldü.Bu sebepten dolayı Discordda sürekli iletişim halinde kaldık.
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
  # Güncel Sprint Sonu Backlog
@@ -103,3 +103,12 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F3.jpg?alt=media&token=0d75aae4-8ae0-4a12-b4c9-03c507874fee">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F8.jpg?alt=media&token=1b0a6787-a95f-442d-adb8-18e5188ed999">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F10.jpg?alt=media&token=8fe65810-2444-4297-804f-ed19f90c5dc7">
+
+# Sprint Review: Sprint 2
+
+Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen bütün Backend task'ları tamamlandı ve tahmini tamamlama sürelerine uyuldu. İletişim araçlarını etkin bir şekilde kullandık ve ekip üyeleri arasında güçlü bir işbirliği sağlandı. Öğrendiğimiz noktaları dikkate alarak ilerleyen sprintlerde daha fazla optimizasyon ve performans iyileştirmeleri yapmayı hedefliyoruz.
+
+# Sprint Retrospective : Sprint 2
+
+* Backend yapısını başarıyla oluşturduğumuz ve iletişim ve işbirliği konularında önemli başarılar elde ettiğimiz bir sprint oldu.
+
