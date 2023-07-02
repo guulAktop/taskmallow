@@ -91,6 +91,11 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 *  Daily Scrum: 
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
+ # Güncel Sprint Sonu Backlog
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875">
+
  # Uygulama Son Durum
 
 [![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fapp_usage.mp4?alt=media&token=f6ec8c09-a123-4b81-8a70-a3cbeb904204)
