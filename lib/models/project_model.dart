@@ -2,9 +2,7 @@
 // ignore_for_file: unused_element, constant_identifier_names
 
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/utils/enum_utils.dart';
@@ -70,24 +68,26 @@ class ProjectModel {
     };
   }
 
-  factory ProjectModel.fromMap(Map<String, dynamic> map) {
+  factory ProjectModel.fromMap(Map<dynamic, dynamic> map) {
     return ProjectModel(
       id: map['id'] as String,
       name: map['name'] as String,
       category: (map['category'] as String).getEnumValue(Category.values) ?? Category.other_category,
       description: map['description'] as String,
       createdDate: map['createdDate'] != null ? map['createdDate'] as int : null,
-      userWhoCreated: UserModel.fromMap(map['userWhoCreated'] as Map<String, dynamic>),
+      userWhoCreated: UserModel.fromMap(map['userWhoCreated'] as Map<dynamic, dynamic>),
       collaborators: List<UserModel>.from(
         (map['collaborators'] as dynamic).map<UserModel>(
-          (x) => UserModel.fromMap(x as Map<String, dynamic>),
+          (x) => UserModel.fromMap(x as Map<dynamic, dynamic>),
         ),
       ),
-      tasks: List<TaskModel>.from(
-        (map['tasks'] as List<dynamic>).map<TaskModel>(
-          (x) => TaskModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      tasks: map['tasks'] != null
+          ? List<TaskModel>.from(
+              (map['tasks'] as List<dynamic>).map<TaskModel>(
+                (x) => TaskModel.fromMap(x as Map<dynamic, dynamic>),
+              ),
+            )
+          : [],
       isDeleted: map['isDeleted'] as bool,
     );
   }

@@ -38,7 +38,7 @@ class TaskModel {
     };
   }
 
-  factory TaskModel.fromMap(Map<String, dynamic> map) {
+  factory TaskModel.fromMap(Map<dynamic, dynamic> map) {
     return TaskModel(
       id: map['id'] as String,
       name: map['name'] as String,

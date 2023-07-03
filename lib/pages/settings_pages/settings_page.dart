@@ -8,7 +8,6 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
-import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/language_settings_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/privacy_policy_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/theme_settings_page.dart';
@@ -26,7 +25,6 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool isLoading = false;
-  late UserModel loggedUser;
 
   @override
   void initState() {
@@ -134,7 +132,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           setState(() {
                             isLoading = true;
                           });
-                          userRepository.deleteAccount(loggedUser).then((result) {
+                          userRepository.deleteAccount().then((result) {
                             if (userRepository.isSucceeded) {
                               ref.read(userProvider).logout(context);
                               AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.accountHasBeenDeleted),

@@ -43,7 +43,9 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
       await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
-        if (ref.read(projectProvider).projectModel != null && ref.read(projectProvider).projectModel!.isDeleted) {
+        if (ref.read(projectProvider).projectModel == null ||
+            ref.read(projectProvider).projectModel!.isDeleted ||
+            !ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
           Navigator.pop(context);
         } else {
           ref.read(projectProvider).isLoading = false;
@@ -172,13 +174,15 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                   },
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectRepository.projectModel);
-                },
-                splashRadius: AppConstants.iconSplashRadius,
-                icon: const IconComponent(iconData: CustomIconData.pen),
-              ),
+              projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                  ? IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectRepository.projectModel);
+                      },
+                      splashRadius: AppConstants.iconSplashRadius,
+                      icon: const IconComponent(iconData: CustomIconData.pen),
+                    )
+                  : const SizedBox(),
             ],
             widgetList: [
               Column(
@@ -270,31 +274,33 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                                   ))
                               .toList()
                             ..add(
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(Radius.circular(100)),
-                                    child: Material(
-                                      color: primaryColor,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(context, collaboratorsPageRoute);
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.all(10),
-                                          child: const IconComponent(
-                                            iconData: CustomIconData.plus,
-                                            color: textPrimaryDarkColor,
+                              projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                                  ? Container(
+                                      padding: const EdgeInsets.all(5),
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                          child: Material(
+                                            color: primaryColor,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.pushNamed(context, collaboratorsPageRoute);
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(10),
+                                                child: const IconComponent(
+                                                  iconData: CustomIconData.plus,
+                                                  color: textPrimaryDarkColor,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : Container(),
                             ),
                         ),
                       ),
@@ -304,15 +310,19 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(color: secondaryColor, thickness: 1),
                   ),
-                  ButtonComponent(
-                    text: getTranslated(context, AppKeys.newTask),
-                    isOutLined: true,
-                    isWide: true,
-                    onPressed: () {
-                      Navigator.pushNamed(context, createTaskPageRoute);
-                    },
-                  ),
-                  const SizedBox(height: 10),
+                  projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: ButtonComponent(
+                            text: getTranslated(context, AppKeys.newTask),
+                            isOutLined: true,
+                            isWide: true,
+                            onPressed: () {
+                              Navigator.pushNamed(context, createTaskPageRoute);
+                            },
+                          ),
+                        )
+                      : const SizedBox(),
                   Center(
                     child: TabBar(
                       onTap: (value) {
@@ -401,7 +411,9 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
       ),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, updateTaskPageRoute, arguments: taskModel);
+          if (ref.watch(projectProvider).projectModel!.userWhoCreated.email == ref.watch(userProvider).userModel!.email) {
+            Navigator.pushNamed(context, updateTaskPageRoute, arguments: taskModel);
+          }
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -480,7 +492,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               color: primaryColor,
               function: () {
                 if (ref.watch(projectProvider).projectModel != null) {
-                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.to_do;
                   taskModel.situation = TaskSituation.to_do;
                   ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
                     debugPrint("Güncel Task Durumu: ${taskModel.situation}");
@@ -499,7 +510,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               color: warningDark,
               function: () {
                 if (ref.watch(projectProvider).projectModel != null) {
-                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.in_progress;
                   taskModel.situation = TaskSituation.in_progress;
                   ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
                     debugPrint("Güncel Task Durumu: ${taskModel.situation}");
@@ -518,7 +528,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               color: success,
               function: () {
                 if (ref.watch(projectProvider).projectModel != null) {
-                  // ref.read(projectProvider).projectModel!.tasks.where((element) => element.id == taskModel.id).first.situation = TaskSituation.done;
                   taskModel.situation = TaskSituation.done;
                   ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
                     debugPrint("Güncel Task Durumu: ${taskModel.situation}");

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
+import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/routes/route_constants.dart';
@@ -22,6 +24,8 @@ class UserRepository extends ChangeNotifier {
   List<ProjectModel> selectedUserProjects = [];
   List<ProjectModel> filteredProjects = [];
   List<UserModel> filteredUsers = [];
+  List<InvitationModel> incomingInvitations = [];
+  List<InvitationModel> outgoingInvitations = [];
 
   Future<void> register(UserModel model) async {
     isSucceeded = false;
@@ -106,17 +110,19 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteAccount(UserModel user) async {
+  Future<void> deleteAccount() async {
     isSucceeded = false;
-    final DocumentReference snapshot = users.doc(user.email);
-    await snapshot.delete().then((value) {
-      isSucceeded = true;
-      userModel = user;
-    }).catchError((error) {
-      debugPrint("ERROR: UserRepository.deleteAccount()\n$error");
-      isSucceeded = false;
-    });
-    notifyListeners();
+    if (userModel != null) {
+      final DocumentReference snapshot = users.doc(userModel!.email);
+      await snapshot.delete().then((value) {
+        isSucceeded = true;
+        userModel = null;
+      }).catchError((error) {
+        debugPrint("ERROR: UserRepository.deleteAccount()\n$error");
+        isSucceeded = false;
+      });
+      notifyListeners();
+    }
   }
 
   Future<void> updatePassword(UserModel user) async {
@@ -263,5 +269,88 @@ class UserRepository extends ChangeNotifier {
       });
     }
     isLoading = false;
+  }
+
+  Future<void> sendInvitation(InvitationModel invitationModel) async {
+    isSucceeded = false;
+    final databaseReference = FirebaseDatabase.instance.ref();
+    try {
+      final DatabaseReference inviteRef = databaseReference.child('invitations').push();
+      final invitationId = inviteRef.key;
+      invitationModel.id = invitationId ?? DateTime.now().millisecondsSinceEpoch.toString();
+      final invitationData = invitationModel.toMap();
+
+      await inviteRef.set(invitationData).then((value) {
+        isSucceeded = true;
+      }).onError((error, stackTrace) {
+        isSucceeded = false;
+      });
+    } catch (error) {
+      debugPrint("ERROR: UserRepository.sendInvitation()\n$error");
+      isSucceeded = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> removeInvitation(InvitationModel invitationModel) async {
+    isSucceeded = false;
+    final databaseReference = FirebaseDatabase.instance.ref();
+    try {
+      await databaseReference.child('invitations').child(invitationModel.id).remove().whenComplete(() {
+        incomingInvitations.removeWhere((element) => element.id == invitationModel.id);
+        outgoingInvitations.removeWhere((element) => element.id == invitationModel.id);
+        debugPrint("successfully removed");
+      });
+    } catch (error) {
+      debugPrint("ERROR: UserRepository.removeInvitation()\n$error");
+      isSucceeded = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> listenInvitations() async {
+    incomingInvitations.clear();
+    outgoingInvitations.clear();
+    if (userModel != null) {
+      final databaseReference = FirebaseDatabase.instance.ref();
+      final query = databaseReference.child('invitations').orderByChild('fromUser/email').equalTo(userModel!.email);
+      query.onValue.listen((event) {
+        outgoingInvitations.clear();
+        final DataSnapshot dataSnapshot = event.snapshot;
+        final dynamic dataSnapshotValue = dataSnapshot.value;
+        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+          invitationsData.forEach((key, value) {
+            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+            outgoingInvitations.add(invitation);
+          });
+        } else {
+          debugPrint('Davet bulunamadı');
+        }
+        notifyListeners();
+      }, onError: (error) {
+        debugPrint("ERROR: getInvitations()\n$error");
+      });
+
+      final query2 = databaseReference.child('invitations').orderByChild('toUser/email').equalTo(userModel!.email);
+      query2.onValue.listen((event) {
+        incomingInvitations.clear();
+        final DataSnapshot dataSnapshot = event.snapshot;
+        final dynamic dataSnapshotValue = dataSnapshot.value;
+        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+          invitationsData.forEach((key, value) {
+            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+            incomingInvitations.add(invitation);
+          });
+        } else {
+          debugPrint('Davet bulunamadı');
+        }
+        incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+        notifyListeners();
+      }, onError: (error) {
+        debugPrint("ERROR: getInvitations()\n$error");
+      });
+    }
   }
 }
