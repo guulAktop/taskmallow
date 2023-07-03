@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
@@ -15,6 +17,7 @@ class ProjectRepository extends ChangeNotifier {
   List<UserModel> matchingUsers = [];
   bool isSucceeded = false;
   bool isLoading = false;
+  List<InvitationModel> invitations = [];
 
   Future<void> add(ProjectModel project) async {
     isSucceeded = false;
@@ -61,11 +64,12 @@ class ProjectRepository extends ChangeNotifier {
           .map((doc) {
             final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             final ProjectModel project = ProjectModel.fromMap(data);
-            if (!project.isDeleted &&
-                project.collaborators.any((element) => element.email != userModel.email) &&
-                project.tasks.where((task) => task.isDeleted == false).where((element) => element.situation == TaskSituation.done).length !=
-                    project.tasks.where((task) => task.isDeleted == false).length) {
-              return project;
+            if (!project.isDeleted && !project.collaborators.any((element) => element.email == userModel.email)) {
+              if (project.tasks.isEmpty ||
+                  project.tasks.where((task) => task.isDeleted == false).where((element) => element.situation == TaskSituation.done).length !=
+                      project.tasks.where((task) => task.isDeleted == false).length) {
+                return project;
+              }
             }
           })
           .whereType<ProjectModel>()
@@ -173,8 +177,14 @@ class ProjectRepository extends ChangeNotifier {
     try {
       final DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
       if (projectSnapshot.exists) {
-        final ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
+        ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
         final DocumentSnapshot userSnapshot = await users.doc(project.userWhoCreated.email).get();
+
+        for (var task in project.tasks) {
+          if (!project.collaborators.any((element) => element.email == task.assignedUserMail)) {
+            project = project..tasks.where((element) => element.assignedUserMail == task.assignedUserMail).first.assignedUserMail = null;
+          }
+        }
 
         if (userSnapshot.exists) {
           final UserModel user = UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>)..password = null;
@@ -183,6 +193,7 @@ class ProjectRepository extends ChangeNotifier {
             userWhoCreated: user,
             collaborators: collaborators,
           );
+          listenForInvitationsByProject();
         }
       }
     } catch (error) {
@@ -302,5 +313,79 @@ class ProjectRepository extends ChangeNotifier {
     } catch (error) {
       debugPrint("ERROR: ProjectRepository.getFavoriteProjects()\n$error");
     }
+  }
+
+  Future<void> getInvitationsByProject(ProjectModel project) async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+
+    try {
+      final DatabaseEvent event = await databaseReference.child('invitations').orderByChild('project/id').equalTo(project.id).once();
+      final DataSnapshot dataSnapshot = event.snapshot;
+      final dynamic dataSnapshotValue = dataSnapshot.value;
+
+      if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+        final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+        invitations = [];
+        invitationsData.forEach((key, value) {
+          final InvitationModel invitation = InvitationModel.fromMap(value as Map<String, dynamic>);
+          invitations.add(invitation);
+        });
+        debugPrint('Davetler: $invitations');
+      } else {
+        debugPrint('Davet bulunamadı');
+      }
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getInvitationsByProject()\n$error");
+    }
+    notifyListeners();
+  }
+
+  Future<void> listenForInvitationsByProject() async {
+    invitations.clear();
+    if (projectModel != null) {
+      final databaseReference = FirebaseDatabase.instance.ref();
+      final query = databaseReference.child('invitations').orderByChild('project/id').equalTo(projectModel!.id);
+      query.onValue.listen((event) {
+        invitations.clear();
+        final DataSnapshot dataSnapshot = event.snapshot;
+        final dynamic dataSnapshotValue = dataSnapshot.value;
+        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+          invitationsData.forEach((key, value) {
+            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+            invitations.add(invitation);
+          });
+          debugPrint('Güncellenmiş Davetler: $invitations');
+        } else {
+          debugPrint('Davet bulunamadı');
+        }
+        notifyListeners();
+      }, onError: (error) {
+        debugPrint("ERROR: ProjectRepository.listenForInvitationsByProject()\n$error");
+      });
+    }
+  }
+
+  Future<void> addCollaborator(ProjectModel project, UserModel userModel) async {
+    try {
+      final DocumentSnapshot projectSnapshot = await projects.doc(project.id).get();
+      if (projectSnapshot.exists) {
+        final ProjectModel currentProject = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
+        if (!currentProject.collaborators.any((element) => element.email == userModel.email)) {
+          currentProject.collaborators.add(userModel..password = null);
+          await projects.doc(project.id).update(currentProject.toMap()).whenComplete(() {
+            projectModel = currentProject;
+            int involvedIndex = allRelatedProjects.indexWhere((item) => item.id == currentProject.id);
+            if (involvedIndex == -1 && !currentProject.isDeleted) {
+              allRelatedProjects.insert(0, currentProject);
+            }
+            updateProjectInAllLists();
+          });
+        }
+      }
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
+    }
+    notifyListeners();
   }
 }

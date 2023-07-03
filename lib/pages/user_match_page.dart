@@ -9,6 +9,7 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
@@ -26,7 +27,6 @@ class UserMatchPage extends ConsumerStatefulWidget {
 
 class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProviderStateMixin {
   bool isLoading = false;
-  List<UserModel> invitedUsers = [];
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _rotateAnimation;
@@ -128,7 +128,7 @@ class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProvid
                     ),
                     const SizedBox(height: 10),
                     Column(
-                      children: projectRepository.matchingUsers.map((user) => getUserRow(user)).toList(),
+                      children: projectRepository.matchingUsers.map((user) => getUserRow(user, projectRepository, userRepository)).toList(),
                     ),
                   ]
                 : [
@@ -160,7 +160,7 @@ class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProvid
           );
   }
 
-  Widget getUserRow(UserModel user) {
+  Widget getUserRow(UserModel user, ProjectRepository projectRepository, UserRepository userRepository) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -221,21 +221,27 @@ class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProvid
               child: Material(
                 color: Colors.transparent,
                 child: IconButton(
-                  tooltip: !invitedUsers.contains(user) ? getTranslated(context, AppKeys.invite) : getTranslated(context, AppKeys.removeInvite),
-                  onPressed: () {
-                    if (!invitedUsers.contains(user)) {
-                      setState(() {
-                        invitedUsers.add(user);
-                      });
+                  tooltip: !projectRepository.invitations.any((element) => element.toUser.email == user.email)
+                      ? getTranslated(context, AppKeys.invite)
+                      : getTranslated(context, AppKeys.removeInvite),
+                  onPressed: () async {
+                    if (!projectRepository.invitations.any((element) => element.toUser.email == user.email)) {
+                      await userRepository
+                          .sendInvitation(InvitationModel(fromUser: userRepository.userModel!, toUser: user, project: projectRepository.projectModel!))
+                          .whenComplete(() {});
                     } else {
-                      setState(() {
-                        invitedUsers.remove(user);
+                      await userRepository
+                          .removeInvitation(projectRepository.invitations.where((element) => element.toUser.email == user.email).first)
+                          .whenComplete(() {
+                        projectRepository.listenForInvitationsByProject();
                       });
                     }
                   },
                   icon: IconComponent(
-                    iconData: !invitedUsers.contains(user) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
-                    color: !invitedUsers.contains(user) ? matchColor : dangerDark,
+                    iconData: !projectRepository.invitations.any((element) => element.toUser.email == user.email)
+                        ? CustomIconData.paperPlane
+                        : CustomIconData.circleXmark,
+                    color: !projectRepository.invitations.any((element) => element.toUser.email == user.email) ? matchColor : dangerDark,
                   ),
                 ),
               ),

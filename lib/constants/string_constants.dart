@@ -62,8 +62,10 @@ class AppKeys {
   static String privacyPolicy = 'privacy_policy';
   static String deleteMyAccount = 'delete_my_account';
   static String invitations = 'invitations';
-  static String invitationMessagePart1 = 'invitation_message_part1';
-  static String invitationMessagePart2 = 'invitation_message_part2';
+  static String toInvolveMessagePart1 = 'to_involve_message_part1';
+  static String toInvolveMessagePart2 = 'to_involve_message_part2';
+  static String toBeIncludedMessagePart1 = 'to_be_included_message_part1';
+  static String toBeIncludedMessagePart2 = 'to_be_included_message_part2';
   static String accept = 'accept';
   static String reject = 'reject';
   static String hello = 'hello';
@@ -140,6 +142,7 @@ class AppKeys {
   static String projectRemovedFavorites = 'project_removed_favorites';
   static String noProjectMatching = 'no_project_matching';
   static String noUserMatching = 'no_user_matching';
+  static String takeItBack = 'take_it_back';
 }
 
 class CategoryKeys {

@@ -9,6 +9,7 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/providers/providers.dart';
@@ -263,9 +264,30 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                     child: Divider(color: secondaryColor, thickness: 1),
                   ),
                   ButtonComponent(
-                    text: getTranslated(context, AppKeys.sendJoinRequest),
+                    text: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                        ? getTranslated(context, AppKeys.takeItBack)
+                        : getTranslated(context, AppKeys.sendJoinRequest),
+                    color: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                        ? dangerDark
+                        : primaryColor,
                     isOutLined: true,
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
+                        await userRepository
+                            .sendInvitation(InvitationModel(
+                                fromUser: userRepository.userModel!,
+                                toUser: projectRepository.projectModel!.userWhoCreated,
+                                project: projectRepository.projectModel!))
+                            .whenComplete(() {});
+                      } else {
+                        await userRepository
+                            .removeInvitation(
+                                userRepository.outgoingInvitations.where((element) => element.project.id == projectRepository.projectModel!.id).first)
+                            .whenComplete(() {
+                          projectRepository.listenForInvitationsByProject();
+                        });
+                      }
+                    },
                   )
                 ],
               ),

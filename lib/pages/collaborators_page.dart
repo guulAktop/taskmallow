@@ -10,6 +10,7 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
+import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
@@ -27,7 +28,6 @@ class CollaboratorsPage extends ConsumerStatefulWidget {
 
 class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
   bool isLoading = false;
-  List<UserModel> invitedUsers = [];
   final TextEditingController _searchTextEditingController = TextEditingController();
 
   @override
@@ -181,7 +181,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
           ),
         ),
         Visibility(
-          visible: invitedUsers.isNotEmpty,
+          visible: projectRepository.invitations.isNotEmpty,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -194,7 +194,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
                 softWrap: true,
               ),
               Column(
-                children: invitedUsers.map((user) => getUserRow(user, projectRepository)).toList(),
+                children: projectRepository.invitations.map((invite) => getUserRow(invite.toUser, projectRepository, userRepository)).toList(),
               ),
             ],
           ),
@@ -226,7 +226,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
             : Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Column(
-                  children: userRepository.filteredUsers.map((user) => getUserRow(user, projectRepository)).toList(),
+                  children: userRepository.filteredUsers.map((user) => getUserRow(user, projectRepository, userRepository)).toList(),
                 ),
               ),
         const SizedBox(height: 10),
@@ -262,7 +262,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
     );
   }
 
-  Widget getUserRow(UserModel user, ProjectRepository projectRepository) {
+  Widget getUserRow(UserModel user, ProjectRepository projectRepository, UserRepository userRepository) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -325,23 +325,27 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
                     child: Material(
                       color: Colors.transparent,
                       child: IconButton(
-                        tooltip: !invitedUsers.any((element) => element.email == user.email)
+                        tooltip: !projectRepository.invitations.any((element) => element.toUser.email == user.email)
                             ? getTranslated(context, AppKeys.invite)
                             : getTranslated(context, AppKeys.removeInvite),
-                        onPressed: () {
-                          if (!invitedUsers.any((element) => element.email == user.email)) {
-                            setState(() {
-                              invitedUsers.add(user);
-                            });
+                        onPressed: () async {
+                          if (!projectRepository.invitations.any((element) => element.toUser.email == user.email)) {
+                            await userRepository
+                                .sendInvitation(InvitationModel(fromUser: userRepository.userModel!, toUser: user, project: projectRepository.projectModel!))
+                                .whenComplete(() {});
                           } else {
-                            setState(() {
-                              invitedUsers.removeWhere((element) => element.email == user.email);
+                            await userRepository
+                                .removeInvitation(projectRepository.invitations.where((element) => element.toUser.email == user.email).first)
+                                .whenComplete(() {
+                              projectRepository.listenForInvitationsByProject();
                             });
                           }
                         },
                         icon: IconComponent(
-                          iconData: !invitedUsers.any((element) => element.email == user.email) ? CustomIconData.paperPlane : CustomIconData.circleXmark,
-                          color: !invitedUsers.any((element) => element.email == user.email) ? primaryColor : dangerDark,
+                          iconData: !projectRepository.invitations.any((element) => element.toUser.email == user.email)
+                              ? CustomIconData.paperPlane
+                              : CustomIconData.circleXmark,
+                          color: !projectRepository.invitations.any((element) => element.toUser.email == user.email) ? primaryColor : dangerDark,
                         ),
                       ),
                     ),

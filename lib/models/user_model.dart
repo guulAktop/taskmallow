@@ -57,7 +57,7 @@ class UserModel {
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<dynamic, dynamic> map) {
     return UserModel(
       email: map['email'] as String,
       password: map['password'] != null ? map['password'] as String : null,

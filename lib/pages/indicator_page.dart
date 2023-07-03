@@ -43,6 +43,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                       projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
                         projectRepository.getLatestProjects().whenComplete(() {
                           projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
+                            userRepository.listenInvitations();
                             if (mounted) {
                               if (userRepository.userInfoIsFull) {
                                 if (userRepository.userModel!.preferredCategories.isEmpty) {
