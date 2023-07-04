@@ -5,6 +5,7 @@ import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 
 class ProjectRepository extends ChangeNotifier {
   CollectionReference projects = FirebaseFirestore.instance.collection('projects');
@@ -304,7 +305,7 @@ class ProjectRepository extends ChangeNotifier {
         DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
         if (projectSnapshot.exists) {
           ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
-          if (!project.isDeleted) {
+          if (!project.isDeleted && !favoriteProjects.any((element) => element.id == project.id)) {
             favoriteProjects.add(project);
           }
         }
@@ -351,9 +352,20 @@ class ProjectRepository extends ChangeNotifier {
         final dynamic dataSnapshotValue = dataSnapshot.value;
         if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
           final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) {
+          invitationsData.forEach((key, value) async {
             final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
-            invitations.add(invitation);
+            if (invitation.project.id == projectModel!.id && !projectModel!.isDeleted) {
+              if (projectModel!.collaborators.any((element) => element.email == invitation.toUser.email) &&
+                  projectModel!.collaborators.any((element) => element.email == invitation.fromUser.email)) {
+                UserRepository userRepository = UserRepository();
+                await userRepository.removeInvitation(invitation);
+              } else {
+                invitations.add(invitation);
+              }
+            } else {
+              UserRepository userRepository = UserRepository();
+              await userRepository.removeInvitation(invitation);
+            }
           });
           debugPrint('Güncellenmiş Davetler: $invitations');
         } else {
@@ -373,6 +385,29 @@ class ProjectRepository extends ChangeNotifier {
         final ProjectModel currentProject = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
         if (!currentProject.collaborators.any((element) => element.email == userModel.email)) {
           currentProject.collaborators.add(userModel..password = null);
+          await projects.doc(project.id).update(currentProject.toMap()).whenComplete(() {
+            projectModel = currentProject;
+            int involvedIndex = allRelatedProjects.indexWhere((item) => item.id == currentProject.id);
+            if (involvedIndex == -1 && !currentProject.isDeleted) {
+              allRelatedProjects.insert(0, currentProject);
+            }
+            updateProjectInAllLists();
+          });
+        }
+      }
+    } catch (error) {
+      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
+    }
+    notifyListeners();
+  }
+
+  Future<void> removeCollaborator(ProjectModel project, UserModel userModel) async {
+    try {
+      final DocumentSnapshot projectSnapshot = await projects.doc(project.id).get();
+      if (projectSnapshot.exists) {
+        final ProjectModel currentProject = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
+        if (currentProject.collaborators.any((element) => element.email == userModel.email)) {
+          currentProject.collaborators.removeWhere((element) => element.email == userModel.email);
           await projects.doc(project.id).update(currentProject.toMap()).whenComplete(() {
             projectModel = currentProject;
             int involvedIndex = allRelatedProjects.indexWhere((item) => item.id == currentProject.id);

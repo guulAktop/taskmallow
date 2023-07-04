@@ -151,46 +151,6 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: itemBackgroundLightColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: getTranslated(context, AppKeys.completedTasks),
-                                style: const TextStyle(
-                                  color: textPrimaryLightColor,
-                                  fontSize: 18,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                              TextSpan(
-                                text: userRepository.selectedUserProjects
-                                    .expand((project) => project.tasks)
-                                    .where((task) =>
-                                        !task.isDeleted &&
-                                        task.situation == TaskSituation.done &&
-                                        task.assignedUserMail == userRepository.selectedUserModel!.email)
-                                    .length
-                                    .toString(),
-                                style: const TextStyle(
-                                  color: textPrimaryLightColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(color: secondaryColor, thickness: 1),
@@ -238,8 +198,50 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                   ),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: itemBackgroundLightColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: getTranslated(context, AppKeys.completedTasks),
+                            style: const TextStyle(
+                              color: textPrimaryLightColor,
+                              fontSize: 18,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                          TextSpan(
+                            text: userRepository.selectedUserProjects
+                                .expand((project) => project.tasks)
+                                .where((task) =>
+                                    !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.selectedUserModel!.email)
+                                .length
+                                .toString(),
+                            style: const TextStyle(
+                              color: textPrimaryLightColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SliverPadding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,

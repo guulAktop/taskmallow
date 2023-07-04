@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:taskmallow/components/button_component.dart';
 import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/color_constants.dart';
+import 'package:taskmallow/constants/image_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/invitation_model.dart';
 import 'package:taskmallow/providers/providers.dart';
@@ -42,28 +44,41 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
         icon: const IconComponent(iconData: CustomIconData.chevronLeft),
         onPressed: () => isLoading ? null : Navigator.pop(context),
       ),
-      widgetList: userRepository.incomingInvitations
-          .where((element) => element.toUser.email == userRepository.userModel!.email)
-          .map((invitation) => getInvitationRow(invitation, projectRepository, userRepository))
-          .toList(),
+      widgetList: userRepository.incomingInvitations.isEmpty
+          ? [
+              Expanded(
+                child: Center(
+                  child: SizedBox(
+                    width: UIHelper.getDeviceWidth(context) / 3,
+                    child: Image.asset(
+                      ImageAssetKeys.emptyEnvelope,
+                    ),
+                  ),
+                ),
+              ),
+            ]
+          : userRepository.incomingInvitations
+              .where((element) => element.toUser.email == userRepository.userModel!.email)
+              .map((invitation) => getInvitationRow(invitation, projectRepository, userRepository))
+              .toList(),
     );
   }
 
   Widget getInvitationRow(InvitationModel invitationModel, ProjectRepository projectRepository, UserRepository userRepository) {
-    return invitationModel.project.userWhoCreated.email == invitationModel.fromUser.email
-        ? Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: itemBackgroundLightColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                RichText(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: itemBackgroundLightColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          invitationModel.project.userWhoCreated.email == invitationModel.fromUser.email
+              ? RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
@@ -76,7 +91,7 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            debugPrint("${invitationModel.project.userWhoCreated.firstName} ${invitationModel.project.userWhoCreated.lastName}");
+                            Navigator.pushNamed(context, profileScreenPageRoute, arguments: invitationModel.fromUser);
                           },
                       ),
                       TextSpan(
@@ -97,7 +112,15 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            debugPrint(invitationModel.project.name);
+                            ref.read(projectProvider).projectModel = invitationModel.project;
+                            if (invitationModel.project.collaborators
+                                .map((collaborator) => collaborator.email)
+                                .toList()
+                                .contains(userRepository.userModel!.email)) {
+                              Navigator.pushNamed(context, projectDetailPageRoute, arguments: invitationModel.project);
+                            } else {
+                              Navigator.pushNamed(context, projectScreenPageRoute, arguments: invitationModel.project);
+                            }
                           },
                       ),
                       TextSpan(
@@ -110,52 +133,129 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonComponent(
-                        text: getTranslated(context, AppKeys.accept),
-                        textPadding: 8,
-                        isOutLined: true,
-                        color: success,
-                        onPressed: () async {
-                          await projectRepository.addCollaborator(invitationModel.project, userRepository.userModel!).whenComplete(() {
-                            userRepository.removeInvitation(invitationModel);
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: SizedBox(
-                        child: ButtonComponent(
-                          text: getTranslated(context, AppKeys.reject),
-                          textPadding: 8,
-                          isOutLined: true,
-                          color: danger,
-                          onPressed: () async {
-                            await userRepository.removeInvitation(invitationModel);
+                )
+              : RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}",
+                        style: const TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushNamed(context, profileScreenPageRoute, arguments: invitationModel.fromUser);
                           },
+                      ),
+                      TextSpan(
+                        text: getTranslated(context, AppKeys.toBeIncludedMessagePart1),
+                        style: const TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontFamily: "Poppins",
                         ),
                       ),
-                    ),
-                  ],
+                      TextSpan(
+                        text: invitationModel.project.name,
+                        style: const TextStyle(
+                          color: primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            ref.read(projectProvider).projectModel = invitationModel.project;
+                            if (invitationModel.project.collaborators
+                                .map((collaborator) => collaborator.email)
+                                .toList()
+                                .contains(userRepository.userModel!.email)) {
+                              Navigator.pushNamed(context, projectDetailPageRoute, arguments: invitationModel.project);
+                            } else {
+                              Navigator.pushNamed(context, projectScreenPageRoute, arguments: invitationModel.project);
+                            }
+                          },
+                      ),
+                      TextSpan(
+                        text: getTranslated(context, AppKeys.toBeIncludedMessagePart2),
+                        style: const TextStyle(
+                          color: textPrimaryLightColor,
+                          fontSize: 18,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                TextComponent(
-                  text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
-                    DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-                  )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
-                    DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-                  )}",
-                  textAlign: TextAlign.end,
-                  headerType: HeaderType.h8,
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ButtonComponent(
+                  text: getTranslated(context, AppKeys.accept),
+                  textPadding: 8,
+                  isOutLined: true,
+                  color: success,
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    if (invitationModel.project.userWhoCreated.email == invitationModel.fromUser.email) {
+                      await projectRepository.addCollaborator(invitationModel.project, invitationModel.toUser).whenComplete(() async {
+                        await userRepository.removeInvitation(invitationModel);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                      debugPrint("0");
+                    } else if (invitationModel.project.userWhoCreated.email == invitationModel.toUser.email) {
+                      await projectRepository.addCollaborator(invitationModel.project, invitationModel.fromUser).whenComplete(() async {
+                        await userRepository.removeInvitation(invitationModel);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                      debugPrint("1");
+                    }
+                  },
                 ),
-              ],
-            ),
-          )
-        : Container(
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: SizedBox(
+                  child: ButtonComponent(
+                    text: getTranslated(context, AppKeys.reject),
+                    textPadding: 8,
+                    isOutLined: true,
+                    color: danger,
+                    onPressed: () async {
+                      await userRepository.removeInvitation(invitationModel);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          TextComponent(
+            text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
+              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+            )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
+              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+            )}",
+            textAlign: TextAlign.end,
+            headerType: HeaderType.h8,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/*
+Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
@@ -267,5 +367,4 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
               ],
             ),
           );
-  }
-}
+          */

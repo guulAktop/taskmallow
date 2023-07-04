@@ -15,6 +15,7 @@ import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
+import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
@@ -32,7 +33,6 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
   bool isExpanded = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  List<String> favoriteProjects = [];
 
   @override
   void initState() {
@@ -42,6 +42,11 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
       await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
+        if (ref.read(projectProvider).projectModel != null && ref.read(userProvider).userModel != null) {
+          if (ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
+            Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: ref.read(projectProvider).projectModel!);
+          }
+        }
         ref.read(projectProvider).isLoading = false;
       });
     });
@@ -96,7 +101,7 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
         if (!projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)) {
           ref.read(projectProvider).favoriteProjects.insert(0, projectRepository.projectModel!);
           await userRepository
-              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .update(userRepository.userModel!..favoriteProjects = projectRepository.favoriteProjects.map((e) => e.id).toList())
               .whenComplete(() {
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.projectAddedFavorites), backgroundColor: successDark, icon: CustomIconData.circlePlus);
@@ -108,7 +113,7 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
         } else {
           ref.read(projectProvider).favoriteProjects.removeWhere((element) => element.id == projectRepository.projectModel!.id);
           await userRepository
-              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .update(userRepository.userModel!..favoriteProjects = projectRepository.favoriteProjects.map((e) => e.id).toList())
               .whenComplete(() {
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.projectRemovedFavorites), backgroundColor: successDark, icon: CustomIconData.circleMinus);
@@ -145,7 +150,6 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
             actionList: [
               IconButton(
                 onPressed: () async {
-                  debugPrint(favoriteProjects.length.toString());
                   handleButtonTap();
                   checkFavoriteStatus();
                 },
@@ -263,32 +267,55 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(color: secondaryColor, thickness: 1),
                   ),
-                  ButtonComponent(
-                    text: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
-                        ? getTranslated(context, AppKeys.takeItBack)
-                        : getTranslated(context, AppKeys.sendJoinRequest),
-                    color: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
-                        ? dangerDark
-                        : primaryColor,
-                    isOutLined: true,
-                    onPressed: () async {
-                      if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
-                        await userRepository
-                            .sendInvitation(InvitationModel(
-                                fromUser: userRepository.userModel!,
-                                toUser: projectRepository.projectModel!.userWhoCreated,
-                                project: projectRepository.projectModel!))
-                            .whenComplete(() {});
-                      } else {
-                        await userRepository
-                            .removeInvitation(
-                                userRepository.outgoingInvitations.where((element) => element.project.id == projectRepository.projectModel!.id).first)
-                            .whenComplete(() {
-                          projectRepository.listenForInvitationsByProject();
-                        });
-                      }
-                    },
-                  )
+                  ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(color: infoDark, borderRadius: BorderRadius.all(Radius.circular(10))),
+                          child: Row(
+                            children: [
+                              const IconComponent(
+                                iconData: CustomIconData.envelope,
+                                color: textPrimaryDarkColor,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: TextComponent(
+                                    text: getTranslated(context, AppKeys.youHaveBeenInvited), color: textPrimaryDarkColor, textAlign: TextAlign.start),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ButtonComponent(
+                          text: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                              ? getTranslated(context, AppKeys.takeItBack)
+                              : getTranslated(context, AppKeys.sendJoinRequest),
+                          color: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                              ? dangerDark
+                              : primaryColor,
+                          isOutLined: true,
+                          onPressed: () async {
+                            if (ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
+                              AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.youHaveBeenInvited),
+                                  icon: CustomIconData.envelope, backgroundColor: infoDark);
+                            } else {
+                              if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
+                                await userRepository
+                                    .sendInvitation(InvitationModel(
+                                        fromUser: userRepository.userModel!,
+                                        toUser: projectRepository.projectModel!.userWhoCreated,
+                                        project: projectRepository.projectModel!))
+                                    .whenComplete(() {});
+                              } else {
+                                await userRepository
+                                    .removeInvitation(
+                                        userRepository.outgoingInvitations.where((element) => element.project.id == projectRepository.projectModel!.id).first)
+                                    .whenComplete(() {
+                                  projectRepository.listenForInvitationsByProject();
+                                });
+                              }
+                            }
+                          },
+                        )
                 ],
               ),
             ],

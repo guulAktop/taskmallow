@@ -105,7 +105,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
         if (!projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)) {
           ref.read(projectProvider).favoriteProjects.insert(0, projectRepository.projectModel!);
           await userRepository
-              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .update(userRepository.userModel!..favoriteProjects = projectRepository.favoriteProjects.map((e) => e.id).toList())
               .whenComplete(() {
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.projectAddedFavorites), backgroundColor: successDark, icon: CustomIconData.circlePlus);
@@ -117,7 +117,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
         } else {
           ref.read(projectProvider).favoriteProjects.removeWhere((element) => element.id == projectRepository.projectModel!.id);
           await userRepository
-              .update(userRepository.userModel!..favoriteProjects = ref.watch(projectProvider).favoriteProjects.map((e) => e.id).toList())
+              .update(userRepository.userModel!..favoriteProjects = projectRepository.favoriteProjects.map((e) => e.id).toList())
               .whenComplete(() {
             AppFunctions()
                 .showSnackbar(context, getTranslated(context, AppKeys.projectRemovedFavorites), backgroundColor: successDark, icon: CustomIconData.circleMinus);

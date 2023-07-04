@@ -53,6 +53,7 @@ class _ButtonComponentState extends State<ButtonComponent> {
               ? ElevatedButton.icon(
                   onPressed: widget.onPressed,
                   style: OutlinedButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     elevation: 0,
                     minimumSize: widget.isWide == true ? const Size.fromHeight(10) : const Size(10, 10),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -67,16 +68,16 @@ class _ButtonComponentState extends State<ButtonComponent> {
                   label: Padding(
                     padding: EdgeInsets.all(widget.textPadding),
                     child: widget.isLoading
-                        ? const SizedBox(
-                            width: 25,
-                            height: 25,
+                        ? SizedBox(
+                            width: 24,
+                            height: 24,
                             child: CircularProgressIndicator(
-                              color: indicatorLightColor,
-                              backgroundColor: indicatorBackgroundColor,
+                              color: HSLColor.fromColor(widget.color).withLightness(0.6).toColor(),
+                              backgroundColor: HSLColor.fromColor(widget.color).withLightness(0.3).toColor(),
                             ),
                           )
                         : SizedBox(
-                            height: 25,
+                            height: 24,
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
@@ -89,6 +90,7 @@ class _ButtonComponentState extends State<ButtonComponent> {
               : OutlinedButton.icon(
                   onPressed: widget.onPressed,
                   style: OutlinedButton.styleFrom(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     foregroundColor: widget.color,
                     disabledForegroundColor: widget.color.withOpacity(0.38),
                     elevation: 0,
@@ -103,21 +105,20 @@ class _ButtonComponentState extends State<ButtonComponent> {
                       ? const SizedBox()
                       : IconComponent(
                           iconData: widget.icon!,
-                          color: widget.color,
+                          color: Colors.white,
                         ),
                   label: Padding(
                     padding: EdgeInsets.all(widget.textPadding),
                     child: widget.isLoading
-                        ? const SizedBox(
-                            width: 25,
-                            height: 25,
+                        ? SizedBox(
+                            width: 24,
+                            height: 24,
                             child: CircularProgressIndicator(
-                              color: indicatorLightColor,
-                              backgroundColor: indicatorBackgroundColor,
-                            ),
-                          )
+                              color: HSLColor.fromColor(widget.color).withLightness(0.2).toColor(),
+                              backgroundColor: HSLColor.fromColor(widget.color).withLightness(0.3).toColor(),
+                            ))
                         : SizedBox(
-                            height: 25,
+                            height: 24,
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
@@ -141,6 +142,7 @@ class _ButtonComponentState extends State<ButtonComponent> {
               child: ElevatedButton.icon(
                 onPressed: widget.onPressed,
                 style: OutlinedButton.styleFrom(
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   elevation: 0,
                   minimumSize: widget.isWide == true ? const Size.fromHeight(10) : const Size(10, 10),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -155,16 +157,15 @@ class _ButtonComponentState extends State<ButtonComponent> {
                 label: Padding(
                   padding: EdgeInsets.all(widget.textPadding),
                   child: widget.isLoading
-                      ? const SizedBox(
-                          width: 25,
-                          height: 25,
+                      ? SizedBox(
+                          width: 24,
+                          height: 24,
                           child: CircularProgressIndicator(
-                            color: indicatorLightColor,
-                            backgroundColor: indicatorBackgroundColor,
-                          ),
-                        )
+                            color: HSLColor.fromColor(widget.color).withLightness(0.2).toColor(),
+                            backgroundColor: HSLColor.fromColor(widget.color).withLightness(0.3).toColor(),
+                          ))
                       : SizedBox(
-                          height: 25,
+                          height: 24,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(

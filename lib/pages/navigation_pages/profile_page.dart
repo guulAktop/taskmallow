@@ -18,6 +18,7 @@ import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
 import 'package:taskmallow/widgets/sliver_scaffold_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -136,7 +137,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                                           color: Color(0xFF0A66C2),
                                         ),
                                       ),
-                                      onTap: () {},
+                                      onTap: () async {
+                                        if (await canLaunchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"))) {
+                                          await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"),
+                                              mode: LaunchMode.externalApplication);
+                                        }
+                                      },
                                     ),
                               userRepository.userModel!.twitterProfileURL.isEmpty
                                   ? const SizedBox()
@@ -149,7 +155,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                                           color: Color(0xFF1DA1F2),
                                         ),
                                       ),
-                                      onTap: () {},
+                                      onTap: () async {
+                                        if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"))) {
+                                          await launchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"),
+                                              mode: LaunchMode.externalApplication);
+                                        }
+                                      },
                                     ),
                             ],
                           ),
@@ -170,44 +181,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                         textAlign: TextAlign.start,
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: itemBackgroundLightColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: getTranslated(context, AppKeys.completedTasks),
-                          style: const TextStyle(
-                            color: textPrimaryLightColor,
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
-                        TextSpan(
-                          text: projectRepository.allRelatedProjects
-                              .expand((project) => project.tasks)
-                              .where(
-                                  (task) => !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.userModel!.email)
-                              .length
-                              .toString(),
-                          style: const TextStyle(
-                            color: textPrimaryLightColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
                 const Padding(
@@ -292,8 +265,49 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
             ),
           ),
         ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: itemBackgroundLightColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: getTranslated(context, AppKeys.completedTasks),
+                      style: const TextStyle(
+                        color: textPrimaryLightColor,
+                        fontSize: 18,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                    TextSpan(
+                      text: projectRepository.allRelatedProjects
+                          .expand((project) => project.tasks)
+                          .where((task) => !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.userModel!.email)
+                          .length
+                          .toString(),
+                      style: const TextStyle(
+                        color: textPrimaryLightColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         SliverPadding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
