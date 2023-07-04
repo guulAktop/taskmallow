@@ -361,7 +361,7 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
               ),
               TextFormFieldComponent(
                 context: context,
-                prefixText: "www.linkedin.com/in/",
+                prefixText: "linkedin.com/in/",
                 textEditingController: _linkedinTextEditingController,
                 hintText: "username",
                 enabled: !isLoading,

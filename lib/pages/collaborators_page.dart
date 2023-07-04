@@ -42,6 +42,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
     UserRepository userRepository = ref.watch(userProvider);
     ProjectRepository projectRepository = ref.watch(projectProvider);
     return BaseScaffoldWidget(
+      popScopeFunction: isLoading ? () async => false : () async => true,
       title: getTranslated(context, AppKeys.collaborators),
       leadingWidget: IconButton(
         splashRadius: AppConstants.iconSplashRadius,
@@ -66,96 +67,84 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return BaseScaffoldWidget(
-                              hasAppBar: false,
-                              widgetList: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 10),
+                            return StatefulBuilder(
+                              builder: (context, setState) {
+                                return WillPopScope(
+                                  onWillPop: isLoading ? () async => false : () async => true,
+                                  child: SingleChildScrollView(
+                                    child: Padding(
                                       padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                        color: itemBackgroundLightColor,
-                                      ),
                                       child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                         children: [
-                                          SizedBox(
-                                            width: UIHelper.getDeviceWidth(context) / 4,
-                                            height: UIHelper.getDeviceWidth(context) / 4,
-                                            child: CircularPhotoComponent(
-                                              url: user.profilePhotoURL,
-                                              hasBorder: false,
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              color: itemBackgroundLightColor,
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  width: UIHelper.getDeviceWidth(context) / 4,
+                                                  height: UIHelper.getDeviceWidth(context) / 4,
+                                                  child: CircularPhotoComponent(
+                                                    url: user.profilePhotoURL,
+                                                    hasBorder: false,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                MarqueeWidget(
+                                                  child: TextComponent(
+                                                    text: "${user.firstName} ${user.lastName}",
+                                                    fontWeight: FontWeight.bold,
+                                                    headerType: HeaderType.h4,
+                                                    textAlign: TextAlign.start,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                                MarqueeWidget(
+                                                  child: TextComponent(
+                                                    text: user.email,
+                                                    headerType: HeaderType.h7,
+                                                    textAlign: TextAlign.start,
+                                                    maxLines: 1,
+                                                    softWrap: true,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          const SizedBox(height: 10),
-                                          MarqueeWidget(
-                                            child: TextComponent(
-                                              text: "${user.firstName} ${user.lastName}",
-                                              fontWeight: FontWeight.bold,
-                                              headerType: HeaderType.h4,
-                                              textAlign: TextAlign.start,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                          MarqueeWidget(
-                                            child: TextComponent(
-                                              text: user.email,
-                                              headerType: HeaderType.h7,
-                                              textAlign: TextAlign.start,
-                                              maxLines: 1,
-                                              softWrap: true,
-                                            ),
-                                          ),
+                                          ref.watch(projectProvider).projectModel!.userWhoCreated.email != user.email
+                                              ? Padding(
+                                                  padding: const EdgeInsets.only(top: 10),
+                                                  child: ButtonComponent(
+                                                    isLoading: isLoading,
+                                                    text: getTranslated(context, AppKeys.deleteCollaborator),
+                                                    color: dangerDark,
+                                                    isWide: true,
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      if (projectRepository.projectModel != null) {
+                                                        await projectRepository.removeCollaborator(projectRepository.projectModel!, user).whenComplete(() {
+                                                          Navigator.pop(context);
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                        });
+                                                      }
+                                                    },
+                                                  ),
+                                                )
+                                              : const SizedBox()
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(bottom: 10),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                        color: itemBackgroundLightColor,
-                                      ),
-                                      child: MarqueeWidget(
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: getTranslated(context, AppKeys.completedTasks),
-                                                style: const TextStyle(
-                                                  color: textPrimaryLightColor,
-                                                  fontSize: 18,
-                                                  fontFamily: "Poppins",
-                                                ),
-                                              ),
-                                              const TextSpan(
-                                                text: "4",
-                                                style: TextStyle(
-                                                  color: textPrimaryLightColor,
-                                                  fontSize: 18,
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                ref.watch(projectProvider).projectModel!.userWhoCreated.email != user.email
-                                    ? ButtonComponent(
-                                        text: getTranslated(context, AppKeys.deleteCollaborator),
-                                        color: dangerDark,
-                                        isWide: true,
-                                        onPressed: () {},
-                                      )
-                                    : const SizedBox()
-                              ],
+                                  ),
+                                );
+                              },
                             );
                           });
                     },

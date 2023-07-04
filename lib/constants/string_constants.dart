@@ -143,6 +143,7 @@ class AppKeys {
   static String noProjectMatching = 'no_project_matching';
   static String noUserMatching = 'no_user_matching';
   static String takeItBack = 'take_it_back';
+  static String youHaveBeenInvited = 'you_have_been_invited';
 }
 
 class CategoryKeys {

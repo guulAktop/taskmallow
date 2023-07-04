@@ -294,8 +294,8 @@ class UserRepository extends ChangeNotifier {
 
   Future<void> removeInvitation(InvitationModel invitationModel) async {
     isSucceeded = false;
-    final databaseReference = FirebaseDatabase.instance.ref();
     try {
+      final databaseReference = FirebaseDatabase.instance.ref();
       await databaseReference.child('invitations').child(invitationModel.id).remove().whenComplete(() {
         incomingInvitations.removeWhere((element) => element.id == invitationModel.id);
         outgoingInvitations.removeWhere((element) => element.id == invitationModel.id);
