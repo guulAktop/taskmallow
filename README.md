@@ -57,8 +57,8 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 # Sprint 1
 
 *  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
-*  Sprint içinde tamamlanması tahmin edilen puan: 90 puandır ve tamamlanmıştır.
-*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. İlk sprinte 90 backlog puanı ile başlama kararı aldık ve tamamladık.
+*  Sprint içinde tamamlanması tahmin edilen puan: 100 puandır ve tamamlanmıştır.
+*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanı 300 olarak belirlendi, ilk sprintin başlangıç puanının en az 100 olmasına karar verildi. 
 *  Daily Scrum: Gün içerisinde en az 2 saat toplantı yaptık ve eşzamanlı hareket ettiğimiz için bazı günler yazılı olarak bildiri yapamadık. Discordda bulunan daily kanalını toplantıyı uzun tutmadığımız günlerde kullandık.
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fdailyscrumchats.docx?alt=media&token=7f5c5925-80bf-4c39-8fd7-2cb47d66b2cc)
 
@@ -86,8 +86,8 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 # Sprint 2
 
 *  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine "Kapsam" bloğuna eklenmiştir, bu blogdan User Story lerin detaylarını inceleyebilirsiniz.
-*  Sprint içinde tamamlanması tahmin edilen puan: 93 puandır.
-*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanları belirlenmedi, her sprintin başında teknik bilgilerimize göre değerlendirip puanları atıyoruz. 
+*  Sprint içinde tamamlanması tahmin edilen puan: 100 puandır.
+*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanı 300 olarak belirlendi, Sprint 2 de 100 puanı tamamlama kararı alındı.
 *  Daily Scrum: Task'ları tamamlama sırası belirlenerek öncelikli olarak çalışıldı. Her bir task için tahmini tamamlama süresi belirlendi ve bu sürelere göre atanan task'ın bitmesi öngörüldü.Bu sebepten dolayı Discordda sürekli iletişim halinde kaldık.
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
