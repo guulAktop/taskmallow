@@ -32,6 +32,16 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
     await SharedPreferencesHelper.getString("loggedUser").then((loggedUserSP) {
       if (loggedUserSP != null && loggedUserSP.toString().isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          userRepository.filteredProjects.clear();
+          userRepository.filteredUsers.clear();
+          userRepository.incomingInvitations.clear();
+          userRepository.outgoingInvitations.clear();
+          projectRepository.allRelatedProjects.clear();
+          projectRepository.favoriteProjects.clear();
+          projectRepository.invitations.clear();
+          projectRepository.latestProjects.clear();
+          projectRepository.matchingProjects.clear();
+          projectRepository.matchingUsers.clear();
           userRepository.userModel = UserModel.fromJson(jsonDecode(loggedUserSP.toString()));
           userRepository.hasProfile(userRepository.userModel!.email).then((value) {
             if (value) {
@@ -43,18 +53,20 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                       projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
                         projectRepository.getLatestProjects().whenComplete(() {
                           projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
-                            userRepository.listenInvitations();
-                            if (mounted) {
-                              if (userRepository.userInfoIsFull) {
-                                if (userRepository.userModel!.preferredCategories.isEmpty) {
-                                  Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                            userRepository.updateUserLocale(View.of(context).platformDispatcher.locale.languageCode).whenComplete(() async {
+                              await userRepository.listenInvitations();
+                              if (mounted) {
+                                if (userRepository.userInfoIsFull) {
+                                  if (userRepository.userModel!.preferredCategories.isEmpty) {
+                                    Navigator.pushNamedAndRemoveUntil(context, categoryPreferencesPageRoute, (route) => false, arguments: 0);
+                                  } else {
+                                    Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  }
                                 } else {
-                                  Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
+                                  Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                                 }
-                              } else {
-                                Navigator.pushNamedAndRemoveUntil(context, updateProfilePageRoute, (route) => false, arguments: 1);
                               }
-                            }
+                            });
                           });
                         });
                       });

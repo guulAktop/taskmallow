@@ -15,6 +15,7 @@ import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget.dart';
@@ -92,6 +93,7 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
     }
 
     ProjectRepository projectRepository = ref.watch(projectProvider);
+    UserRepository userRepository = ref.watch(userProvider);
 
     return BaseScaffoldWidget(
       popScopeFunction: isLoading ? () async => false : () async => true,
@@ -232,8 +234,18 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
               taskModel!.situation = TaskModel.getTaskSituationFromValue(_selectedSituation!);
               taskModel!.description = _taskDescriptionTextEditingController.text.trim();
               taskModel!.assignedUserMail = _selectedUser?.email;
-              await projectRepository.updateTask(taskModel!).whenComplete(() {
-                Navigator.pop(context);
+              await projectRepository.updateTask(taskModel!).whenComplete(() async {
+                if (taskModel!.assignedUserMail != null) {
+                  UserModel user = await userRepository.getUserByEmail(taskModel!.assignedUserMail!);
+                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssigned);
+                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail1);
+                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail2);
+                  String body3 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail3);
+                  await AppFunctions().sendPushMessage(user, title, "$body1${taskModel!.viewId}$body2${projectRepository.projectModel!.name}$body3");
+                }
+                if (mounted) {
+                  Navigator.pop(context);
+                }
               });
             }
           },

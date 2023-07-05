@@ -58,8 +58,12 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
           onPressed: () {
             Navigator.pushNamed(context, searchPageRoute);
           },
-          icon: const IconComponent(
-            iconData: CustomIconData.magnifyingGlass,
+          icon: const Padding(
+            padding: EdgeInsets.all(3),
+            child: IconComponent(
+              iconData: CustomIconData.magnifyingGlass,
+              size: 25,
+            ),
           ),
           splashRadius: AppConstants.iconSplashRadius,
         ),
@@ -67,8 +71,33 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
           onPressed: () {
             Navigator.pushNamed(context, invitationsPageRoute);
           },
-          icon: const IconComponent(
-            iconData: CustomIconData.bell,
+          icon: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(3),
+                child: IconComponent(
+                  iconData: CustomIconData.bell,
+                  size: 25,
+                ),
+              ),
+              userRepository.incomingInvitations.isEmpty
+                  ? const SizedBox()
+                  : Container(
+                      decoration: const BoxDecoration(color: danger, borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
+                        padding: EdgeInsets.zero,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: TextComponent(
+                            maxLines: 1,
+                            text: userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
+                            headerType: HeaderType.h8,
+                          ),
+                        ),
+                      ),
+                    ),
+            ],
           ),
           splashRadius: AppConstants.iconSplashRadius,
         ),

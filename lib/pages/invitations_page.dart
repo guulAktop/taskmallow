@@ -64,6 +64,197 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
     );
   }
 
+  // Widget getInvitationRow(InvitationModel invitationModel, ProjectRepository projectRepository, UserRepository userRepository) {
+  //   return Container(
+  //     margin: const EdgeInsets.only(bottom: 10),
+  //     padding: const EdgeInsets.all(10),
+  //     decoration: const BoxDecoration(
+  //       color: itemBackgroundLightColor,
+  //       borderRadius: BorderRadius.all(
+  //         Radius.circular(10),
+  //       ),
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.stretch,
+  //       children: [
+  //         invitationModel.project.userWhoCreated.email == invitationModel.fromUser.email
+  //             ? RichText(
+  //                 text: TextSpan(
+  //                   children: [
+  //                     TextSpan(
+  //                       text: "${invitationModel.project.userWhoCreated.firstName} ${invitationModel.project.userWhoCreated.lastName}",
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                       recognizer: TapGestureRecognizer()
+  //                         ..onTap = () {
+  //                           Navigator.pushNamed(context, profileScreenPageRoute, arguments: invitationModel.fromUser);
+  //                         },
+  //                     ),
+  //                     TextSpan(
+  //                       text: getTranslated(context, AppKeys.toInvolveMessagePart1),
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                     ),
+  //                     TextSpan(
+  //                       text: invitationModel.project.name,
+  //                       style: const TextStyle(
+  //                         color: primaryColor,
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                       recognizer: TapGestureRecognizer()
+  //                         ..onTap = () {
+  //                           ref.read(projectProvider).projectModel = invitationModel.project;
+  //                           if (invitationModel.project.collaborators
+  //                               .map((collaborator) => collaborator.email)
+  //                               .toList()
+  //                               .contains(userRepository.userModel!.email)) {
+  //                             Navigator.pushNamed(context, projectDetailPageRoute, arguments: invitationModel.project);
+  //                           } else {
+  //                             Navigator.pushNamed(context, projectScreenPageRoute, arguments: invitationModel.project);
+  //                           }
+  //                         },
+  //                     ),
+  //                     TextSpan(
+  //                       text: getTranslated(context, AppKeys.toInvolveMessagePart2),
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               )
+  //             : RichText(
+  //                 text: TextSpan(
+  //                   children: [
+  //                     TextSpan(
+  //                       text: "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}",
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                       recognizer: TapGestureRecognizer()
+  //                         ..onTap = () {
+  //                           Navigator.pushNamed(context, profileScreenPageRoute, arguments: invitationModel.fromUser);
+  //                         },
+  //                     ),
+  //                     TextSpan(
+  //                       text: getTranslated(context, AppKeys.toBeIncludedMessagePart1),
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                     ),
+  //                     TextSpan(
+  //                       text: invitationModel.project.name,
+  //                       style: const TextStyle(
+  //                         color: primaryColor,
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                       recognizer: TapGestureRecognizer()
+  //                         ..onTap = () {
+  //                           ref.read(projectProvider).projectModel = invitationModel.project;
+  //                           if (invitationModel.project.collaborators
+  //                               .map((collaborator) => collaborator.email)
+  //                               .toList()
+  //                               .contains(userRepository.userModel!.email)) {
+  //                             Navigator.pushNamed(context, projectDetailPageRoute, arguments: invitationModel.project);
+  //                           } else {
+  //                             Navigator.pushNamed(context, projectScreenPageRoute, arguments: invitationModel.project);
+  //                           }
+  //                         },
+  //                     ),
+  //                     TextSpan(
+  //                       text: getTranslated(context, AppKeys.toBeIncludedMessagePart2),
+  //                       style: const TextStyle(
+  //                         color: textPrimaryLightColor,
+  //                         fontSize: 18,
+  //                         fontFamily: "Poppins",
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //         const SizedBox(height: 10),
+  //         Row(
+  //           children: [
+  //             Expanded(
+  //               child: ButtonComponent(
+  //                 text: getTranslated(context, AppKeys.accept),
+  //                 textPadding: 8,
+  //                 isOutLined: true,
+  //                 color: success,
+  //                 onPressed: () async {
+  //                   setState(() {
+  //                     isLoading = true;
+  //                   });
+  //                   if (invitationModel.project.userWhoCreated.email == invitationModel.fromUser.email) {
+  //                     await projectRepository.addCollaborator(invitationModel.project, invitationModel.toUser).whenComplete(() async {
+  //                       await userRepository.removeInvitation(invitationModel);
+  //                       setState(() {
+  //                         isLoading = false;
+  //                       });
+  //                     });
+  //                     debugPrint("0");
+  //                   } else if (invitationModel.project.userWhoCreated.email == invitationModel.toUser.email) {
+  //                     await projectRepository.addCollaborator(invitationModel.project, invitationModel.fromUser).whenComplete(() async {
+  //                       await userRepository.removeInvitation(invitationModel);
+  //                       setState(() {
+  //                         isLoading = false;
+  //                       });
+  //                     });
+  //                     debugPrint("1");
+  //                   }
+  //                 },
+  //               ),
+  //             ),
+  //             const SizedBox(width: 10),
+  //             Expanded(
+  //               child: SizedBox(
+  //                 child: ButtonComponent(
+  //                   text: getTranslated(context, AppKeys.reject),
+  //                   textPadding: 8,
+  //                   isOutLined: true,
+  //                   color: danger,
+  //                   onPressed: () async {
+  //                     await userRepository.removeInvitation(invitationModel);
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 5),
+  //         TextComponent(
+  //           text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
+  //             DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+  //           )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
+  //             DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+  //           )}",
+  //           color: secondaryColor,
+  //           textAlign: TextAlign.end,
+  //           headerType: HeaderType.h8,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget getInvitationRow(InvitationModel invitationModel, ProjectRepository projectRepository, UserRepository userRepository) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -190,6 +381,16 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                     ],
                   ),
                 ),
+          TextComponent(
+            text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
+              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+            )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
+              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
+            )}",
+            color: secondaryColor,
+            textAlign: TextAlign.end,
+            headerType: HeaderType.h8,
+          ),
           const SizedBox(height: 10),
           Row(
             children: [
@@ -239,132 +440,8 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
               ),
             ],
           ),
-          TextComponent(
-            text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
-              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-            )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
-              DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-            )}",
-            textAlign: TextAlign.end,
-            headerType: HeaderType.h8,
-          ),
         ],
       ),
     );
   }
 }
-
-/*
-Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: itemBackgroundLightColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}",
-                        style: const TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushNamed(context, profileScreenPageRoute, arguments: invitationModel.fromUser);
-                          },
-                      ),
-                      TextSpan(
-                        text: getTranslated(context, AppKeys.toBeIncludedMessagePart1),
-                        style: const TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                      TextSpan(
-                        text: invitationModel.project.name,
-                        style: const TextStyle(
-                          color: primaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            ref.read(projectProvider).projectModel = invitationModel.project;
-                            if (invitationModel.project.collaborators
-                                .map((collaborator) => collaborator.email)
-                                .toList()
-                                .contains(userRepository.userModel!.email)) {
-                              Navigator.pushNamed(context, projectDetailPageRoute, arguments: invitationModel.project);
-                            } else {
-                              Navigator.pushNamed(context, projectScreenPageRoute, arguments: invitationModel.project);
-                            }
-                          },
-                      ),
-                      TextSpan(
-                        text: getTranslated(context, AppKeys.toBeIncludedMessagePart2),
-                        style: const TextStyle(
-                          color: textPrimaryLightColor,
-                          fontSize: 18,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ButtonComponent(
-                        text: getTranslated(context, AppKeys.accept),
-                        textPadding: 8,
-                        isOutLined: true,
-                        color: success,
-                        onPressed: () async {
-                          await projectRepository.addCollaborator(invitationModel.project, invitationModel.fromUser).whenComplete(() {
-                            userRepository.removeInvitation(invitationModel);
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: SizedBox(
-                        child: ButtonComponent(
-                          text: getTranslated(context, AppKeys.reject),
-                          textPadding: 8,
-                          isOutLined: true,
-                          color: danger,
-                          onPressed: () async {
-                            await userRepository.removeInvitation(invitationModel);
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TextComponent(
-                  text: "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(
-                    DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-                  )} ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(
-                    DateTime.fromMillisecondsSinceEpoch(invitationModel.createdDate!),
-                  )}",
-                  textAlign: TextAlign.end,
-                  headerType: HeaderType.h8,
-                ),
-              ],
-            ),
-          );
-          */

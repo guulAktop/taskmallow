@@ -465,7 +465,9 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                             height: 40,
                             width: 40,
                             child: CircularPhotoComponent(
-                              url: projectModel.collaborators.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL,
+                              url: projectModel.collaborators.any((element) => element.email == taskModel.assignedUserMail)
+                                  ? projectModel.collaborators.where((element) => element.email == taskModel.assignedUserMail).first.profilePhotoURL
+                                  : null,
                               hasBorder: false,
                             ),
                           ),

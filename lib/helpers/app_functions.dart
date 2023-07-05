@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,9 @@ import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
+import 'package:taskmallow/models/user_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:taskmallow/repositories/user_repository.dart';
 
 class AppFunctions {
   void showSnackbar(BuildContext context, String text, {Color? backgroundColor, CustomIconData? icon, int duration = 2}) {
@@ -207,5 +212,49 @@ class AppFunctions {
       }
     }
     return taskLength == 0 ? 0 : (doneLength / taskLength).toDouble();
+  }
+
+  Future<void> sendPushMessage(UserModel user, String title, String body) async {
+    UserRepository userRepository = UserRepository();
+    user = await userRepository.getUserByEmail(user.email);
+    try {
+      await http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization':
+                'key=AAAAQsHIQXU:APA91bH8WZXi8SGlHe7J9QpZMGIzN2Q_r79VpyS44Tnfe3b3q6KEKiT-Mp6BXSzA8LuVQU_zFQFXdE0iqLN-YXAtbNtzJa_TICcABymcyz1_W8AKSTxJzI3UwnQLpZvUqCsxsqxQK8tf'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'title': title,
+              'body': body,
+            },
+            'notification': <String, dynamic>{
+              'android_channel_id': 'taskmallow',
+              'title': title,
+              'body': body,
+            },
+            'to': user.notificationToken,
+          }));
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint("Error push notification!");
+      }
+    }
+  }
+
+  Future<String> getTranslatedByLocale(String languageCode, String key) async {
+    try {
+      late Map<dynamic, dynamic> localizedValues;
+      String jsonStringValues = await rootBundle.loadString('lib/localization/languages/$languageCode.json');
+      Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
+      localizedValues = mappedJson.map((key, value) => MapEntry(key, value.toString()));
+      return localizedValues[key];
+    } catch (e) {
+      return key;
+    }
   }
 }

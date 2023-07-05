@@ -144,6 +144,15 @@ class AppKeys {
   static String noUserMatching = 'no_user_matching';
   static String takeItBack = 'take_it_back';
   static String youHaveBeenInvited = 'you_have_been_invited';
+  static String taskHasBeenAssigned = 'task_has_been_assigned';
+  static String taskHasBeenAssignedDetail1 = 'task_has_been_assigned_detail_1';
+  static String taskHasBeenAssignedDetail2 = 'task_has_been_assigned_detail_2';
+  static String taskHasBeenAssignedDetail3 = 'task_has_been_assigned_detail_3';
+  static String newInvitation = 'new_invitation';
+  static String youHaveBeenInvitedBody1 = 'you_have_been_invited_body_1';
+  static String youHaveBeenInvitedBody2 = 'you_have_been_invited_body_2';
+  static String wantsToBeInvolved1 = 'wants_to_be_involved_1';
+  static String wantsToBeInvolved2 = 'wants_to_be_involved_2';
 }
 
 class CategoryKeys {

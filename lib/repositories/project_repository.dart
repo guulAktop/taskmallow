@@ -317,16 +317,16 @@ class ProjectRepository extends ChangeNotifier {
   }
 
   Future<void> getInvitationsByProject(ProjectModel project) async {
-    final databaseReference = FirebaseDatabase.instance.ref();
-
+    invitations.clear();
     try {
+      final databaseReference = FirebaseDatabase.instance.ref();
       final DatabaseEvent event = await databaseReference.child('invitations').orderByChild('project/id').equalTo(project.id).once();
       final DataSnapshot dataSnapshot = event.snapshot;
       final dynamic dataSnapshotValue = dataSnapshot.value;
 
       if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
         final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-        invitations = [];
+        invitations.clear();
         invitationsData.forEach((key, value) {
           final InvitationModel invitation = InvitationModel.fromMap(value as Map<String, dynamic>);
           invitations.add(invitation);
@@ -354,7 +354,7 @@ class ProjectRepository extends ChangeNotifier {
           final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
           invitationsData.forEach((key, value) async {
             final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
-            if (invitation.project.id == projectModel!.id && !projectModel!.isDeleted) {
+            if (invitation.project.id == projectModel!.id && !projectModel!.isDeleted && invitation.project.userWhoCreated.email == invitation.fromUser.email) {
               if (projectModel!.collaborators.any((element) => element.email == invitation.toUser.email) &&
                   projectModel!.collaborators.any((element) => element.email == invitation.fromUser.email)) {
                 UserRepository userRepository = UserRepository();
@@ -362,9 +362,6 @@ class ProjectRepository extends ChangeNotifier {
               } else {
                 invitations.add(invitation);
               }
-            } else {
-              UserRepository userRepository = UserRepository();
-              await userRepository.removeInvitation(invitation);
             }
           });
           debugPrint('Güncellenmiş Davetler: $invitations');
@@ -396,7 +393,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
+      debugPrint("ERROR: ProjectRepository.addCollaborator()\n$error");
     }
     notifyListeners();
   }
@@ -419,7 +416,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
+      debugPrint("ERROR: ProjectRepository.removeCollaborator()\n$error");
     }
     notifyListeners();
   }

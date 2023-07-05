@@ -7,6 +7,7 @@ import 'package:taskmallow/components/text_component.dart';
 import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/constants/string_constants.dart';
+import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/invitation_model.dart';
@@ -226,9 +227,17 @@ class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProvid
                       : getTranslated(context, AppKeys.removeInvite),
                   onPressed: () async {
                     if (!projectRepository.invitations.any((element) => element.toUser.email == user.email)) {
-                      await userRepository
-                          .sendInvitation(InvitationModel(fromUser: userRepository.userModel!, toUser: user, project: projectRepository.projectModel!))
-                          .whenComplete(() {});
+                      InvitationModel invitationModel =
+                          InvitationModel(fromUser: userRepository.userModel!, toUser: user, project: projectRepository.projectModel!);
+                      await userRepository.sendInvitation(invitationModel).whenComplete(() async {
+                        UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
+                        String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.newInvitation);
+                        String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.youHaveBeenInvitedBody1);
+                        String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.youHaveBeenInvitedBody2);
+
+                        await AppFunctions().sendPushMessage(user, title,
+                            "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");
+                      });
                     } else {
                       await userRepository
                           .removeInvitation(projectRepository.invitations.where((element) => element.toUser.email == user.email).first)
