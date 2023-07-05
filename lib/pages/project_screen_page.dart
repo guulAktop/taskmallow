@@ -20,6 +20,8 @@ import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/popup_menu_widget/popup_menu_widget_item.dart';
 
+import '../models/user_model.dart';
+
 class ProjectScreenPage extends ConsumerStatefulWidget {
   const ProjectScreenPage({super.key});
 
@@ -299,12 +301,19 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                                   icon: CustomIconData.envelope, backgroundColor: infoDark);
                             } else {
                               if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
-                                await userRepository
-                                    .sendInvitation(InvitationModel(
-                                        fromUser: userRepository.userModel!,
-                                        toUser: projectRepository.projectModel!.userWhoCreated,
-                                        project: projectRepository.projectModel!))
-                                    .whenComplete(() {});
+                                InvitationModel invitationModel = InvitationModel(
+                                    fromUser: userRepository.userModel!,
+                                    toUser: projectRepository.projectModel!.userWhoCreated,
+                                    project: projectRepository.projectModel!);
+                                await userRepository.sendInvitation(invitationModel).whenComplete(() async {
+                                  UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
+                                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.newInvitation);
+                                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.wantsToBeInvolved1);
+                                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.wantsToBeInvolved2);
+
+                                  await AppFunctions().sendPushMessage(user, title,
+                                      "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");
+                                });
                               } else {
                                 await userRepository
                                     .removeInvitation(

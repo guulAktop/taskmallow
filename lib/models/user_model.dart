@@ -16,6 +16,7 @@ class UserModel {
   List<String> preferredCategories;
   List<String> favoriteProjects;
   String? notificationToken;
+  String? languageCode;
 
   UserModel({
     required this.email,
@@ -32,6 +33,7 @@ class UserModel {
     this.preferredCategories = const [],
     this.favoriteProjects = const [],
     this.notificationToken,
+    this.languageCode,
   });
 
   String toJson() => json.encode(toMap());
@@ -54,6 +56,7 @@ class UserModel {
       'preferredCategories': preferredCategories.toList(),
       'favoriteProjects': favoriteProjects.toList(),
       'notificationToken': notificationToken,
+      'languageCode': languageCode ?? "en",
     };
   }
 
@@ -73,6 +76,7 @@ class UserModel {
       preferredCategories: map['preferredCategories'] != null ? List<String>.from((map['preferredCategories'] as List<dynamic>)) : [],
       favoriteProjects: map['favoriteProjects'] != null ? List<String>.from((map['favoriteProjects'] as List<dynamic>)) : [],
       notificationToken: map['notificationToken'] != null ? map['notificationToken'] as String : null,
+      languageCode: map['languageCode'] != null ? map['languageCode'] as String : "en",
     );
   }
 }

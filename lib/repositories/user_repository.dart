@@ -72,6 +72,8 @@ class UserRepository extends ChangeNotifier {
 
   void logout(BuildContext context) {
     SharedPreferencesHelper.remove("loggedUser");
+    userModel = null;
+    notifyListeners();
     Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
   }
 
@@ -149,6 +151,11 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<UserModel> getUserByEmail(String email) async {
+    DocumentSnapshot snapshot = await users.doc(email).get();
+    return UserModel.fromJson(json.encode(snapshot.data()))..password = null;
+  }
+
   Future<void> getSelectedUserByEmail(String email) async {
     DocumentSnapshot snapshot = await users.doc(email).get();
     selectedUserModel = UserModel.fromJson(json.encode(snapshot.data()));
@@ -218,6 +225,23 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateUserLocale(String languageCode) async {
+    isSucceeded = false;
+    await users.where('email', isEqualTo: userModel!.email).get().then((value) async {
+      if (value.docs.isNotEmpty) {
+        await users.doc(userModel!.email).update({
+          "languageCode": languageCode,
+        }).then((value1) {
+          isSucceeded = true;
+        }).catchError((error) {
+          debugPrint("ERROR: UserRepository.updateUserLocale()\n$error");
+          isSucceeded = false;
+        });
+      }
+    });
+    notifyListeners();
+  }
+
   Future<String?> uploadImage(File image, String child) async {
     final storageRef = FirebaseStorage.instance.ref();
     try {
@@ -280,7 +304,7 @@ class UserRepository extends ChangeNotifier {
       invitationModel.id = invitationId ?? DateTime.now().millisecondsSinceEpoch.toString();
       final invitationData = invitationModel.toMap();
 
-      await inviteRef.set(invitationData).then((value) {
+      await inviteRef.set(invitationData).then((value) async {
         isSucceeded = true;
       }).onError((error, stackTrace) {
         isSucceeded = false;
@@ -309,8 +333,9 @@ class UserRepository extends ChangeNotifier {
   }
 
   Future<void> listenInvitations() async {
-    incomingInvitations.clear();
     outgoingInvitations.clear();
+    incomingInvitations.clear();
+    notifyListeners();
     if (userModel != null) {
       final databaseReference = FirebaseDatabase.instance.ref();
       final query = databaseReference.child('invitations').orderByChild('fromUser/email').equalTo(userModel!.email);
@@ -327,6 +352,7 @@ class UserRepository extends ChangeNotifier {
         } else {
           debugPrint('Davet bulunamadı');
         }
+        outgoingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
         notifyListeners();
       }, onError: (error) {
         debugPrint("ERROR: getInvitations()\n$error");

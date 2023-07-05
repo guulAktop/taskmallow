@@ -10,18 +10,21 @@ class TextComponent extends StatefulWidget {
   final bool? softWrap;
   final int? maxLines;
   final bool hasShadow;
-  const TextComponent({
-    Key? key,
-    required this.text,
-    this.color,
-    this.textAlign = TextAlign.center,
-    this.fontWeight = FontWeight.normal,
-    this.headerType,
-    this.overflow,
-    this.softWrap,
-    this.maxLines,
-    this.hasShadow = false,
-  }) : super(key: key);
+  final double? height;
+
+  const TextComponent(
+      {Key? key,
+      required this.text,
+      this.color,
+      this.textAlign = TextAlign.center,
+      this.fontWeight = FontWeight.normal,
+      this.headerType,
+      this.overflow,
+      this.softWrap,
+      this.maxLines,
+      this.hasShadow = false,
+      this.height})
+      : super(key: key);
 
   @override
   State<TextComponent> createState() => _TextComponentState();
@@ -34,6 +37,7 @@ class _TextComponentState extends State<TextComponent> {
       widget.text,
       textAlign: widget.textAlign,
       style: TextStyle(
+        height: widget.height,
         color: widget.color,
         fontSize: getHeaderTypeValue(widget.headerType ?? HeaderType.h5),
         fontWeight: widget.fontWeight,
