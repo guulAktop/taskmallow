@@ -8,6 +8,7 @@ import 'package:taskmallow/pages/category_preferences_page.dart';
 import 'package:taskmallow/pages/collaborators_page.dart';
 import 'package:taskmallow/pages/create_project_page.dart';
 import 'package:taskmallow/pages/create_task_page.dart';
+import 'package:taskmallow/pages/project_messaging_page.dart';
 import 'package:taskmallow/pages/update_profile_page.dart';
 import 'package:taskmallow/pages/indicator_page.dart';
 import 'package:taskmallow/pages/navigation_pages/home_page.dart';
@@ -123,6 +124,8 @@ class RouteGenerator {
           pageBuilder: (_, __, ___) => const IndicatorPage(),
           transitionDuration: Duration.zero,
         );
+      case projectMessagingPageRoute:
+        return createRoute(const ProjectMessagingPage(), settings);
       case onboardingPageRoute:
         return createRoute(const OnBoardingPage(), settings);
       default:

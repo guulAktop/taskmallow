@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmallow/models/invitation_model.dart';
+import 'package:taskmallow/models/message_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
@@ -19,6 +20,7 @@ class ProjectRepository extends ChangeNotifier {
   bool isSucceeded = false;
   bool isLoading = false;
   List<InvitationModel> invitations = [];
+  List<MessageModel> projectMessages = [];
 
   Future<void> add(ProjectModel project) async {
     isSucceeded = false;
@@ -174,7 +176,7 @@ class ProjectRepository extends ChangeNotifier {
     }
   }
 
-  Future<void> getProjectById(String projectId) async {
+  Future<void> getProject(String projectId) async {
     try {
       final DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
       if (projectSnapshot.exists) {
@@ -198,9 +200,35 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getProjectById()\n$error");
+      debugPrint("ERROR: ProjectRepository.getProject()\n$error");
     }
     notifyListeners();
+  }
+
+  Future<ProjectModel> getProjectById(String projectId) async {
+    final DocumentSnapshot projectSnapshot = await projects.doc(projectId).get();
+    if (projectSnapshot.exists) {
+      ProjectModel project = ProjectModel.fromMap(projectSnapshot.data() as Map<String, dynamic>);
+      final DocumentSnapshot userSnapshot = await users.doc(project.userWhoCreated.email).get();
+
+      for (var task in project.tasks) {
+        if (!project.collaborators.any((element) => element.email == task.assignedUserMail)) {
+          project = project..tasks.where((element) => element.assignedUserMail == task.assignedUserMail).first.assignedUserMail = null;
+        }
+      }
+
+      if (userSnapshot.exists) {
+        final UserModel user = UserModel.fromMap(userSnapshot.data() as Map<String, dynamic>)..password = null;
+        final List<UserModel> collaborators = await _fetchCollaborators(project.collaborators);
+        project = project.copyWith(
+          userWhoCreated: user,
+          collaborators: collaborators,
+        );
+      }
+      return project;
+    } else {
+      throw Exception('Davet bulunamadı');
+    }
   }
 
   Future<List<UserModel>> _fetchCollaborators(List<UserModel> collaborators) async {
@@ -344,6 +372,7 @@ class ProjectRepository extends ChangeNotifier {
   Future<void> listenForInvitationsByProject() async {
     invitations.clear();
     if (projectModel != null) {
+      projectModel = await getProjectById(projectModel!.id);
       final databaseReference = FirebaseDatabase.instance.ref();
       final query = databaseReference.child('invitations').orderByChild('project/id').equalTo(projectModel!.id);
       query.onValue.listen((event) {
@@ -419,5 +448,32 @@ class ProjectRepository extends ChangeNotifier {
       debugPrint("ERROR: ProjectRepository.removeCollaborator()\n$error");
     }
     notifyListeners();
+  }
+
+  Future<void> listenForProjectMessages() async {
+    projectMessages.clear();
+    if (projectModel != null) {
+      final databaseReference = FirebaseDatabase.instance.ref();
+      final query = databaseReference.child('projectMessages').child(projectModel!.id).orderByKey();
+      query.onValue.listen((event) {
+        projectMessages.clear();
+        final DataSnapshot dataSnapshot = event.snapshot;
+        final dynamic dataSnapshotValue = dataSnapshot.value;
+        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+          final Map<dynamic, dynamic> projectMessagesData = dataSnapshotValue;
+          projectMessagesData.forEach((key, value) {
+            final MessageModel messageModel = MessageModel.fromMap(value as Map<dynamic, dynamic>);
+            projectMessages.add(messageModel);
+          });
+          debugPrint('Güncel Mesajlar: $projectMessages');
+        } else {
+          debugPrint('Mesaj bulunamadı');
+        }
+        projectMessages.sort((a, b) => a.messageDate.compareTo(b.messageDate));
+        notifyListeners();
+      }, onError: (error) {
+        debugPrint("ERROR: ProjectRepository.listenForMessagesByProject()\n$error");
+      });
+    }
   }
 }

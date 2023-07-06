@@ -43,7 +43,7 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
     ref.read(projectProvider).isLoading = true;
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
-      await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
+      await ref.read(projectProvider).getProject(projectArg.id).whenComplete(() {
         if (ref.read(projectProvider).projectModel != null && ref.read(userProvider).userModel != null) {
           if (ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
             Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: ref.read(projectProvider).projectModel!);

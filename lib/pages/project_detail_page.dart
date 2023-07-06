@@ -42,7 +42,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
     ref.read(projectProvider).isLoading = true;
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
-      await ref.read(projectProvider).getProjectById(projectArg.id).whenComplete(() {
+      await ref.read(projectProvider).getProject(projectArg.id).whenComplete(() {
         if (ref.read(projectProvider).projectModel == null ||
             ref.read(projectProvider).projectModel!.isDeleted ||
             !ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
@@ -184,6 +184,14 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                     )
                   : const SizedBox(),
             ],
+            floatingActionButton: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: primaryColor,
+              child: const IconComponent(iconData: CustomIconData.message, color: textPrimaryDarkColor),
+              onPressed: () {
+                Navigator.pushNamed(context, projectMessagingPageRoute);
+              },
+            ),
             widgetList: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

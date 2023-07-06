@@ -201,7 +201,7 @@ class _CollaboratorsPageState extends ConsumerState<CollaboratorsPage> {
           context: context,
           textEditingController: _searchTextEditingController,
           iconData: CustomIconData.magnifyingGlass,
-          hintText: getTranslated(context, AppKeys.search),
+          hintText: getTranslated(context, AppKeys.enterAtLeast3LettersToSearch),
           onChanged: (text) {
             userRepository.searchUserAndProject(text.trim().toLowerCase());
           },
