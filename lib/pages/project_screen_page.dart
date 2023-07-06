@@ -307,9 +307,9 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
                                     project: projectRepository.projectModel!);
                                 await userRepository.sendInvitation(invitationModel).whenComplete(() async {
                                   UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
-                                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.newInvitation);
-                                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.wantsToBeInvolved1);
-                                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.wantsToBeInvolved2);
+                                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.newInvitation);
+                                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved1);
+                                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved2);
 
                                   await AppFunctions().sendPushMessage(user, title,
                                       "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");

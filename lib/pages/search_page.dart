@@ -51,7 +51,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           context: context,
           textEditingController: _searchTextEditingController,
           iconData: CustomIconData.magnifyingGlass,
-          hintText: getTranslated(context, AppKeys.search),
+          hintText: getTranslated(context, AppKeys.enterAtLeast3LettersToSearch),
           onChanged: (text) {
             userRepository.searchUserAndProject(text.trim().toLowerCase());
           },
@@ -64,6 +64,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 ),
               )
             : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Visibility(
                     visible: _searchTextEditingController.text.length > 2,

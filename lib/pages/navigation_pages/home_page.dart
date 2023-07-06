@@ -62,7 +62,6 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
             padding: EdgeInsets.all(3),
             child: IconComponent(
               iconData: CustomIconData.magnifyingGlass,
-              size: 25,
             ),
           ),
           splashRadius: AppConstants.iconSplashRadius,
@@ -78,7 +77,6 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                 padding: EdgeInsets.all(3),
                 child: IconComponent(
                   iconData: CustomIconData.bell,
-                  size: 25,
                 ),
               ),
               userRepository.incomingInvitations.isEmpty
@@ -88,11 +86,11 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                       child: Padding(
                         padding: EdgeInsets.zero,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: TextComponent(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Text(
+                            userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
                             maxLines: 1,
-                            text: userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
-                            headerType: HeaderType.h8,
+                            style: const TextStyle(fontSize: 8),
                           ),
                         ),
                       ),

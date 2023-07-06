@@ -153,6 +153,12 @@ class AppKeys {
   static String youHaveBeenInvitedBody2 = 'you_have_been_invited_body_2';
   static String wantsToBeInvolved1 = 'wants_to_be_involved_1';
   static String wantsToBeInvolved2 = 'wants_to_be_involved_2';
+  static String yourInvitationHasBeenAccepted = 'your_invitation_has_been_accepted';
+  static String userHasIncludedYouInTheProjectBody1 = 'user_has_included_you_in_the_project_body_1';
+  static String userHasIncludedYouInTheProjectBody2 = 'user_has_included_you_in_the_project_body_2';
+  static String userWasInvolvedInTheProjectBody1 = 'user_was_involved_in_the_project_body_1';
+  static String userWasInvolvedInTheProjectBody2 = 'user_was_involved_in_the_project_body_2';
+  static String enterAtLeast3LettersToSearch = 'enter_at_least_3_letters_to_search';
 }
 
 class CategoryKeys {

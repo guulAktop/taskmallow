@@ -237,10 +237,10 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
               await projectRepository.updateTask(taskModel!).whenComplete(() async {
                 if (taskModel!.assignedUserMail != null) {
                   UserModel user = await userRepository.getUserByEmail(taskModel!.assignedUserMail!);
-                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssigned);
-                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail1);
-                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail2);
-                  String body3 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.taskHasBeenAssignedDetail3);
+                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.taskHasBeenAssigned);
+                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.taskHasBeenAssignedDetail1);
+                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.taskHasBeenAssignedDetail2);
+                  String body3 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.taskHasBeenAssignedDetail3);
                   await AppFunctions().sendPushMessage(user, title, "$body1${taskModel!.viewId}$body2${projectRepository.projectModel!.name}$body3");
                 }
                 if (mounted) {

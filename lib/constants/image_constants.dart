@@ -7,6 +7,7 @@ class ImageAssetKeys {
   static String emptyFolder = 'lib/assets/images/empty_folder.png';
   static String emptyFavoriteProjects = 'lib/assets/images/empty_favorite_projects.png';
   static String emptyEnvelope = 'lib/assets/images/empty_envelope.png';
+  static String defaultProfilePhoto = 'lib/assets/images/defaultProfilePhoto.png';
   static const String defaultProfilePhotoUrl =
       'https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/app_images%2FdefaultProfilePhoto.png?alt=media&token=c8a49624-55c4-44da-bfd7-9e88cf5f971a';
 }
