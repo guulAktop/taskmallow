@@ -25,3 +25,4 @@ const String navigationPageRoute = "navigationPageRoute";
 const String profileScreenPageRoute = "profileScreenPageRoute";
 const String indicatorPageRoute = "indicatorPageRoute";
 const String onboardingPageRoute = "onboardingPageRoute";
+const String projectMessagingPageRoute = "projectMessagingPageRoute";

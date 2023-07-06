@@ -10,6 +10,7 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/models/task_model.dart';
 import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/pages/photo_view_page.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
@@ -84,9 +85,25 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                       padding: const EdgeInsets.all(5),
                       width: UIHelper.getDeviceWidth(context) / 5,
                       height: UIHelper.getDeviceWidth(context) / 5,
-                      child: CircularPhotoComponent(
-                        url: userRepository.userModel?.profilePhotoURL,
-                        hasBorder: false,
+                      child: InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => PhotoViewPage(url: userRepository.userModel!.profilePhotoURL),
+                              transitionDuration: const Duration(seconds: 0),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: userRepository.userModel!.profilePhotoURL,
+                          child: CircularPhotoComponent(
+                            url: userRepository.userModel!.profilePhotoURL,
+                            hasBorder: false,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 5),

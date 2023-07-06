@@ -6,8 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:taskmallow/helpers/shared_preferences_helper.dart';
 import 'package:taskmallow/models/invitation_model.dart';
+import 'package:taskmallow/models/message_model.dart';
 import 'package:taskmallow/models/project_model.dart';
 import 'package:taskmallow/models/user_model.dart';
+import 'package:taskmallow/repositories/project_repository.dart';
 import 'package:taskmallow/routes/route_constants.dart';
 
 class UserRepository extends ChangeNotifier {
@@ -373,6 +375,51 @@ class UserRepository extends ChangeNotifier {
       }, onError: (error) {
         debugPrint("ERROR: getInvitations()\n$error");
       });
+    }
+  }
+
+  Future<InvitationModel?> getInvitationById(String invitationId) async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+    final query = databaseReference.child('invitations').child(invitationId);
+    ProjectRepository projectRepository = ProjectRepository();
+
+    final DatabaseEvent event = await query.once();
+    final DataSnapshot dataSnapshot = event.snapshot;
+    final dynamic dataSnapshotValue = dataSnapshot.value;
+
+    if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+      final Map<dynamic, dynamic> invitationData = dataSnapshotValue;
+      final InvitationModel invitation = InvitationModel.fromMap(invitationData);
+      invitation.project.userWhoCreated = await getUserByEmail(invitation.project.userWhoCreated.email);
+      invitation.fromUser = await getUserByEmail(invitation.fromUser.email);
+      invitation.toUser = await getUserByEmail(invitation.toUser.email);
+      invitation.project = await projectRepository.getProjectById(invitation.project.id);
+      return invitation;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> sendMessageToProject(ProjectModel? projectModel, UserModel? userModel, MessageModel messageModel) async {
+    isSucceeded = false;
+    ProjectRepository projectRepository = ProjectRepository();
+    final databaseReference = FirebaseDatabase.instance.ref();
+    if (projectModel != null && userModel != null) {
+      projectModel = await projectRepository.getProjectById(projectModel.id);
+      if (projectModel.collaborators.any((element) => element.email == userModel.email)) {
+        try {
+          final DatabaseReference projectMessageRef = databaseReference.child('projectMessages').child(projectModel.id).push();
+          final messageData = messageModel.toMap();
+          await projectMessageRef.set(messageData).then((value) async {
+            isSucceeded = true;
+          }).onError((error, stackTrace) {
+            isSucceeded = false;
+          });
+        } catch (error) {
+          debugPrint("ERROR: UserRepository.sendMessageToProject()\n$error");
+          isSucceeded = false;
+        }
+      }
     }
   }
 }
