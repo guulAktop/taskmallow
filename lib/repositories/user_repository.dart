@@ -345,12 +345,10 @@ class UserRepository extends ChangeNotifier {
         final dynamic dataSnapshotValue = dataSnapshot.value;
         if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
           final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) {
-            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+          invitationsData.forEach((key, value) async {
+            InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
             outgoingInvitations.add(invitation);
           });
-        } else {
-          debugPrint('Davet bulunamadı');
         }
         outgoingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
         notifyListeners();
@@ -365,12 +363,10 @@ class UserRepository extends ChangeNotifier {
         final dynamic dataSnapshotValue = dataSnapshot.value;
         if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
           final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) {
-            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+          invitationsData.forEach((key, value) async {
+            InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
             incomingInvitations.add(invitation);
           });
-        } else {
-          debugPrint('Davet bulunamadı');
         }
         incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
         notifyListeners();

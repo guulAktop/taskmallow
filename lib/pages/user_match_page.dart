@@ -231,9 +231,9 @@ class _UserMatchPageState extends ConsumerState<UserMatchPage> with TickerProvid
                           InvitationModel(fromUser: userRepository.userModel!, toUser: user, project: projectRepository.projectModel!);
                       await userRepository.sendInvitation(invitationModel).whenComplete(() async {
                         UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
-                        String title = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.newInvitation);
-                        String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.youHaveBeenInvitedBody1);
-                        String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode ?? "en", AppKeys.youHaveBeenInvitedBody2);
+                        String title = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.newInvitation);
+                        String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.youHaveBeenInvitedBody1);
+                        String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.youHaveBeenInvitedBody2);
 
                         await AppFunctions().sendPushMessage(user, title,
                             "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");

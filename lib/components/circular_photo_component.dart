@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:taskmallow/constants/color_constants.dart';
@@ -16,7 +17,7 @@ class CircularPhotoComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: itemBackgroundLightColor,
+        color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(500)),
         border: hasBorder
             ? Border.all(
@@ -28,23 +29,28 @@ class CircularPhotoComponent extends StatelessWidget {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(500)),
         child: url != null
-            ? Image.network(
-                url ?? ImageAssetKeys.defaultProfilePhotoUrl,
+            ? CachedNetworkImage(
+                placeholder: (context, url) => Image.asset(ImageAssetKeys.defaultProfilePhoto),
+                imageUrl: url ?? ImageAssetKeys.defaultProfilePhotoUrl,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: Transform.scale(
-                      scale: smallCircularProgressIndicator ? 0.5 : 1.0,
-                      child: CircularProgressIndicator(
-                        value: byTotalBytes
-                            ? (loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)
-                            : null,
-                      ),
-                    ),
-                  );
-                },
               )
+            // Image.network(
+            //     url ?? ImageAssetKeys.defaultProfilePhotoUrl,
+            //     fit: BoxFit.cover,
+            //   loadingBuilder: (context, child, loadingProgress) {
+            //     if (loadingProgress == null) return child;
+            //     return Center(
+            //       child: Transform.scale(
+            //         scale: smallCircularProgressIndicator ? 0.5 : 1.0,
+            //         child: CircularProgressIndicator(
+            //           value: byTotalBytes
+            //               ? (loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)
+            //               : null,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // )
             : image != null
                 ? Image.file(
                     image!,

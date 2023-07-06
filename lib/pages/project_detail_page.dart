@@ -46,7 +46,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
         if (ref.read(projectProvider).projectModel == null ||
             ref.read(projectProvider).projectModel!.isDeleted ||
             !ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, projectScreenPageRoute, arguments: ref.read(projectProvider).projectModel!);
         } else {
           ref.read(projectProvider).isLoading = false;
         }

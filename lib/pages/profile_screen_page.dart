@@ -17,6 +17,7 @@ import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/marquee_widget.dart';
 import 'package:taskmallow/widgets/project_grid_item.dart';
 import 'package:taskmallow/widgets/sliver_scaffold_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreenPage extends ConsumerStatefulWidget {
   const ProfileScreenPage({super.key});
@@ -73,15 +74,16 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: UIHelper.getDeviceWidth(context) / 4,
-                            height: UIHelper.getDeviceWidth(context) / 4,
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            width: UIHelper.getDeviceWidth(context) / 5,
+                            height: UIHelper.getDeviceWidth(context) / 5,
                             child: CircularPhotoComponent(
                               url: userRepository.selectedUserModel!.profilePhotoURL,
                               hasBorder: false,
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -102,36 +104,6 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    userRepository.selectedUserModel!.linkedinProfileURL.isEmpty
-                                        ? const SizedBox()
-                                        : InkWell(
-                                            borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: IconComponent(
-                                                iconData: CustomIconData.linkedin,
-                                                color: Color(0xFF0A66C2),
-                                              ),
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                    userRepository.selectedUserModel!.twitterProfileURL.isEmpty
-                                        ? const SizedBox()
-                                        : InkWell(
-                                            borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: IconComponent(
-                                                iconData: CustomIconData.twitter,
-                                                color: Color(0xFF1DA1F2),
-                                              ),
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                  ],
-                                ),
                               ],
                             ),
                           ),
@@ -151,8 +123,48 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
                           ],
                         ),
                       ),
+                      Row(
+                        children: [
+                          userRepository.selectedUserModel!.linkedinProfileURL.isEmpty
+                              ? const SizedBox()
+                              : InkWell(
+                                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: IconComponent(
+                                      iconData: CustomIconData.linkedin,
+                                      color: Color(0xFF0A66C2),
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    if (await canLaunchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"))) {
+                                      await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"),
+                                          mode: LaunchMode.externalApplication);
+                                    }
+                                  },
+                                ),
+                          userRepository.selectedUserModel!.twitterProfileURL.isEmpty
+                              ? const SizedBox()
+                              : InkWell(
+                                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: IconComponent(
+                                      iconData: CustomIconData.twitter,
+                                      color: Color(0xFF1DA1F2),
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"))) {
+                                      await launchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"),
+                                          mode: LaunchMode.externalApplication);
+                                    }
+                                  },
+                                ),
+                        ],
+                      ),
                       const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.only(bottom: 5),
                         child: Divider(color: secondaryColor, thickness: 1),
                       ),
                       TextComponent(

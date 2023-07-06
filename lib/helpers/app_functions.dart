@@ -246,10 +246,10 @@ class AppFunctions {
     }
   }
 
-  Future<String> getTranslatedByLocale(String languageCode, String key) async {
+  Future<String> getTranslatedByLocale(String? languageCode, String key) async {
     try {
       late Map<dynamic, dynamic> localizedValues;
-      String jsonStringValues = await rootBundle.loadString('lib/localization/languages/$languageCode.json');
+      String jsonStringValues = await rootBundle.loadString('lib/localization/languages/${languageCode ?? "en"}.json');
       Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
       localizedValues = mappedJson.map((key, value) => MapEntry(key, value.toString()));
       return localizedValues[key];

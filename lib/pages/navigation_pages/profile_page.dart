@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/components/circular_photo_component.dart';
 import 'package:taskmallow/components/icon_component.dart';
@@ -81,29 +80,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onLongPress: () {
-                        HapticFeedback.vibrate();
-                        setState(() {
-                          showPreview = true;
-                        });
-                      },
-                      onLongPressEnd: (details) {
-                        HapticFeedback.vibrate();
-                        setState(() {
-                          showPreview = false;
-                        });
-                      },
-                      child: SizedBox(
-                        width: UIHelper.getDeviceWidth(context) / 4,
-                        height: UIHelper.getDeviceWidth(context) / 4,
-                        child: CircularPhotoComponent(
-                          url: userRepository.userModel?.profilePhotoURL,
-                          hasBorder: false,
-                        ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      width: UIHelper.getDeviceWidth(context) / 5,
+                      height: UIHelper.getDeviceWidth(context) / 5,
+                      child: CircularPhotoComponent(
+                        url: userRepository.userModel?.profilePhotoURL,
+                        hasBorder: false,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,46 +110,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                               textAlign: TextAlign.start,
                             ),
                           ),
-                          Row(
-                            children: [
-                              userRepository.userModel!.linkedinProfileURL.isEmpty
-                                  ? const SizedBox()
-                                  : InkWell(
-                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: IconComponent(
-                                          iconData: CustomIconData.linkedin,
-                                          color: Color(0xFF0A66C2),
-                                        ),
-                                      ),
-                                      onTap: () async {
-                                        if (await canLaunchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"))) {
-                                          await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"),
-                                              mode: LaunchMode.externalApplication);
-                                        }
-                                      },
-                                    ),
-                              userRepository.userModel!.twitterProfileURL.isEmpty
-                                  ? const SizedBox()
-                                  : InkWell(
-                                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: IconComponent(
-                                          iconData: CustomIconData.twitter,
-                                          color: Color(0xFF1DA1F2),
-                                        ),
-                                      ),
-                                      onTap: () async {
-                                        if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"))) {
-                                          await launchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"),
-                                              mode: LaunchMode.externalApplication);
-                                        }
-                                      },
-                                    ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -183,8 +129,48 @@ class _ProfilePageState extends ConsumerState<ProfilePage> with TickerProviderSt
                     ],
                   ),
                 ),
+                Row(
+                  children: [
+                    userRepository.userModel!.linkedinProfileURL.isEmpty
+                        ? const SizedBox()
+                        : InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: IconComponent(
+                                iconData: CustomIconData.linkedin,
+                                color: Color(0xFF0A66C2),
+                              ),
+                            ),
+                            onTap: () async {
+                              if (await canLaunchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"))) {
+                                await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.userModel!.linkedinProfileURL}"),
+                                    mode: LaunchMode.externalApplication);
+                              }
+                            },
+                          ),
+                    userRepository.userModel!.twitterProfileURL.isEmpty
+                        ? const SizedBox()
+                        : InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: IconComponent(
+                                iconData: CustomIconData.twitter,
+                                color: Color(0xFF1DA1F2),
+                              ),
+                            ),
+                            onTap: () async {
+                              if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"))) {
+                                await launchUrl(Uri.parse("https://twitter.com/${userRepository.userModel!.twitterProfileURL}"),
+                                    mode: LaunchMode.externalApplication);
+                              }
+                            },
+                          ),
+                  ],
+                ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.only(bottom: 5),
                   child: Divider(color: secondaryColor, thickness: 1),
                 ),
                 TextComponent(
