@@ -451,29 +451,33 @@ class ProjectRepository extends ChangeNotifier {
   }
 
   Future<void> listenForProjectMessages() async {
-    projectMessages.clear();
-    if (projectModel != null) {
-      final databaseReference = FirebaseDatabase.instance.ref();
-      final query = databaseReference.child('projectMessages').child(projectModel!.id).orderByKey();
-      query.onValue.listen((event) {
-        projectMessages.clear();
-        final DataSnapshot dataSnapshot = event.snapshot;
-        final dynamic dataSnapshotValue = dataSnapshot.value;
-        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
-          final Map<dynamic, dynamic> projectMessagesData = dataSnapshotValue;
-          projectMessagesData.forEach((key, value) {
-            final MessageModel messageModel = MessageModel.fromMap(value as Map<dynamic, dynamic>);
-            projectMessages.add(messageModel);
-          });
-          debugPrint('Güncel Mesajlar: $projectMessages');
-        } else {
-          debugPrint('Mesaj bulunamadı');
-        }
-        projectMessages.sort((a, b) => a.messageDate.compareTo(b.messageDate));
-        notifyListeners();
-      }, onError: (error) {
-        debugPrint("ERROR: ProjectRepository.listenForMessagesByProject()\n$error");
-      });
+    try {
+      projectMessages.clear();
+      if (projectModel != null) {
+        final databaseReference = FirebaseDatabase.instance.ref();
+        final query = databaseReference.child('projectMessages').child(projectModel!.id).orderByKey();
+        query.onValue.listen((event) {
+          projectMessages.clear();
+          final DataSnapshot dataSnapshot = event.snapshot;
+          final dynamic dataSnapshotValue = dataSnapshot.value;
+          if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+            final Map<dynamic, dynamic> projectMessagesData = dataSnapshotValue;
+            projectMessagesData.forEach((key, value) {
+              final MessageModel messageModel = MessageModel.fromMap(value as Map<dynamic, dynamic>);
+              projectMessages.add(messageModel);
+            });
+            debugPrint('Güncel Mesajlar: $projectMessages');
+          } else {
+            debugPrint('Mesaj bulunamadı');
+          }
+          projectMessages.sort((a, b) => a.messageDate.compareTo(b.messageDate));
+          notifyListeners();
+        }, onError: (error) {
+          debugPrint("ERROR: ProjectRepository.listenForMessagesByProject()\n$error");
+        });
+      }
+    } catch (e) {
+      throw Exception([e]);
     }
   }
 }

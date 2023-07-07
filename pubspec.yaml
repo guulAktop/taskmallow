@@ -46,6 +46,8 @@ dependencies:
   firebase_database: ^10.2.3
   cached_network_image: ^3.2.3
   photo_view: ^0.14.0
+  firebase_analytics: ^10.4.3
+  firebase_crashlytics: ^3.3.3
 
 dev_dependencies:
   flutter_test:

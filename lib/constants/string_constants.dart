@@ -159,6 +159,7 @@ class AppKeys {
   static String userWasInvolvedInTheProjectBody1 = 'user_was_involved_in_the_project_body_1';
   static String userWasInvolvedInTheProjectBody2 = 'user_was_involved_in_the_project_body_2';
   static String enterAtLeast3LettersToSearch = 'enter_at_least_3_letters_to_search';
+  static String yourTransactionHasBeenCanceled = 'your_transaction_has_been_canceled';
 }
 
 class CategoryKeys {

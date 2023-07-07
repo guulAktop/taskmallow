@@ -18,7 +18,7 @@ class BaseScaffoldWidget extends StatelessWidget {
   final double rightPadding;
   final double leftPadding;
   final List<Widget>? actionList;
-  final Function? popScopeFunction;
+  final Function()? popScopeFunction;
   final Color appBarBackgroundColor;
   final Widget? floatingActionButton;
   final CrossAxisAlignment crossAxisAlignment;
@@ -45,7 +45,7 @@ class BaseScaffoldWidget extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
   }) : super(key: key);
 
-  defaultFunction() {
+  Future<bool> defaultFunction() {
     return Future.value(true);
   }
 
