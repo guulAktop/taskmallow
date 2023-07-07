@@ -52,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '286718968181',
     projectId: 'taskmallow-app',
     authDomain: 'taskmallow-app.firebaseapp.com',
+    databaseURL: 'https://taskmallow-app-default-rtdb.firebaseio.com',
     storageBucket: 'taskmallow-app.appspot.com',
     measurementId: 'G-3VRW7675H8',
   );
@@ -61,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:286718968181:android:dfd92eb5de99546c01933c',
     messagingSenderId: '286718968181',
     projectId: 'taskmallow-app',
+    databaseURL: 'https://taskmallow-app-default-rtdb.firebaseio.com',
     storageBucket: 'taskmallow-app.appspot.com',
   );
 
@@ -69,6 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:286718968181:ios:c8a439a740c1e0af01933c',
     messagingSenderId: '286718968181',
     projectId: 'taskmallow-app',
+    databaseURL: 'https://taskmallow-app-default-rtdb.firebaseio.com',
     storageBucket: 'taskmallow-app.appspot.com',
     iosClientId: '286718968181-57kbi9opkiqd6l1f3eoja6pf5iap7fog.apps.googleusercontent.com',
     iosBundleId: 'com.taskmallow.taskmallow',

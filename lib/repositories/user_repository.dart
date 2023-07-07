@@ -335,69 +335,75 @@ class UserRepository extends ChangeNotifier {
   }
 
   Future<void> listenInvitations() async {
-    outgoingInvitations.clear();
-    incomingInvitations.clear();
-    notifyListeners();
-    if (userModel != null) {
-      final databaseReference = FirebaseDatabase.instance.ref();
-      final query = databaseReference.child('invitations').orderByChild('fromUser/email').equalTo(userModel!.email);
-      query.onValue.listen((event) {
-        outgoingInvitations.clear();
-        final DataSnapshot dataSnapshot = event.snapshot;
-        final dynamic dataSnapshotValue = dataSnapshot.value;
-        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
-          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) async {
-            InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
-            outgoingInvitations.add(invitation);
-          });
-        }
-        outgoingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
-        notifyListeners();
-      }, onError: (error) {
-        debugPrint("ERROR: getInvitations()\n$error");
-      });
+    try {
+      outgoingInvitations.clear();
+      incomingInvitations.clear();
+      if (userModel != null) {
+        final databaseReference = FirebaseDatabase.instance.ref();
+        final query = databaseReference.child('invitations').orderByChild('fromUser/email').equalTo(userModel!.email);
+        query.onValue.listen((event) {
+          outgoingInvitations.clear();
+          final DataSnapshot dataSnapshot = event.snapshot;
+          final dynamic dataSnapshotValue = dataSnapshot.value;
+          if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+            final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+            invitationsData.forEach((key, value) async {
+              InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+              outgoingInvitations.add(invitation);
+            });
+          }
+          outgoingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+          notifyListeners();
+        }, onError: (error) {
+          debugPrint("ERROR: getInvitations()\n$error");
+        });
 
-      final query2 = databaseReference.child('invitations').orderByChild('toUser/email').equalTo(userModel!.email);
-      query2.onValue.listen((event) {
-        incomingInvitations.clear();
-        final DataSnapshot dataSnapshot = event.snapshot;
-        final dynamic dataSnapshotValue = dataSnapshot.value;
-        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
-          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) async {
-            InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
-            incomingInvitations.add(invitation);
-          });
-        }
-        incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
-        notifyListeners();
-      }, onError: (error) {
-        debugPrint("ERROR: getInvitations()\n$error");
-      });
+        final query2 = databaseReference.child('invitations').orderByChild('toUser/email').equalTo(userModel!.email);
+        query2.onValue.listen((event) {
+          incomingInvitations.clear();
+          final DataSnapshot dataSnapshot = event.snapshot;
+          final dynamic dataSnapshotValue = dataSnapshot.value;
+          if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+            final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+            invitationsData.forEach((key, value) async {
+              InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+              incomingInvitations.add(invitation);
+            });
+          }
+          incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+        }, onError: (error) {
+          debugPrint("ERROR: getInvitations()\n$error");
+        });
+      }
+    } catch (e) {
+      throw Exception([e]);
     }
+    notifyListeners();
   }
 
   Future<InvitationModel?> getInvitationById(String invitationId) async {
-    final databaseReference = FirebaseDatabase.instance.ref();
-    final query = databaseReference.child('invitations').child(invitationId);
-    ProjectRepository projectRepository = ProjectRepository();
+    try {
+      final databaseReference = FirebaseDatabase.instance.ref();
+      final query = databaseReference.child('invitations').child(invitationId);
+      ProjectRepository projectRepository = ProjectRepository();
 
-    final DatabaseEvent event = await query.once();
-    final DataSnapshot dataSnapshot = event.snapshot;
-    final dynamic dataSnapshotValue = dataSnapshot.value;
+      final DatabaseEvent event = await query.once();
+      final DataSnapshot dataSnapshot = event.snapshot;
+      final dynamic dataSnapshotValue = dataSnapshot.value;
 
-    if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
-      final Map<dynamic, dynamic> invitationData = dataSnapshotValue;
-      final InvitationModel invitation = InvitationModel.fromMap(invitationData);
-      invitation.project.userWhoCreated = await getUserByEmail(invitation.project.userWhoCreated.email);
-      invitation.fromUser = await getUserByEmail(invitation.fromUser.email);
-      invitation.toUser = await getUserByEmail(invitation.toUser.email);
-      invitation.project = await projectRepository.getProjectById(invitation.project.id);
-      return invitation;
-    } else {
+      if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+        final Map<dynamic, dynamic> invitationData = dataSnapshotValue;
+        final InvitationModel invitation = InvitationModel.fromMap(invitationData);
+        invitation.project.userWhoCreated = await getUserByEmail(invitation.project.userWhoCreated.email);
+        invitation.fromUser = await getUserByEmail(invitation.fromUser.email);
+        invitation.toUser = await getUserByEmail(invitation.toUser.email);
+        invitation.project = await projectRepository.getProjectById(invitation.project.id);
+        return invitation;
+      }
+    } catch (e) {
       return null;
     }
+    return null;
   }
 
   Future<void> sendMessageToProject(ProjectModel? projectModel, UserModel? userModel, MessageModel messageModel) async {

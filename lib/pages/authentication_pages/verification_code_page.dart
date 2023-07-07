@@ -43,6 +43,8 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
   String enteredCode = "";
   int? verificationType;
 
+  int entryLimit = 5;
+
   @override
   void initState() {
     super.initState();
@@ -131,48 +133,56 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
     String digit5 = _textEditingController5.text;
     String digit6 = _textEditingController6.text;
     enteredCode = digit1 + digit2 + digit3 + digit4 + digit5 + digit6;
-    debugPrint("code: $enteredCode");
 
-    if (verificationType == 0) {
-      if (userModel != null) {
+    if (entryLimit > 0) {
+      if (verificationType == 0) {
+        if (userModel != null) {
+          if (enteredCode == ref.watch(verificationCodeProvider).toString()) {
+            AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.profileCreating), backgroundColor: success, icon: CustomIconData.circleCheck);
+            setState(() {
+              _isLoading = true;
+            });
+            ref.watch(userProvider).register(userModel!).then((result) {
+              if (ref.watch(userProvider).isSucceeded) {
+                ref.watch(userProvider).login(userModel!).then((value) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  ref.watch(userProvider).setLoggedUser().then((value) {
+                    if (ref.watch(userProvider).isSucceeded) {
+                      Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
+                    }
+                  });
+                });
+              } else {
+                Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+              }
+            });
+          } else if (enteredCode.length < 6) {
+            AppFunctions()
+                .showSnackbar(context, getTranslated(context, AppKeys.enterCode), backgroundColor: warningDark, icon: CustomIconData.circleExclamation);
+          } else {
+            entryLimit--;
+            AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkCode), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
+          }
+        } else {
+          Navigator.pop(context);
+        }
+      } else if (verificationType == 1) {
         if (enteredCode == ref.watch(verificationCodeProvider).toString()) {
-          AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.profileCreating), backgroundColor: success, icon: CustomIconData.circleCheck);
-          setState(() {
-            _isLoading = true;
-          });
-          ref.watch(userProvider).register(userModel!).then((result) {
-            if (ref.watch(userProvider).isSucceeded) {
-              ref.watch(userProvider).login(userModel!).then((value) {
-                setState(() {
-                  _isLoading = false;
-                });
-                ref.watch(userProvider).setLoggedUser().then((value) {
-                  if (ref.watch(userProvider).isSucceeded) {
-                    Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
-                  }
-                });
-              });
-            } else {
-              Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
-            }
-          });
-        } else if (enteredCode.isEmpty) {
+          Navigator.pushReplacementNamed(context, changePasswordPageRoute);
+        } else if (enteredCode.length < 6) {
           AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterCode), backgroundColor: warningDark, icon: CustomIconData.circleExclamation);
         } else {
+          entryLimit--;
           AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkCode), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
         }
       } else {
         Navigator.pop(context);
       }
-    } else if (verificationType == 1) {
-      if (enteredCode == ref.watch(verificationCodeProvider).toString()) {
-        Navigator.pushReplacementNamed(context, changePasswordPageRoute);
-      } else if (enteredCode.isEmpty) {
-        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.enterCode), backgroundColor: warningDark, icon: CustomIconData.circleExclamation);
-      } else {
-        AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.checkCode), backgroundColor: dangerDark, icon: CustomIconData.circleXmark);
-      }
     } else {
+      AppFunctions()
+          .showSnackbar(context, getTranslated(context, AppKeys.yourTransactionHasBeenCanceled), backgroundColor: warningDark, icon: CustomIconData.info);
       Navigator.pop(context);
     }
   }
@@ -242,28 +252,29 @@ class _VerificationCodePageState extends ConsumerState<VerificationCodePage> {
     );
   }
 
-  _showAysForCancelDialog() {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: Text(getTranslated(context, AppKeys.processContinues), textAlign: TextAlign.start),
-        content: TextComponent(text: getTranslated(context, AppKeys.aysForCancel), textAlign: TextAlign.start, headerType: HeaderType.h6),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            child: Text(getTranslated(context, AppKeys.yes)),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
+  Future<bool> _showAysForCancelDialog() async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) => CupertinoAlertDialog(
+            title: Text(getTranslated(context, AppKeys.processContinues), textAlign: TextAlign.start),
+            content: TextComponent(text: getTranslated(context, AppKeys.aysForCancel), textAlign: TextAlign.start, headerType: HeaderType.h6),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text(getTranslated(context, AppKeys.yes)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text(getTranslated(context, AppKeys.no)),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
-          CupertinoDialogAction(
-            child: Text(getTranslated(context, AppKeys.no)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
+        ) ??
+        false;
   }
 }

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "286718968181",
+    "firebase_url": "https://taskmallow-app-default-rtdb.firebaseio.com",
     "project_id": "taskmallow-app",
     "storage_bucket": "taskmallow-app.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "286718968181-g17pdorlg9kti6rn8k9srk92mqvhcmuf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "286718968181-57kbi9opkiqd6l1f3eoja6pf5iap7fog.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taskmallow.taskmallow"
+              }
             }
           ]
         }
