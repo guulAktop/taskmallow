@@ -315,12 +315,14 @@ class ProjectRepository extends ChangeNotifier {
   }
 
   Future<void> getLatestProjects() async {
-    latestProjects.clear();
     try {
+      latestProjects.clear();
+      notifyListeners();
       QuerySnapshot querySnapshot = await projects.where('isDeleted', isEqualTo: false).orderBy('createdDate', descending: true).limit(20).get();
       for (var doc in querySnapshot.docs) {
         ProjectModel project = ProjectModel.fromMap(doc.data() as Map<String, dynamic>);
         latestProjects.add(project);
+        notifyListeners();
       }
     } catch (error) {
       debugPrint("ERROR: ProjectRepository.getLatestProjects()\n$error");
@@ -370,37 +372,43 @@ class ProjectRepository extends ChangeNotifier {
   }
 
   Future<void> listenForInvitationsByProject() async {
-    invitations.clear();
-    if (projectModel != null) {
-      projectModel = await getProjectById(projectModel!.id);
-      final databaseReference = FirebaseDatabase.instance.ref();
-      final query = databaseReference.child('invitations').orderByChild('project/id').equalTo(projectModel!.id);
-      query.onValue.listen((event) {
-        invitations.clear();
-        final DataSnapshot dataSnapshot = event.snapshot;
-        final dynamic dataSnapshotValue = dataSnapshot.value;
-        if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
-          final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
-          invitationsData.forEach((key, value) async {
-            final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
-            if (invitation.project.id == projectModel!.id && !projectModel!.isDeleted && invitation.project.userWhoCreated.email == invitation.fromUser.email) {
-              if (projectModel!.collaborators.any((element) => element.email == invitation.toUser.email) &&
-                  projectModel!.collaborators.any((element) => element.email == invitation.fromUser.email)) {
-                UserRepository userRepository = UserRepository();
-                await userRepository.removeInvitation(invitation);
-              } else {
-                invitations.add(invitation);
+    try {
+      invitations.clear();
+      if (projectModel != null) {
+        projectModel = await getProjectById(projectModel!.id);
+        final databaseReference = FirebaseDatabase.instance.ref();
+        final query = databaseReference.child('invitations').orderByChild('project/id').equalTo(projectModel!.id);
+        query.onValue.listen((event) {
+          invitations.clear();
+          final DataSnapshot dataSnapshot = event.snapshot;
+          final dynamic dataSnapshotValue = dataSnapshot.value;
+          if (dataSnapshotValue != null && dataSnapshotValue is Map<dynamic, dynamic>) {
+            final Map<dynamic, dynamic> invitationsData = dataSnapshotValue;
+            invitationsData.forEach((key, value) async {
+              final InvitationModel invitation = InvitationModel.fromMap(value as Map<dynamic, dynamic>);
+              if (invitation.project.id == projectModel!.id &&
+                  !projectModel!.isDeleted &&
+                  invitation.project.userWhoCreated.email == invitation.fromUser.email) {
+                if (projectModel!.collaborators.any((element) => element.email == invitation.toUser.email) &&
+                    projectModel!.collaborators.any((element) => element.email == invitation.fromUser.email)) {
+                  UserRepository userRepository = UserRepository();
+                  await userRepository.removeInvitation(invitation);
+                } else {
+                  invitations.add(invitation);
+                }
               }
-            }
-          });
-          debugPrint('Güncellenmiş Davetler: $invitations');
-        } else {
-          debugPrint('Davet bulunamadı');
-        }
-        notifyListeners();
-      }, onError: (error) {
-        debugPrint("ERROR: ProjectRepository.listenForInvitationsByProject()\n$error");
-      });
+            });
+            debugPrint('Güncellenmiş Davetler: $invitations');
+          } else {
+            debugPrint('Davet bulunamadı');
+          }
+          notifyListeners();
+        }, onError: (error) {
+          debugPrint("ERROR: ProjectRepository.listenForInvitationsByProject()\n$error");
+        });
+      }
+    } catch (e) {
+      throw Exception([e]);
     }
   }
 

@@ -143,267 +143,277 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               ),
             ],
           )
-        : BaseScaffoldWidget(
-            popScopeFunction: isLoading ? () async => false : () async => true,
-            title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
-            leadingWidget: IconButton(
-              splashRadius: AppConstants.iconSplashRadius,
-              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-              onPressed: () => isLoading ? null : Navigator.pop(context),
-            ),
-            actionList: [
-              IconButton(
-                onPressed: () async {
-                  handleButtonTap();
-                  checkFavoriteStatus();
-                },
-                splashRadius: AppConstants.iconSplashRadius,
-                icon: AnimatedBuilder(
-                  animation: _animation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Transform.scale(
-                      scale: isExpanded ? _animation.value : 1.0,
-                      child: IconComponent(
-                        iconData: CustomIconData.star,
-                        color: primaryColor,
-                        iconWeight: projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)
-                            ? CustomIconWeight.solid
-                            : CustomIconWeight.regular,
-                      ),
-                    );
-                  },
-                ),
+        : RefreshIndicator(
+            onRefresh: () async {
+              if (ref.watch(projectProvider).projectModel != null) {
+                await ref.watch(projectProvider).getProject(ref.watch(projectProvider).projectModel!.id);
+              }
+            },
+            child: BaseScaffoldWidget(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-              projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectRepository.projectModel);
-                      },
-                      splashRadius: AppConstants.iconSplashRadius,
-                      icon: const IconComponent(iconData: CustomIconData.pen),
-                    )
-                  : const SizedBox(),
-            ],
-            floatingActionButton: FloatingActionButton(
-              elevation: 0,
-              backgroundColor: primaryColor,
-              child: const IconComponent(iconData: CustomIconData.message, color: textPrimaryDarkColor),
-              onPressed: () {
-                Navigator.pushNamed(context, projectMessagingPageRoute);
-              },
-            ),
-            widgetList: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
-                        textAlign: TextAlign.end,
-                        fontWeight: FontWeight.bold,
-                        headerType: HeaderType.h8,
-                        color: primaryColor,
-                      ),
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
-                        textAlign: TextAlign.start,
-                        headerType: HeaderType.h5,
-                      ),
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.end,
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
-                        headerType: HeaderType.h8,
-                      ),
-                    ],
+              popScopeFunction: isLoading ? () async => false : () async => true,
+              title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
+              leadingWidget: IconButton(
+                splashRadius: AppConstants.iconSplashRadius,
+                icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+                onPressed: () => isLoading ? null : Navigator.pop(context),
+              ),
+              actionList: [
+                IconButton(
+                  onPressed: () async {
+                    handleButtonTap();
+                    checkFavoriteStatus();
+                  },
+                  splashRadius: AppConstants.iconSplashRadius,
+                  icon: AnimatedBuilder(
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      return Transform.scale(
+                        scale: isExpanded ? _animation.value : 1.0,
+                        child: IconComponent(
+                          iconData: CustomIconData.star,
+                          color: primaryColor,
+                          iconWeight: projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)
+                              ? CustomIconWeight.solid
+                              : CustomIconWeight.regular,
+                        ),
+                      );
+                    },
                   ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      MarqueeWidget(
-                        child: TextComponent(
-                          text:
-                              "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                ),
+                projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, updateProjectPageRoute, arguments: projectRepository.projectModel);
+                        },
+                        splashRadius: AppConstants.iconSplashRadius,
+                        icon: const IconComponent(iconData: CustomIconData.pen),
+                      )
+                    : const SizedBox(),
+              ],
+              floatingActionButton: FloatingActionButton(
+                elevation: 0,
+                backgroundColor: primaryColor,
+                child: const IconComponent(iconData: CustomIconData.message, color: textPrimaryDarkColor),
+                onPressed: () {
+                  Navigator.pushNamed(context, projectMessagingPageRoute);
+                },
+              ),
+              widgetList: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
+                          textAlign: TextAlign.end,
+                          fontWeight: FontWeight.bold,
+                          headerType: HeaderType.h8,
+                          color: primaryColor,
+                        ),
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
                           textAlign: TextAlign.start,
+                          headerType: HeaderType.h5,
+                        ),
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
+                          fontWeight: FontWeight.bold,
+                          textAlign: TextAlign.end,
                           overflow: TextOverflow.fade,
                           softWrap: true,
-                          headerType: HeaderType.h7,
+                          headerType: HeaderType.h8,
                         ),
-                      ),
-                      ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
-                        child: LinearProgressIndicator(
-                          minHeight: 20,
-                          value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        MarqueeWidget(
+                          child: TextComponent(
+                            text:
+                                "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.fade,
+                            softWrap: true,
+                            headerType: HeaderType.h7,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextComponent(
-                        text: getTranslated(context, AppKeys.collaborators),
-                        textAlign: TextAlign.start,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: ref
-                              .watch(projectProvider)
-                              .projectModel!
-                              .collaborators
-                              .map((user) => Container(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          child: LinearProgressIndicator(
+                            minHeight: 20,
+                            value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextComponent(
+                          text: getTranslated(context, AppKeys.collaborators),
+                          textAlign: TextAlign.start,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: ref
+                                .watch(projectProvider)
+                                .projectModel!
+                                .collaborators
+                                .map((user) => Container(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                            width: 50,
+                                            child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
+                                          ),
+                                          TextComponent(
+                                            text: user.firstName[0] + user.lastName[0],
+                                            headerType: HeaderType.h6,
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                                .toList()
+                              ..add(
+                                projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                                    ? Container(
+                                        padding: const EdgeInsets.all(5),
+                                        child: SizedBox(
                                           height: 50,
                                           width: 50,
-                                          child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
-                                        ),
-                                        TextComponent(
-                                          text: user.firstName[0] + user.lastName[0],
-                                          headerType: HeaderType.h6,
-                                        )
-                                      ],
-                                    ),
-                                  ))
-                              .toList()
-                            ..add(
-                              projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
-                                  ? Container(
-                                      padding: const EdgeInsets.all(5),
-                                      child: SizedBox(
-                                        height: 50,
-                                        width: 50,
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(Radius.circular(100)),
-                                          child: Material(
-                                            color: primaryColor,
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.pushNamed(context, collaboratorsPageRoute);
-                                              },
-                                              child: Container(
-                                                padding: const EdgeInsets.all(10),
-                                                child: const IconComponent(
-                                                  iconData: CustomIconData.plus,
-                                                  color: textPrimaryDarkColor,
+                                          child: ClipRRect(
+                                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                            child: Material(
+                                              color: primaryColor,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(context, collaboratorsPageRoute);
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(10),
+                                                  child: const IconComponent(
+                                                    iconData: CustomIconData.plus,
+                                                    color: textPrimaryDarkColor,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  : Container(),
-                            ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(color: secondaryColor, thickness: 1),
-                  ),
-                  projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: ButtonComponent(
-                            text: getTranslated(context, AppKeys.newTask),
-                            isOutLined: true,
-                            isWide: true,
-                            onPressed: () {
-                              Navigator.pushNamed(context, createTaskPageRoute);
-                            },
+                                      )
+                                    : Container(),
+                              ),
                           ),
-                        )
-                      : const SizedBox(),
-                  Center(
-                    child: TabBar(
-                      onTap: (value) {
-                        setState(() {
-                          _selectedTab = value;
-                        });
-                        debugPrint(_selectedTab.toString());
-                      },
-                      splashBorderRadius: const BorderRadius.all(Radius.circular(50)),
-                      physics: const BouncingScrollPhysics(),
-                      controller: tabController,
-                      labelColor: primaryColor,
-                      isScrollable: true,
-                      unselectedLabelColor: Colors.black,
-                      labelPadding: const EdgeInsets.symmetric(horizontal: 15),
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicator: const UnderlineTabIndicator(
-                        borderSide: BorderSide(color: primaryColor, width: 2),
-                      ),
-                      tabs: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextComponent(text: getTranslated(context, TaskSituation.to_do.name)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextComponent(text: getTranslated(context, TaskSituation.in_progress.name)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextComponent(text: getTranslated(context, TaskSituation.done.name)),
                         ),
                       ],
                     ),
-                  ),
-                  Builder(
-                    builder: (context) {
-                      if (_selectedTab == 0) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.to_do && !element.isDeleted)
-                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
-                                .toList(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Divider(color: secondaryColor, thickness: 1),
+                    ),
+                    projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: ButtonComponent(
+                              text: getTranslated(context, AppKeys.newTask),
+                              isOutLined: true,
+                              isWide: true,
+                              onPressed: () {
+                                Navigator.pushNamed(context, createTaskPageRoute);
+                              },
+                            ),
+                          )
+                        : const SizedBox(),
+                    Center(
+                      child: TabBar(
+                        onTap: (value) {
+                          setState(() {
+                            _selectedTab = value;
+                          });
+                          debugPrint(_selectedTab.toString());
+                        },
+                        splashBorderRadius: const BorderRadius.all(Radius.circular(50)),
+                        physics: const BouncingScrollPhysics(),
+                        controller: tabController,
+                        labelColor: primaryColor,
+                        isScrollable: true,
+                        unselectedLabelColor: Colors.black,
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 15),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicator: const UnderlineTabIndicator(
+                          borderSide: BorderSide(color: primaryColor, width: 2),
+                        ),
+                        tabs: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: TextComponent(text: getTranslated(context, TaskSituation.to_do.name)),
                           ),
-                        );
-                      } else if (_selectedTab == 1) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.in_progress && !element.isDeleted)
-                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
-                                .toList(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: TextComponent(text: getTranslated(context, TaskSituation.in_progress.name)),
                           ),
-                        );
-                      } else {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: projectRepository.projectModel!.tasks
-                                .where((element) => element.situation == TaskSituation.done && !element.isDeleted)
-                                .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
-                                .toList(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: TextComponent(text: getTranslated(context, TaskSituation.done.name)),
                           ),
-                        );
-                      }
-                    },
-                  )
-                ],
-              ),
-            ],
+                        ],
+                      ),
+                    ),
+                    Builder(
+                      builder: (context) {
+                        if (_selectedTab == 0) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              children: projectRepository.projectModel!.tasks
+                                  .where((element) => element.situation == TaskSituation.to_do && !element.isDeleted)
+                                  .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                  .toList(),
+                            ),
+                          );
+                        } else if (_selectedTab == 1) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              children: projectRepository.projectModel!.tasks
+                                  .where((element) => element.situation == TaskSituation.in_progress && !element.isDeleted)
+                                  .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              children: projectRepository.projectModel!.tasks
+                                  .where((element) => element.situation == TaskSituation.done && !element.isDeleted)
+                                  .map((task) => getTaskRow(task, ref.watch(projectProvider).projectModel!))
+                                  .toList(),
+                            ),
+                          );
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ],
+            ),
           );
   }
 

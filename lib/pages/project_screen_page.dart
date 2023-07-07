@@ -141,193 +141,203 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
               ),
             ],
           )
-        : BaseScaffoldWidget(
-            popScopeFunction: isLoading ? () async => false : () async => true,
-            title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
-            leadingWidget: IconButton(
-              splashRadius: AppConstants.iconSplashRadius,
-              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-              onPressed: () => isLoading ? null : Navigator.pop(context),
-            ),
-            actionList: [
-              IconButton(
-                onPressed: () async {
-                  handleButtonTap();
-                  checkFavoriteStatus();
-                },
-                splashRadius: AppConstants.iconSplashRadius,
-                icon: AnimatedBuilder(
-                  animation: _animation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Transform.scale(
-                      scale: isExpanded ? _animation.value : 1.0,
-                      child: IconComponent(
-                        iconData: CustomIconData.star,
-                        color: primaryColor,
-                        iconWeight: projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)
-                            ? CustomIconWeight.solid
-                            : CustomIconWeight.regular,
-                      ),
-                    );
-                  },
-                ),
+        : RefreshIndicator(
+            onRefresh: () async {
+              if (ref.watch(projectProvider).projectModel != null) {
+                await ref.watch(projectProvider).getProject(ref.watch(projectProvider).projectModel!.id);
+              }
+            },
+            child: BaseScaffoldWidget(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-            ],
-            widgetList: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
-                        textAlign: TextAlign.end,
-                        fontWeight: FontWeight.bold,
-                        headerType: HeaderType.h8,
-                        color: primaryColor,
-                      ),
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
-                        textAlign: TextAlign.start,
-                        headerType: HeaderType.h5,
-                      ),
-                      TextComponent(
-                        text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.end,
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
-                        headerType: HeaderType.h8,
-                      ),
-                    ],
+              popScopeFunction: isLoading ? () async => false : () async => true,
+              title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
+              leadingWidget: IconButton(
+                splashRadius: AppConstants.iconSplashRadius,
+                icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+                onPressed: () => isLoading ? null : Navigator.pop(context),
+              ),
+              actionList: [
+                IconButton(
+                  onPressed: () async {
+                    handleButtonTap();
+                    checkFavoriteStatus();
+                  },
+                  splashRadius: AppConstants.iconSplashRadius,
+                  icon: AnimatedBuilder(
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      return Transform.scale(
+                        scale: isExpanded ? _animation.value : 1.0,
+                        child: IconComponent(
+                          iconData: CustomIconData.star,
+                          color: primaryColor,
+                          iconWeight: projectRepository.favoriteProjects.any((element) => element.id == projectRepository.projectModel!.id)
+                              ? CustomIconWeight.solid
+                              : CustomIconWeight.regular,
+                        ),
+                      );
+                    },
                   ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      MarqueeWidget(
-                        child: TextComponent(
-                          text:
-                              "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                ),
+              ],
+              widgetList: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
+                          textAlign: TextAlign.end,
+                          fontWeight: FontWeight.bold,
+                          headerType: HeaderType.h8,
+                          color: primaryColor,
+                        ),
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
                           textAlign: TextAlign.start,
+                          headerType: HeaderType.h5,
+                        ),
+                        TextComponent(
+                          text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
+                          fontWeight: FontWeight.bold,
+                          textAlign: TextAlign.end,
                           overflow: TextOverflow.fade,
                           softWrap: true,
-                          headerType: HeaderType.h7,
+                          headerType: HeaderType.h8,
                         ),
-                      ),
-                      ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(50)),
-                        child: LinearProgressIndicator(
-                          minHeight: 20,
-                          value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextComponent(
-                        text: getTranslated(context, AppKeys.collaborators),
-                        textAlign: TextAlign.start,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: ref
-                                .watch(projectProvider)
-                                .projectModel!
-                                .collaborators
-                                .map((user) => Container(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 50,
-                                            width: 50,
-                                            child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
-                                          ),
-                                          TextComponent(
-                                            text: user.firstName[0] + user.lastName[0],
-                                            headerType: HeaderType.h6,
-                                          )
-                                        ],
-                                      ),
-                                    ))
-                                .toList()),
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Divider(color: secondaryColor, thickness: 1),
-                  ),
-                  ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
-                      ? Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(color: infoDark, borderRadius: BorderRadius.all(Radius.circular(10))),
-                          child: Row(
-                            children: [
-                              const IconComponent(
-                                iconData: CustomIconData.envelope,
-                                color: textPrimaryDarkColor,
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: TextComponent(
-                                    text: getTranslated(context, AppKeys.youHaveBeenInvited), color: textPrimaryDarkColor, textAlign: TextAlign.start),
-                              ),
-                            ],
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        MarqueeWidget(
+                          child: TextComponent(
+                            text:
+                                "${(AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!) * 100).toStringAsFixed(0)}% ${getTranslated(context, AppKeys.completed)}",
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.fade,
+                            softWrap: true,
+                            headerType: HeaderType.h7,
                           ),
-                        )
-                      : ButtonComponent(
-                          text: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
-                              ? getTranslated(context, AppKeys.takeItBack)
-                              : getTranslated(context, AppKeys.sendJoinRequest),
-                          color: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
-                              ? dangerDark
-                              : primaryColor,
-                          isOutLined: true,
-                          onPressed: () async {
-                            if (ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
-                              AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.youHaveBeenInvited),
-                                  icon: CustomIconData.envelope, backgroundColor: infoDark);
-                            } else {
-                              if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
-                                InvitationModel invitationModel = InvitationModel(
-                                    fromUser: userRepository.userModel!,
-                                    toUser: projectRepository.projectModel!.userWhoCreated,
-                                    project: projectRepository.projectModel!);
-                                await userRepository.sendInvitation(invitationModel).whenComplete(() async {
-                                  UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
-                                  String title = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.newInvitation);
-                                  String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved1);
-                                  String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved2);
-
-                                  await AppFunctions().sendPushMessage(user, title,
-                                      "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");
-                                });
+                        ),
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          child: LinearProgressIndicator(
+                            minHeight: 20,
+                            value: AppFunctions().getPercentageOfCompletion(projectRepository.projectModel!),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextComponent(
+                          text: getTranslated(context, AppKeys.collaborators),
+                          textAlign: TextAlign.start,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: ref
+                                  .watch(projectProvider)
+                                  .projectModel!
+                                  .collaborators
+                                  .map((user) => Container(
+                                        padding: const EdgeInsets.all(5),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
+                                            ),
+                                            TextComponent(
+                                              text: user.firstName[0] + user.lastName[0],
+                                              headerType: HeaderType.h6,
+                                            )
+                                          ],
+                                        ),
+                                      ))
+                                  .toList()),
+                        ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Divider(color: secondaryColor, thickness: 1),
+                    ),
+                    ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                        ? Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(color: infoDark, borderRadius: BorderRadius.all(Radius.circular(10))),
+                            child: Row(
+                              children: [
+                                const IconComponent(
+                                  iconData: CustomIconData.envelope,
+                                  color: textPrimaryDarkColor,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: TextComponent(
+                                      text: getTranslated(context, AppKeys.youHaveBeenInvited), color: textPrimaryDarkColor, textAlign: TextAlign.start),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ButtonComponent(
+                            text: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                                ? getTranslated(context, AppKeys.takeItBack)
+                                : getTranslated(context, AppKeys.sendJoinRequest),
+                            color: userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)
+                                ? dangerDark
+                                : primaryColor,
+                            isOutLined: true,
+                            onPressed: () async {
+                              if (ref.watch(userProvider).incomingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
+                                AppFunctions().showSnackbar(context, getTranslated(context, AppKeys.youHaveBeenInvited),
+                                    icon: CustomIconData.envelope, backgroundColor: infoDark);
                               } else {
-                                await userRepository
-                                    .removeInvitation(
-                                        userRepository.outgoingInvitations.where((element) => element.project.id == projectRepository.projectModel!.id).first)
-                                    .whenComplete(() {
-                                  projectRepository.listenForInvitationsByProject();
-                                });
+                                if (!userRepository.outgoingInvitations.any((element) => element.project.id == projectRepository.projectModel!.id)) {
+                                  InvitationModel invitationModel = InvitationModel(
+                                      fromUser: userRepository.userModel!,
+                                      toUser: projectRepository.projectModel!.userWhoCreated,
+                                      project: projectRepository.projectModel!);
+                                  await userRepository.sendInvitation(invitationModel).whenComplete(() async {
+                                    UserModel user = await userRepository.getUserByEmail(invitationModel.toUser.email);
+                                    String title = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.newInvitation);
+                                    String body1 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved1);
+                                    String body2 = await AppFunctions().getTranslatedByLocale(user.languageCode, AppKeys.wantsToBeInvolved2);
+
+                                    await AppFunctions().sendPushMessage(user, title,
+                                        "${invitationModel.fromUser.firstName} ${invitationModel.fromUser.lastName}$body1${invitationModel.project.name}$body2");
+                                  });
+                                } else {
+                                  await userRepository
+                                      .removeInvitation(
+                                          userRepository.outgoingInvitations.where((element) => element.project.id == projectRepository.projectModel!.id).first)
+                                      .whenComplete(() {
+                                    projectRepository.listenForInvitationsByProject();
+                                  });
+                                }
                               }
-                            }
-                          },
-                        )
-                ],
-              ),
-            ],
+                            },
+                          )
+                  ],
+                ),
+              ],
+            ),
           );
   }
 
