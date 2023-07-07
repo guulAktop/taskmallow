@@ -58,248 +58,261 @@ class _ProfileScreenPageState extends ConsumerState<ProfileScreenPage> with Tick
               ),
             ],
           )
-        : SliverScaffoldWidget(
-            title: getTranslated(context, AppKeys.profile),
-            leadingWidget: IconButton(
-              splashRadius: AppConstants.iconSplashRadius,
-              icon: const IconComponent(iconData: CustomIconData.chevronLeft),
-              onPressed: () => isLoading ? null : Navigator.pop(context),
-            ),
-            widgetList: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            width: UIHelper.getDeviceWidth(context) / 5,
-                            height: UIHelper.getDeviceWidth(context) / 5,
-                            child: InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) =>
-                                        PhotoViewPage(url: userRepository.selectedUserModel!.profilePhotoURL),
-                                    transitionDuration: const Duration(seconds: 0),
+        : RefreshIndicator(
+            onRefresh: () async {
+              if (ref.watch(userProvider).selectedUserModel != null) {
+                ref.read(userProvider).selectedUserModel = await userRepository.getUserByEmail(userRepository.selectedUserModel!.email);
+              }
+            },
+            child: SliverScaffoldWidget(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              title: getTranslated(context, AppKeys.profile),
+              leadingWidget: IconButton(
+                splashRadius: AppConstants.iconSplashRadius,
+                icon: const IconComponent(iconData: CustomIconData.chevronLeft),
+                onPressed: () => isLoading ? null : Navigator.pop(context),
+              ),
+              widgetList: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(5),
+                              width: UIHelper.getDeviceWidth(context) / 5,
+                              height: UIHelper.getDeviceWidth(context) / 5,
+                              child: InkWell(
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                          PhotoViewPage(url: userRepository.selectedUserModel!.profilePhotoURL),
+                                      transitionDuration: const Duration(seconds: 0),
+                                    ),
+                                  );
+                                },
+                                child: Hero(
+                                  tag: userRepository.selectedUserModel!.profilePhotoURL,
+                                  child: CircularPhotoComponent(
+                                    url: userRepository.selectedUserModel!.profilePhotoURL,
+                                    hasBorder: false,
                                   ),
-                                );
-                              },
-                              child: Hero(
-                                tag: userRepository.selectedUserModel!.profilePhotoURL,
-                                child: CircularPhotoComponent(
-                                  url: userRepository.selectedUserModel!.profilePhotoURL,
-                                  hasBorder: false,
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 5),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                MarqueeWidget(
-                                  child: TextComponent(
-                                    text: "${userRepository.selectedUserModel?.firstName} ${userRepository.selectedUserModel?.lastName}",
-                                    fontWeight: FontWeight.bold,
-                                    headerType: HeaderType.h3,
-                                    textAlign: TextAlign.start,
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  MarqueeWidget(
+                                    child: TextComponent(
+                                      text: "${userRepository.selectedUserModel?.firstName} ${userRepository.selectedUserModel?.lastName}",
+                                      fontWeight: FontWeight.bold,
+                                      headerType: HeaderType.h3,
+                                      textAlign: TextAlign.start,
+                                    ),
                                   ),
-                                ),
-                                MarqueeWidget(
-                                  child: TextComponent(
-                                    text: userRepository.selectedUserModel!.email,
-                                    headerType: HeaderType.h7,
-                                    textAlign: TextAlign.start,
+                                  MarqueeWidget(
+                                    child: TextComponent(
+                                      text: userRepository.selectedUserModel!.email,
+                                      headerType: HeaderType.h7,
+                                      textAlign: TextAlign.start,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          ],
+                        ),
+                        Visibility(
+                          visible: userRepository.selectedUserModel!.description.isNotEmpty,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const SizedBox(height: 10),
+                              TextComponent(
+                                text: userRepository.selectedUserModel!.description,
+                                headerType: HeaderType.h6,
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Visibility(
-                        visible: userRepository.selectedUserModel!.description.isNotEmpty,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                        ),
+                        Row(
                           children: [
-                            const SizedBox(height: 10),
-                            TextComponent(
-                              text: userRepository.selectedUserModel!.description,
-                              headerType: HeaderType.h6,
-                              textAlign: TextAlign.start,
+                            userRepository.selectedUserModel!.linkedinProfileURL.isEmpty
+                                ? const SizedBox()
+                                : InkWell(
+                                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: IconComponent(
+                                        iconData: CustomIconData.linkedin,
+                                        color: Color(0xFF0A66C2),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      if (await canLaunchUrl(
+                                          Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"))) {
+                                        await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"),
+                                            mode: LaunchMode.externalApplication);
+                                      }
+                                    },
+                                  ),
+                            userRepository.selectedUserModel!.twitterProfileURL.isEmpty
+                                ? const SizedBox()
+                                : InkWell(
+                                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: IconComponent(
+                                        iconData: CustomIconData.twitter,
+                                        color: Color(0xFF1DA1F2),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"))) {
+                                        await launchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"),
+                                            mode: LaunchMode.externalApplication);
+                                      }
+                                    },
+                                  ),
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: Divider(color: secondaryColor, thickness: 1),
+                        ),
+                        TextComponent(
+                          text: getTranslated(context, AppKeys.preferredCategories),
+                          fontWeight: FontWeight.bold,
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.fade,
+                          headerType: HeaderType.h6,
+                          softWrap: true,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: itemBackgroundLightColor,
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: userRepository.selectedUserModel!.preferredCategories.isNotEmpty
+                              ? Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  children: userRepository.selectedUserModel!.preferredCategories.map((item) => buildItemContainer(item)).toList())
+                              : const IconComponent(
+                                  iconData: CustomIconData.listCheck,
+                                  color: primaryColor,
+                                  size: 35,
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                    child: TextComponent(
+                      text: "${getTranslated(context, AppKeys.projects)} (${userRepository.selectedUserProjects.length})",
+                      textAlign: TextAlign.start,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.fade,
+                      headerType: HeaderType.h6,
+                      softWrap: true,
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: itemBackgroundLightColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: getTranslated(context, AppKeys.completedTasks),
+                              style: const TextStyle(
+                                color: textPrimaryLightColor,
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
+                            TextSpan(
+                              text: userRepository.selectedUserProjects
+                                  .expand((project) => project.tasks)
+                                  .where((task) =>
+                                      !task.isDeleted &&
+                                      task.situation == TaskSituation.done &&
+                                      task.assignedUserMail == userRepository.selectedUserModel!.email)
+                                  .length
+                                  .toString(),
+                              style: const TextStyle(
+                                color: textPrimaryLightColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          userRepository.selectedUserModel!.linkedinProfileURL.isEmpty
-                              ? const SizedBox()
-                              : InkWell(
-                                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: IconComponent(
-                                      iconData: CustomIconData.linkedin,
-                                      color: Color(0xFF0A66C2),
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    if (await canLaunchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"))) {
-                                      await launchUrl(Uri.parse("https://www.linkedin.com/in/${userRepository.selectedUserModel!.linkedinProfileURL}"),
-                                          mode: LaunchMode.externalApplication);
-                                    }
-                                  },
-                                ),
-                          userRepository.selectedUserModel!.twitterProfileURL.isEmpty
-                              ? const SizedBox()
-                              : InkWell(
-                                  borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: IconComponent(
-                                      iconData: CustomIconData.twitter,
-                                      color: Color(0xFF1DA1F2),
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    if (await canLaunchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"))) {
-                                      await launchUrl(Uri.parse("https://twitter.com/${userRepository.selectedUserModel!.twitterProfileURL}"),
-                                          mode: LaunchMode.externalApplication);
-                                    }
-                                  },
-                                ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: Divider(color: secondaryColor, thickness: 1),
-                      ),
-                      TextComponent(
-                        text: getTranslated(context, AppKeys.preferredCategories),
-                        fontWeight: FontWeight.bold,
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.fade,
-                        headerType: HeaderType.h6,
-                        softWrap: true,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: itemBackgroundLightColor,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: userRepository.selectedUserModel!.preferredCategories.isNotEmpty
-                            ? Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                children: userRepository.selectedUserModel!.preferredCategories.map((item) => buildItemContainer(item)).toList())
-                            : const IconComponent(
-                                iconData: CustomIconData.listCheck,
-                                color: primaryColor,
-                                size: 35,
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                  child: TextComponent(
-                    text: "${getTranslated(context, AppKeys.projects)} (${userRepository.selectedUserProjects.length})",
-                    textAlign: TextAlign.start,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.fade,
-                    headerType: HeaderType.h6,
-                    softWrap: true,
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: itemBackgroundLightColor,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: getTranslated(context, AppKeys.completedTasks),
-                            style: const TextStyle(
-                              color: textPrimaryLightColor,
-                              fontSize: 18,
-                              fontFamily: "Poppins",
-                            ),
-                          ),
-                          TextSpan(
-                            text: userRepository.selectedUserProjects
-                                .expand((project) => project.tasks)
-                                .where((task) =>
-                                    !task.isDeleted && task.situation == TaskSituation.done && task.assignedUserMail == userRepository.selectedUserModel!.email)
-                                .length
-                                .toString(),
-                            style: const TextStyle(
-                              color: textPrimaryLightColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Poppins",
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0,
-                    childAspectRatio: 1,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return ProjectGridItem(
-                        projectModel: userRepository.selectedUserProjects[index],
-                        onTap: () {
-                          if (userRepository.selectedUserProjects[index].collaborators
-                              .map((collaborator) => collaborator.email)
-                              .toList()
-                              .contains(userRepository.userModel!.email)) {
-                            Navigator.pushNamed(context, projectDetailPageRoute, arguments: userRepository.selectedUserProjects[index]);
-                          } else {
-                            Navigator.pushNamed(context, projectScreenPageRoute, arguments: userRepository.selectedUserProjects[index]);
-                          }
-                        },
-                      );
-                    },
-                    childCount: userRepository.selectedUserProjects.length,
+                SliverPadding(
+                  padding: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                      childAspectRatio: 1,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return ProjectGridItem(
+                          projectModel: userRepository.selectedUserProjects[index],
+                          onTap: () {
+                            if (userRepository.selectedUserProjects[index].collaborators
+                                .map((collaborator) => collaborator.email)
+                                .toList()
+                                .contains(userRepository.userModel!.email)) {
+                              Navigator.pushNamed(context, projectDetailPageRoute, arguments: userRepository.selectedUserProjects[index]);
+                            } else {
+                              Navigator.pushNamed(context, projectScreenPageRoute, arguments: userRepository.selectedUserProjects[index]);
+                            }
+                          },
+                        );
+                      },
+                      childCount: userRepository.selectedUserProjects.length,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
   }
 

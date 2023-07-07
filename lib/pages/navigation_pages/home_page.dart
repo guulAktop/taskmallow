@@ -41,120 +41,127 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     UserRepository userRepository = ref.watch(userProvider);
     ProjectRepository projectRepository = ref.watch(projectProvider);
-    return SliverScaffoldWidget(
-      centerTitle: false,
-      leadingWidth: 0,
-      title: "${greeting()} ${userRepository.userModel!.firstName}",
-      actionList: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, searchPageRoute);
-          },
-          icon: const Padding(
-            padding: EdgeInsets.all(3),
-            child: IconComponent(
-              iconData: CustomIconData.magnifyingGlass,
-            ),
-          ),
-          splashRadius: AppConstants.iconSplashRadius,
+    String greetingMessage = greeting();
+    return RefreshIndicator(
+      onRefresh: () async {
+        greetingMessage = greeting();
+        await projectRepository.getLatestProjects();
+      },
+      child: SliverScaffoldWidget(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
         ),
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, invitationsPageRoute);
-          },
-          icon: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(3),
-                child: IconComponent(
-                  iconData: CustomIconData.bell,
-                ),
+        centerTitle: false,
+        leadingWidth: 0,
+        title: "$greetingMessage ${userRepository.userModel!.firstName}",
+        actionList: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, searchPageRoute);
+            },
+            icon: const Padding(
+              padding: EdgeInsets.all(3),
+              child: IconComponent(
+                iconData: CustomIconData.magnifyingGlass,
               ),
-              userRepository.incomingInvitations.isEmpty
-                  ? const SizedBox()
-                  : Container(
-                      decoration: const BoxDecoration(color: danger, borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Padding(
-                        padding: EdgeInsets.zero,
+            ),
+            splashRadius: AppConstants.iconSplashRadius,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, invitationsPageRoute);
+            },
+            icon: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(3),
+                  child: IconComponent(
+                    iconData: CustomIconData.bell,
+                  ),
+                ),
+                userRepository.incomingInvitations.isEmpty
+                    ? const SizedBox()
+                    : Container(
+                        decoration: const BoxDecoration(color: danger, borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
-                            userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
-                            maxLines: 1,
-                            style: const TextStyle(fontSize: 8),
+                          padding: EdgeInsets.zero,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
+                              maxLines: 1,
+                              style: const TextStyle(fontSize: 8),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-            ],
-          ),
-          splashRadius: AppConstants.iconSplashRadius,
-        ),
-      ],
-      widgetList: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                getMatchingContainer(),
               ],
             ),
+            splashRadius: AppConstants.iconSplashRadius,
           ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-            child: TextComponent(
-              text: getTranslated(context, AppKeys.latestProjects),
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.bold,
-              overflow: TextOverflow.fade,
-              softWrap: true,
+        ],
+        widgetList: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  getMatchingContainer(),
+                ],
+              ),
             ),
           ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.all(10),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 1,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ProjectGridItem(
-                  projectModel: projectRepository.latestProjects[index],
-                  onTap: () {
-                    ref.read(projectProvider).projectModel = projectRepository.latestProjects[index];
-                    if (projectRepository.latestProjects[index].collaborators
-                        .map((collaborator) => collaborator.email)
-                        .toList()
-                        .contains(userRepository.userModel!.email)) {
-                      Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.latestProjects[index]);
-                    } else {
-                      Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.latestProjects[index]);
-                    }
-                  },
-                );
-              },
-              childCount: projectRepository.latestProjects.length,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+              child: TextComponent(
+                text: getTranslated(context, AppKeys.latestProjects),
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+                softWrap: true,
+              ),
             ),
           ),
-        ),
-      ],
+          SliverPadding(
+            padding: const EdgeInsets.all(10),
+            sliver: projectRepository.latestProjects.isNotEmpty
+                ? SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: UIHelper.getDeviceWidth(context) / 2,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                      childAspectRatio: 1,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return ProjectGridItem(
+                          projectModel: projectRepository.latestProjects[index],
+                          onTap: () {
+                            ref.read(projectProvider).projectModel = projectRepository.latestProjects[index];
+                            if (projectRepository.latestProjects[index].collaborators
+                                .map((collaborator) => collaborator.email)
+                                .toList()
+                                .contains(userRepository.userModel!.email)) {
+                              Navigator.pushNamed(context, projectDetailPageRoute, arguments: projectRepository.latestProjects[index]);
+                            } else {
+                              Navigator.pushNamed(context, projectScreenPageRoute, arguments: projectRepository.latestProjects[index]);
+                            }
+                          },
+                        );
+                      },
+                      childCount: projectRepository.latestProjects.length,
+                    ),
+                  )
+                : null,
+          ),
+        ],
+      ),
     );
   }
 

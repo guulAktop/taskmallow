@@ -60,7 +60,11 @@ class _ProjectMessagingPageState extends ConsumerState<ProjectMessagingPage> {
     await userRepository.sendMessageToProject(projectModel, userModel, messageModel).whenComplete(() async {
       for (var user in ref.watch(projectProvider).projectModel!.collaborators) {
         if (user.email != userModel.email) {
-          await AppFunctions().sendPushMessage(user, projectModel.name, "${userModel.firstName}: ${messageModel.content}");
+          if (messageModel.hasImage) {
+            await AppFunctions().sendPushMessage(user, projectModel.name, "${userModel.firstName}: 📸");
+          } else {
+            await AppFunctions().sendPushMessage(user, projectModel.name, "${userModel.firstName}: ${messageModel.content}");
+          }
         }
       }
       setState(() {

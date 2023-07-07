@@ -22,6 +22,7 @@ class BaseScaffoldWidget extends StatelessWidget {
   final Color appBarBackgroundColor;
   final Widget? floatingActionButton;
   final CrossAxisAlignment crossAxisAlignment;
+  final ScrollPhysics? physics;
 
   const BaseScaffoldWidget({
     Key? key,
@@ -43,6 +44,7 @@ class BaseScaffoldWidget extends StatelessWidget {
     this.appBarBackgroundColor = Colors.transparent,
     this.floatingActionButton,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.physics = const BouncingScrollPhysics(),
   }) : super(key: key);
 
   Future<bool> defaultFunction() {
@@ -93,7 +95,7 @@ class BaseScaffoldWidget extends StatelessWidget {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: physics,
             slivers: [
               SliverFillRemaining(
                 hasScrollBody: false,

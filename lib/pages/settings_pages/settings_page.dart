@@ -10,7 +10,6 @@ import 'package:taskmallow/helpers/app_functions.dart';
 import 'package:taskmallow/localization/app_localization.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/language_settings_page.dart';
 import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/privacy_policy_page.dart';
-import 'package:taskmallow/pages/settings_pages/settings_bottom_sheet_dialog_pages/theme_settings_page.dart';
 import 'package:taskmallow/providers/providers.dart';
 import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
@@ -86,18 +85,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 );
               },
             ),
-            ListViewItem(
-              title: getTranslated(context, AppKeys.theme),
-              prefixWidget: const IconComponent(iconData: CustomIconData.palette),
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return ThemeSettingsPage(title: getTranslated(context, AppKeys.theme));
-                  },
-                );
-              },
-            ),
+            // ListViewItem(
+            //   title: getTranslated(context, AppKeys.theme),
+            //   prefixWidget: const IconComponent(iconData: CustomIconData.palette),
+            //   onTap: () {
+            //     showModalBottomSheet(
+            //       context: context,
+            //       builder: (context) {
+            //         return ThemeSettingsPage(title: getTranslated(context, AppKeys.theme));
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
         ListViewWidget(

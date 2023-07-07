@@ -155,6 +155,7 @@ class UserRepository extends ChangeNotifier {
 
   Future<UserModel> getUserByEmail(String email) async {
     DocumentSnapshot snapshot = await users.doc(email).get();
+    notifyListeners();
     return UserModel.fromJson(json.encode(snapshot.data()))..password = null;
   }
 
@@ -371,6 +372,7 @@ class UserRepository extends ChangeNotifier {
             });
           }
           incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+          notifyListeners();
         }, onError: (error) {
           debugPrint("ERROR: getInvitations()\n$error");
         });
@@ -378,7 +380,6 @@ class UserRepository extends ChangeNotifier {
     } catch (e) {
       throw Exception([e]);
     }
-    notifyListeners();
   }
 
   Future<InvitationModel?> getInvitationById(String invitationId) async {
