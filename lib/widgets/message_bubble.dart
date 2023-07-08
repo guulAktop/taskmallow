@@ -11,6 +11,7 @@ import 'package:taskmallow/helpers/ui_helper.dart';
 import 'package:taskmallow/models/message_model.dart';
 import 'package:taskmallow/pages/photo_view_page.dart';
 import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 
 import '../components/rectangle_photo_component.dart';
 
@@ -99,7 +100,7 @@ class _MessageBubbleState extends ConsumerState<MessageBubble> {
                         child: Tooltip(
                           message: widget.messageModel.userWhoSended.email,
                           child: FutureBuilder(
-                            future: ref.watch(userProvider).getUserByEmail(widget.messageModel.userWhoSended.email),
+                            future: UserRepository().getUserByEmail(widget.messageModel.userWhoSended.email),
                             builder: (context, snapshot) {
                               String? url;
                               if (snapshot.hasData) {
