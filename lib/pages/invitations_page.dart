@@ -77,7 +77,7 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
         ),
       ),
       child: FutureBuilder(
-        future: ref.watch(userProvider).getInvitationById(invitationModel.id),
+        future: UserRepository().getInvitationById(invitationModel.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             invitationModel = snapshot.data!;
@@ -91,7 +91,7 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "${snapshot.data!.project.userWhoCreated.firstName} ${snapshot.data!.project.userWhoCreated.lastName}",
+                                  text: "${invitationModel.project.userWhoCreated.firstName} ${invitationModel.project.userWhoCreated.lastName}",
                                   style: const TextStyle(
                                     color: textPrimaryLightColor,
                                     fontSize: 18,

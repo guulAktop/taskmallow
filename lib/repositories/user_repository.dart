@@ -400,11 +400,12 @@ class UserRepository extends ChangeNotifier {
         invitation.toUser = await getUserByEmail(invitation.toUser.email);
         invitation.project = await projectRepository.getProjectById(invitation.project.id);
         return invitation;
+      } else {
+        return null;
       }
     } catch (e) {
-      return null;
+      throw Exception([e]);
     }
-    return null;
   }
 
   Future<void> sendMessageToProject(ProjectModel? projectModel, UserModel? userModel, MessageModel messageModel) async {
