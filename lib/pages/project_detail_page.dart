@@ -44,12 +44,15 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
     Future.delayed(Duration.zero, () async {
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
       await ref.read(projectProvider).getProject(projectArg.id).whenComplete(() {
-        if (ref.read(projectProvider).projectModel == null ||
-            ref.read(projectProvider).projectModel!.isDeleted ||
-            !ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
-          Navigator.pushReplacementNamed(context, projectScreenPageRoute, arguments: ref.read(projectProvider).projectModel!);
+        if (!ref.read(projectProvider).projectModel!.isDeleted) {
+          if (ref.read(projectProvider).projectModel == null ||
+              !ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
+            Navigator.pushReplacementNamed(context, projectScreenPageRoute, arguments: ref.read(projectProvider).projectModel!);
+          } else {
+            ref.read(projectProvider).isLoading = false;
+          }
         } else {
-          ref.read(projectProvider).isLoading = false;
+          Navigator.pop(context);
         }
       });
     });
@@ -383,7 +386,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                           setState(() {
                             _selectedTab = value;
                           });
-                          debugPrint(_selectedTab.toString());
                         },
                         splashBorderRadius: const BorderRadius.all(Radius.circular(50)),
                         physics: const BouncingScrollPhysics(),
@@ -547,12 +549,10 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               title: getTranslated(context, TaskSituation.to_do.name),
               prefixIcon: CustomIconData.list,
               color: primaryColor,
-              function: () {
+              function: () async {
                 if (ref.watch(projectProvider).projectModel != null) {
                   taskModel.situation = TaskSituation.to_do;
-                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
-                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
-                  });
+                  await ref.watch(projectProvider).updateTask(taskModel);
                 }
               },
             ),
@@ -565,12 +565,10 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               title: getTranslated(context, TaskSituation.in_progress.name),
               prefixIcon: CustomIconData.spinner,
               color: warningDark,
-              function: () {
+              function: () async {
                 if (ref.watch(projectProvider).projectModel != null) {
                   taskModel.situation = TaskSituation.in_progress;
-                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
-                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
-                  });
+                  await ref.watch(projectProvider).updateTask(taskModel);
                 }
               },
             ),
@@ -583,12 +581,10 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
               title: getTranslated(context, TaskSituation.done.name),
               prefixIcon: CustomIconData.circleCheck,
               color: success,
-              function: () {
+              function: () async {
                 if (ref.watch(projectProvider).projectModel != null) {
                   taskModel.situation = TaskSituation.done;
-                  ref.watch(projectProvider).updateTask(taskModel).whenComplete(() {
-                    debugPrint("Güncel Task Durumu: ${taskModel.situation}");
-                  });
+                  await ref.watch(projectProvider).updateTask(taskModel);
                 }
               },
             ),

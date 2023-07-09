@@ -258,8 +258,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           }
         },
       );
-    } else {
-      debugPrint("false");
     }
   }
 }

@@ -158,8 +158,6 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
           Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
         }
       });
-    } else {
-      debugPrint("false");
     }
   }
 }

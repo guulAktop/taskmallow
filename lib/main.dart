@@ -36,7 +36,7 @@ initInfo() {
         if (payload != null && payload.isNotEmpty) {
         } else {}
       } catch (e) {
-        debugPrint("initInfo Error: $e");
+        throw Exception([e]);
       }
       return;
     },
@@ -104,7 +104,6 @@ class _MyAppState extends State<MyApp> {
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
-      debugPrint("locale : $locale");
     });
   }
 

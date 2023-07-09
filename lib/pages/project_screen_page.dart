@@ -45,11 +45,16 @@ class _ProjectScreenPageState extends ConsumerState<ProjectScreenPage> with Tick
       ProjectModel projectArg = ModalRoute.of(context)!.settings.arguments as ProjectModel;
       await ref.read(projectProvider).getProject(projectArg.id).whenComplete(() {
         if (ref.read(projectProvider).projectModel != null && ref.read(userProvider).userModel != null) {
-          if (ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
-            Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: ref.read(projectProvider).projectModel!);
+          if (!ref.read(projectProvider).projectModel!.isDeleted) {
+            if (ref.read(projectProvider).projectModel!.collaborators.any((element) => element.email == ref.read(userProvider).userModel!.email)) {
+              Navigator.pushReplacementNamed(context, projectDetailPageRoute, arguments: ref.read(projectProvider).projectModel!);
+            } else {
+              ref.read(projectProvider).isLoading = false;
+            }
+          } else {
+            Navigator.pop(context);
           }
         }
-        ref.read(projectProvider).isLoading = false;
       });
     });
 
