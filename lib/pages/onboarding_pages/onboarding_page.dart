@@ -81,10 +81,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   onPressed: () async {
                     if (currentPageIndex == 2) {
                       Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
-                      await SharedPreferencesHelper.setBool("onboardingPagesShown", true).then((value) {
-                        debugPrint("onboardingPagesShown true");
-                      }).onError((error, stackTrace) {
-                        debugPrint("onboardingPagesShown error");
+                      await SharedPreferencesHelper.setBool("onboardingPagesShown", true).onError((error, stackTrace) {
+                        throw Exception([error]);
                       });
                     } else {
                       _controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeIn);

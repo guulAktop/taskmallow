@@ -37,11 +37,9 @@ class UserRepository extends ChangeNotifier {
           model.profilePhotoURL = value.get("defaultProfilePhoto");
         });
         await users.doc(model.email).set(model.toMap()).then((value1) {
-          debugPrint("User successfully added.");
           isSucceeded = true;
           userModel = model;
         }).catchError((error) {
-          debugPrint("ERROR: UserRepository.register()\n$error");
           isSucceeded = false;
         });
       } else {
@@ -60,10 +58,7 @@ class UserRepository extends ChangeNotifier {
             .where('password', isEqualTo: model.password)
             .get()
             .then((value) {
-          if (value.docs.isEmpty) {
-            debugPrint("Wrong email or password!");
-          } else {
-            debugPrint(value.docs[0].data().toString());
+          if (value.docs.isNotEmpty) {
             userModel = UserModel.fromMap(value.docs[0].data());
           }
         });
@@ -84,8 +79,8 @@ class UserRepository extends ChangeNotifier {
     await SharedPreferencesHelper.setString("loggedUser", jsonEncode(userModel!.toJson())).then((value) {
       isSucceeded = true;
     }).onError((error, stackTrace) {
-      debugPrint("ERROR: UserRepository.register()\n$error");
       isSucceeded = false;
+      throw Exception([error]);
     });
     notifyListeners();
   }
@@ -98,7 +93,7 @@ class UserRepository extends ChangeNotifier {
       user.notificationToken = userModel?.notificationToken;
       user.password = userModel?.password;
     } catch (error) {
-      debugPrint("ERROR: UserRepository.update().getUser()\n$error");
+      throw Exception([error]);
     }
     await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: user.email).get().then((value) async {
       if (value.docs.isNotEmpty) {
@@ -106,8 +101,8 @@ class UserRepository extends ChangeNotifier {
           isSucceeded = true;
           userModel = user;
         }).catchError((error) {
-          debugPrint("ERROR: UserRepository.update()\n$error");
           isSucceeded = false;
+          throw Exception([error]);
         });
       }
     });
@@ -122,8 +117,8 @@ class UserRepository extends ChangeNotifier {
         isSucceeded = true;
         userModel = null;
       }).catchError((error) {
-        debugPrint("ERROR: UserRepository.deleteAccount()\n$error");
         isSucceeded = false;
+        throw Exception([error]);
       });
       notifyListeners();
     }
@@ -139,8 +134,8 @@ class UserRepository extends ChangeNotifier {
           isSucceeded = true;
           userModel = user;
         }).catchError((error) {
-          debugPrint("ERROR: UserRepository.updatePassword()\n$error");
           isSucceeded = false;
+          throw Exception([error]);
         });
       }
     });
@@ -176,7 +171,7 @@ class UserRepository extends ChangeNotifier {
       selectedUserProjects.addAll(matchingProjects);
       notifyListeners();
     } catch (error) {
-      debugPrint("ERROR: UserRepository.getSelectedUserProjects()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -220,8 +215,8 @@ class UserRepository extends ChangeNotifier {
         }).then((value1) {
           isSucceeded = true;
         }).catchError((error) {
-          debugPrint("ERROR: UserRepository.updateNotificationToken()\n$error");
           isSucceeded = false;
+          throw Exception([error]);
         });
       }
     });
@@ -237,8 +232,8 @@ class UserRepository extends ChangeNotifier {
         }).then((value1) {
           isSucceeded = true;
         }).catchError((error) {
-          debugPrint("ERROR: UserRepository.updateUserLocale()\n$error");
           isSucceeded = false;
+          throw Exception([error]);
         });
       }
     });
@@ -251,8 +246,7 @@ class UserRepository extends ChangeNotifier {
       TaskSnapshot snapshot = await storageRef.child(child).putFile(image);
       return await snapshot.ref.getDownloadURL();
     } on FirebaseException catch (error) {
-      debugPrint("ERROR: UserRepository.updateNotificationToken()\n${error.message}");
-      return null;
+      throw Exception([error]);
     }
   }
 
@@ -313,8 +307,8 @@ class UserRepository extends ChangeNotifier {
         isSucceeded = false;
       });
     } catch (error) {
-      debugPrint("ERROR: UserRepository.sendInvitation()\n$error");
       isSucceeded = false;
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -326,11 +320,10 @@ class UserRepository extends ChangeNotifier {
       await databaseReference.child('invitations').child(invitationModel.id).remove().whenComplete(() {
         incomingInvitations.removeWhere((element) => element.id == invitationModel.id);
         outgoingInvitations.removeWhere((element) => element.id == invitationModel.id);
-        debugPrint("successfully removed");
       });
     } catch (error) {
-      debugPrint("ERROR: UserRepository.removeInvitation()\n$error");
       isSucceeded = false;
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -356,7 +349,7 @@ class UserRepository extends ChangeNotifier {
           outgoingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
           notifyListeners();
         }, onError: (error) {
-          debugPrint("ERROR: getInvitations()\n$error");
+          throw Exception([error]);
         });
 
         final query2 = databaseReference.child('invitations').orderByChild('toUser/email').equalTo(userModel!.email);
@@ -374,7 +367,7 @@ class UserRepository extends ChangeNotifier {
           incomingInvitations.sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
           notifyListeners();
         }, onError: (error) {
-          debugPrint("ERROR: getInvitations()\n$error");
+          throw Exception([error]);
         });
       }
     } catch (e) {
@@ -424,8 +417,8 @@ class UserRepository extends ChangeNotifier {
             isSucceeded = false;
           });
         } catch (error) {
-          debugPrint("ERROR: UserRepository.sendMessageToProject()\n$error");
           isSucceeded = false;
+          throw Exception([error]);
         }
       }
     }

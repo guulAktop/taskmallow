@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -145,16 +144,13 @@ class AppFunctions {
           final imageTemp = File(image.path);
           return imageTemp;
         } on PlatformException catch (e) {
-          debugPrint('Failed to pick image: $e');
-          return null;
+          throw Exception([e]);
         }
       } else {
-        debugPrint('$permissionStatus');
         return null;
       }
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      throw Exception([e]);
     }
   }
 
@@ -169,16 +165,13 @@ class AppFunctions {
           final imageTemp = File(image.path);
           return imageTemp;
         } on PlatformException catch (e) {
-          debugPrint('Failed to pick image: $e');
-          return null;
+          throw Exception([e]);
         }
       } else {
-        debugPrint('$permissionStatus');
         return null;
       }
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      throw Exception([e]);
     }
   }
 
@@ -192,10 +185,7 @@ class AppFunctions {
       await FirebaseFunctions.instance.httpsCallable('sendVerificationCode').call(<String, dynamic>{'to': toMail, 'code': code});
       return true;
     } on FirebaseFunctionsException catch (error) {
-      debugPrint(error.code);
-      debugPrint(error.details);
-      debugPrint(error.message);
-      return false;
+      throw Exception([error]);
     }
   }
 
@@ -239,9 +229,7 @@ class AppFunctions {
             'to': user.notificationToken,
           }));
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint("Error push notification!");
-      }
+      throw Exception([e]);
     }
   }
 

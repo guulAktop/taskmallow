@@ -40,7 +40,7 @@ class ProjectRepository extends ChangeNotifier {
       isSucceeded = true;
     } catch (error) {
       isSucceeded = false;
-      debugPrint("ERROR: ProjectRepository.add()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -55,7 +55,7 @@ class ProjectRepository extends ChangeNotifier {
       });
     } catch (error) {
       isSucceeded = false;
-      debugPrint("ERROR: ProjectRepository.update()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -87,7 +87,7 @@ class ProjectRepository extends ChangeNotifier {
       matchingProjects = matchingProjects.getRange(0, matchingProjects.length > 5 ? 5 : matchingProjects.length).toList();
       notifyListeners();
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getMatchingProjects()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -121,7 +121,7 @@ class ProjectRepository extends ChangeNotifier {
       }
       notifyListeners();
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getMatchingUsers()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -143,7 +143,7 @@ class ProjectRepository extends ChangeNotifier {
           .whereType<ProjectModel>()
           .toList();
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getUserAnalytics()\n$error");
+      throw Exception([error]);
     }
     return {
       "relatedProjects": userRelatedProjects.length,
@@ -172,7 +172,7 @@ class ProjectRepository extends ChangeNotifier {
           .toList();
       updateProjectInAllLists();
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getAllRelatedProjects()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -200,7 +200,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getProject()\n$error");
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -227,7 +227,7 @@ class ProjectRepository extends ChangeNotifier {
       }
       return project;
     } else {
-      throw Exception('Davet bulunamadı');
+      throw Exception('No Invitation!!!');
     }
   }
 
@@ -242,7 +242,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint(error.toString());
+      throw Exception([error]);
     }
     return currentCollaborators;
   }
@@ -259,8 +259,8 @@ class ProjectRepository extends ChangeNotifier {
       }
     } catch (error) {
       updateProjectInAllLists();
-      debugPrint("ERROR: ProjectRepository.addTask()\n$error");
       isSucceeded = false;
+      throw Exception([error]);
     }
   }
 
@@ -276,8 +276,8 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.updateTask()\n$error");
       isSucceeded = false;
+      throw Exception([error]);
     }
   }
 
@@ -325,7 +325,7 @@ class ProjectRepository extends ChangeNotifier {
         notifyListeners();
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getLatestProjects()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -342,7 +342,7 @@ class ProjectRepository extends ChangeNotifier {
         notifyListeners();
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getFavoriteProjects()\n$error");
+      throw Exception([error]);
     }
   }
 
@@ -361,12 +361,9 @@ class ProjectRepository extends ChangeNotifier {
           final InvitationModel invitation = InvitationModel.fromMap(value as Map<String, dynamic>);
           invitations.add(invitation);
         });
-        debugPrint('Davetler: $invitations');
-      } else {
-        debugPrint('Davet bulunamadı');
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.getInvitationsByProject()\n$error");
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -398,13 +395,10 @@ class ProjectRepository extends ChangeNotifier {
                 }
               }
             });
-            debugPrint('Güncellenmiş Davetler: $invitations');
-          } else {
-            debugPrint('Davet bulunamadı');
           }
           notifyListeners();
         }, onError: (error) {
-          debugPrint("ERROR: ProjectRepository.listenForInvitationsByProject()\n$error");
+          throw Exception([error]);
         });
       }
     } catch (e) {
@@ -430,7 +424,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.addCollaborator()\n$error");
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -453,7 +447,7 @@ class ProjectRepository extends ChangeNotifier {
         }
       }
     } catch (error) {
-      debugPrint("ERROR: ProjectRepository.removeCollaborator()\n$error");
+      throw Exception([error]);
     }
     notifyListeners();
   }
@@ -474,14 +468,11 @@ class ProjectRepository extends ChangeNotifier {
               final MessageModel messageModel = MessageModel.fromMap(value as Map<dynamic, dynamic>);
               projectMessages.add(messageModel);
             });
-            debugPrint('Güncel Mesajlar: $projectMessages');
-          } else {
-            debugPrint('Mesaj bulunamadı');
           }
           projectMessages.sort((a, b) => a.messageDate.compareTo(b.messageDate));
           notifyListeners();
         }, onError: (error) {
-          debugPrint("ERROR: ProjectRepository.listenForMessagesByProject()\n$error");
+          throw Exception([error]);
         });
       }
     } catch (e) {

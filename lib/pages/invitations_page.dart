@@ -237,7 +237,6 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                                     });
                                   });
                                 });
-                                debugPrint("0");
                               } else if (invitationModel.project.userWhoCreated.email == invitationModel.toUser.email) {
                                 await projectRepository.addCollaborator(invitationModel.project, invitationModel.fromUser).whenComplete(() async {
                                   await userRepository.removeInvitation(invitationModel).whenComplete(() async {
@@ -253,7 +252,6 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
                                     });
                                   });
                                 });
-                                debugPrint("1");
                               }
                             },
                           ),

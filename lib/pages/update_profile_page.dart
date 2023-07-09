@@ -133,7 +133,6 @@ class _UpdateProfilePageState extends ConsumerState<UpdateProfilePage> {
                       UserModel user = userRepository.userModel!;
 
                       await userRepository.update(user).whenComplete(() {
-                        debugPrint(userRepository.isSucceeded.toString());
                         if (userRepository.isSucceeded) {
                           if (arg == 1) {
                             if (userRepository.userModel?.preferredCategories == null || userRepository.userModel!.preferredCategories.isEmpty) {

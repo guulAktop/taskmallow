@@ -41,8 +41,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (value != null) {
         ref.read(userProvider).userModel = UserModel.fromJson(jsonDecode(value.toString()));
         Navigator.pushNamedAndRemoveUntil(context, navigationPageRoute, (route) => false);
-      } else {
-        debugPrint("null sp user");
       }
     });
   }
@@ -230,7 +228,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void _login(UserRepository userRepository) {
     if (_loginFormKey.currentState!.validate()) {
-      debugPrint("true");
       setState(() {
         _isLoading = true;
       });
@@ -280,8 +277,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           }
         }
       });
-    } else {
-      debugPrint("false");
     }
   }
 }

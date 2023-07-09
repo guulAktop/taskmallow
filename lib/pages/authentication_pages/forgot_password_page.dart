@@ -96,7 +96,6 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                                 _isLoading = true;
                               });
                               bool hasProfile = await userRepository.hasProfile(_emailTextEditingController.text);
-                              debugPrint(_emailTextEditingController.text);
                               if (hasProfile) {
                                 ref.watch(verificationCodeProvider.notifier).state = AppFunctions().generateCode();
 
