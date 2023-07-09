@@ -20,8 +20,8 @@ import 'package:taskmallow/repositories/user_repository.dart';
 class AppFunctions {
   void showSnackbar(BuildContext context, String text, {Color? backgroundColor, CustomIconData? icon, int duration = 2}) {
     final snackbar = SnackBar(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
       ),
       content: Row(
         children: [
@@ -40,7 +40,7 @@ class AppFunctions {
           ),
         ],
       ),
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
       backgroundColor: backgroundColor != null ? backgroundColor.withOpacity(1) : Colors.grey.withOpacity(1),
       duration: Duration(seconds: duration),
     );
@@ -140,7 +140,7 @@ class AppFunctions {
       }
       if (permissionStatus.isGranted) {
         try {
-          final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 75, maxWidth: 1000);
+          final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100, maxWidth: 1080);
           if (image == null) return null;
           final imageTemp = File(image.path);
           return imageTemp;
@@ -164,7 +164,7 @@ class AppFunctions {
       var permissionStatus = await Permission.camera.status;
       if (permissionStatus.isGranted) {
         try {
-          final image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 75, maxWidth: 1000);
+          final image = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100, maxWidth: 1080);
           if (image == null) return null;
           final imageTemp = File(image.path);
           return imageTemp;

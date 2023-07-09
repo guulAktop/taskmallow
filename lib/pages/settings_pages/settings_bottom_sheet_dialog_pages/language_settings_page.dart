@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskmallow/constants/color_constants.dart';
 import 'package:taskmallow/localization/language.dart';
 import 'package:taskmallow/localization/language_localization.dart';
 import 'package:taskmallow/main.dart';
+import 'package:taskmallow/providers/providers.dart';
+import 'package:taskmallow/repositories/user_repository.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 import 'package:taskmallow/widgets/list_view_widget.dart';
 
-class LanguageSettingsPage extends StatefulWidget {
+class LanguageSettingsPage extends ConsumerStatefulWidget {
   final String title;
   const LanguageSettingsPage({Key? key, required this.title}) : super(key: key);
 
   @override
-  State<LanguageSettingsPage> createState() => _LanguageSettingsPageState();
+  ConsumerState<LanguageSettingsPage> createState() => _LanguageSettingsPageState();
 }
 
-class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
+class _LanguageSettingsPageState extends ConsumerState<LanguageSettingsPage> {
   Language? selectedLanguage;
   List<Language>? languages;
 
@@ -59,6 +62,7 @@ class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserRepository userRepository = ref.watch(userProvider);
     return BaseScaffoldWidget(title: widget.title, widgetList: [
       ListViewWidget(
         backgroundColor: listViewItemBackgroundLightColor,
@@ -68,9 +72,8 @@ class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
               onTap: () async {
                 _setSelectedLang(selectedLanguage as Language);
                 _changeLanguage(language);
-                await Future.delayed(const Duration(microseconds: 1000), () {}).then((value) {
-                  Navigator.pop(context);
-                });
+                selectedLanguage = language;
+                await userRepository.updateUserLocale(language.languageCode);
               },
               title: language.name,
               prefixWidget: Radio(
@@ -80,9 +83,8 @@ class _LanguageSettingsPageState extends State<LanguageSettingsPage> {
                 onChanged: (selectedLanguage) async {
                   _setSelectedLang(selectedLanguage as Language);
                   _changeLanguage(selectedLanguage);
-                  await Future.delayed(const Duration(microseconds: 1000), () {}).then((value) {
-                    Navigator.pop(context);
-                  });
+                  selectedLanguage = language;
+                  await userRepository.updateUserLocale(language.languageCode);
                 },
               ));
         }).toList(),

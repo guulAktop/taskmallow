@@ -82,7 +82,7 @@ class _InvitationsPageState extends ConsumerState<InvitationsPage> {
           if (snapshot.hasData) {
             invitationModel = snapshot.data!;
           }
-          return snapshot.hasData
+          return snapshot.hasData && !isLoading
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
