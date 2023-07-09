@@ -160,6 +160,7 @@ class _UpdateProjectPageState extends ConsumerState<UpdateProjectPage> {
             hintText: getTranslated(context, AppKeys.description),
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            maxCharacter: 10000,
             validator: (text) {
               return null;
             },

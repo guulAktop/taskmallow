@@ -86,16 +86,16 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
                 userRepository.incomingInvitations.isEmpty
                     ? const SizedBox()
                     : Container(
+                        width: 14,
+                        height: 14,
                         decoration: const BoxDecoration(color: danger, borderRadius: BorderRadius.all(Radius.circular(10))),
-                        child: Padding(
-                          padding: EdgeInsets.zero,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(
-                              userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
-                              maxLines: 1,
-                              style: const TextStyle(fontSize: 8),
-                            ),
+                        child: Text(
+                          userRepository.incomingInvitations.length <= 9 ? userRepository.incomingInvitations.length.toString() : "9",
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

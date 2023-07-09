@@ -53,7 +53,7 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
                       projectRepository.getAllRelatedProjects(userRepository.userModel!).whenComplete(() {
                         projectRepository.getLatestProjects().whenComplete(() {
                           projectRepository.getFavoriteProjects(userRepository.userModel!).whenComplete(() {
-                            userRepository.updateUserLocale(View.of(context).platformDispatcher.locale.languageCode).whenComplete(() async {
+                            userRepository.updateUserLocale(Localizations.localeOf(context).languageCode).whenComplete(() async {
                               await userRepository.listenInvitations();
                               if (mounted) {
                                 if (userRepository.userInfoIsFull) {

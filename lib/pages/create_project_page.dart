@@ -169,6 +169,7 @@ class _CreateProjectPageState extends ConsumerState<CreateProjectPage> {
             hintText: getTranslated(context, AppKeys.description),
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            maxCharacter: 10000,
             validator: (text) {
               return null;
             },

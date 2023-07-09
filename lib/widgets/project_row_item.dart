@@ -45,6 +45,8 @@ class _ProjectRowItemState extends State<ProjectRowItem> {
               text: widget.projectModel.description,
               textAlign: TextAlign.start,
               headerType: HeaderType.h6,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 10),
             MarqueeWidget(

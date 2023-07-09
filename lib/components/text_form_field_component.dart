@@ -60,7 +60,7 @@ class TextFormFieldComponent extends StatefulWidget {
     this.onTap,
     this.focusNode,
     this.maxLines = 1,
-    this.maxCharacter = 1000,
+    this.maxCharacter = 10000,
     this.prefixText,
   }) : super(key: key);
 

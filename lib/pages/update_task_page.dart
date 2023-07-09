@@ -176,6 +176,7 @@ class _UpdateTaskPageState extends ConsumerState<UpdateTaskPage> {
             hintText: getTranslated(context, AppKeys.description),
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            maxCharacter: 1000,
             validator: (text) {
               return null;
             },

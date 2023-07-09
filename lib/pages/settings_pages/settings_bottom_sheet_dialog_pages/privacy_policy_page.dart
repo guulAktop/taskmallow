@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmallow/components/text_component.dart';
+import 'package:taskmallow/constants/app_constants.dart';
 import 'package:taskmallow/widgets/base_scaffold_widget.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
@@ -8,8 +9,26 @@ class PrivacyPolicyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(title: title, widgetList: const [
-      TextComponent(text: ""),
-    ]);
+    String privacyPolicy = AppConstants.privacyPolicyEN;
+    Locale locale = Localizations.localeOf(context);
+    switch (locale.languageCode) {
+      case "en":
+        privacyPolicy = AppConstants.privacyPolicyEN;
+        break;
+      case "tr":
+        privacyPolicy = AppConstants.privacyPolicyTR;
+        break;
+      default:
+        privacyPolicy = AppConstants.privacyPolicyEN;
+    }
+    return BaseScaffoldWidget(
+      title: title,
+      widgetList: [
+        TextComponent(
+          text: privacyPolicy,
+          textAlign: TextAlign.start,
+        ),
+      ],
+    );
   }
 }

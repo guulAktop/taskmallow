@@ -31,6 +31,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
   bool isLoading = false;
   TabController? tabController;
   int _selectedTab = 0;
+  int? maxlines = 5;
   bool isExpanded = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -154,7 +155,6 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                 parent: AlwaysScrollableScrollPhysics(),
               ),
               popScopeFunction: isLoading ? () async => false : () async => true,
-              title: projectRepository.projectModel != null ? projectRepository.projectModel!.name : getTranslated(context, AppKeys.projectDetails),
               leadingWidget: IconButton(
                 splashRadius: AppConstants.iconSplashRadius,
                 icon: const IconComponent(iconData: CustomIconData.chevronLeft),
@@ -209,16 +209,43 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         TextComponent(
+                          text: projectRepository.projectModel != null ? projectRepository.projectModel!.name : "",
+                          textAlign: TextAlign.start,
+                          headerType: HeaderType.h4,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        TextComponent(
                           text: projectRepository.projectModel != null ? getTranslated(context, projectRepository.projectModel!.category.name) : "",
                           textAlign: TextAlign.end,
                           fontWeight: FontWeight.bold,
-                          headerType: HeaderType.h8,
+                          headerType: HeaderType.h7,
                           color: primaryColor,
                         ),
                         TextComponent(
                           text: projectRepository.projectModel != null ? projectRepository.projectModel!.description : "",
                           textAlign: TextAlign.start,
                           headerType: HeaderType.h5,
+                          maxLines: maxlines,
+                          overflow: maxlines != null ? TextOverflow.ellipsis : null,
+                        ),
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              if (maxlines != null) {
+                                maxlines = null;
+                              } else {
+                                maxlines = 5;
+                              }
+                            });
+                          },
+                          child: TextComponent(
+                            text: maxlines == null ? getTranslated(context, AppKeys.showLess) : getTranslated(context, AppKeys.showMore),
+                            color: Colors.grey,
+                            textAlign: TextAlign.start,
+                            headerType: HeaderType.h7,
+                          ),
                         ),
                         TextComponent(
                           text: projectRepository.projectModel != null ? projectRepository.projectModel!.userWhoCreated.email : "",
@@ -226,7 +253,7 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                           textAlign: TextAlign.end,
                           overflow: TextOverflow.fade,
                           softWrap: true,
-                          headerType: HeaderType.h8,
+                          headerType: HeaderType.h7,
                         ),
                       ],
                     ),
@@ -273,51 +300,61 @@ class _ProjectDetailPageState extends ConsumerState<ProjectDetailPage> with Tick
                                 .watch(projectProvider)
                                 .projectModel!
                                 .collaborators
-                                .map((user) => Container(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 50,
-                                            width: 50,
-                                            child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
-                                          ),
-                                          TextComponent(
-                                            text: user.firstName[0] + user.lastName[0],
-                                            headerType: HeaderType.h6,
-                                          )
-                                        ],
+                                .map((user) => InkWell(
+                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      onTap: () {
+                                        if (user.email == ref.watch(userProvider).userModel!.email) {
+                                          Navigator.pushNamed(context, profilePageRoute, arguments: user);
+                                        } else {
+                                          Navigator.pushNamed(context, profileScreenPageRoute, arguments: user);
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(5),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50,
+                                              width: 50,
+                                              child: CircularPhotoComponent(url: user.profilePhotoURL, hasBorder: false),
+                                            ),
+                                            TextComponent(
+                                              text: user.firstName[0] + user.lastName[0],
+                                              headerType: HeaderType.h6,
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ))
                                 .toList()
                               ..add(
-                                projectRepository.projectModel!.userWhoCreated.email == userRepository.userModel!.email
-                                    ? Container(
-                                        padding: const EdgeInsets.all(5),
-                                        child: SizedBox(
-                                          height: 50,
-                                          width: 50,
-                                          child: ClipRRect(
-                                            borderRadius: const BorderRadius.all(Radius.circular(100)),
-                                            child: Material(
-                                              color: primaryColor,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(context, collaboratorsPageRoute);
-                                                },
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(10),
-                                                  child: const IconComponent(
-                                                    iconData: CustomIconData.plus,
-                                                    color: textPrimaryDarkColor,
-                                                  ),
-                                                ),
+                                InkWell(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                        child: Material(
+                                          color: primaryColor,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context, collaboratorsPageRoute);
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(10),
+                                              child: const IconComponent(
+                                                iconData: CustomIconData.plus,
+                                                color: textPrimaryDarkColor,
                                               ),
                                             ),
                                           ),
                                         ),
-                                      )
-                                    : Container(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                           ),
                         ),

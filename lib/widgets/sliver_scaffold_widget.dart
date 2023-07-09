@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskmallow/constants/color_constants.dart';
-import 'package:taskmallow/widgets/marquee_widget.dart';
 
 class SliverScaffoldWidget extends StatelessWidget {
   final String? title;
@@ -74,11 +73,9 @@ class SliverScaffoldWidget extends StatelessWidget {
                 title: (titleWidget != null)
                     ? titleWidget
                     : ((title != null && title!.isNotEmpty)
-                        ? MarqueeWidget(
-                            child: Text(
-                              title!,
-                              style: const TextStyle(color: textPrimaryLightColor, fontSize: 18),
-                            ),
+                        ? Text(
+                            title!,
+                            style: const TextStyle(color: textPrimaryLightColor, fontSize: 18),
                           )
                         : null),
                 centerTitle: centerTitle,

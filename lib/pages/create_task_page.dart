@@ -161,6 +161,7 @@ class _CreateTaskPageState extends ConsumerState<CreateTaskPage> {
             hintText: getTranslated(context, AppKeys.description),
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            maxCharacter: 1000,
             validator: (text) {
               return null;
             },
