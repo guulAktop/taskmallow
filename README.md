@@ -95,17 +95,17 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 [Daily Scrum Chats 2](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
  # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875" height="400">
 
  # Uygulama Son Durum
 
 [![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fapp_usage.mp4?alt=media&token=f6ec8c09-a123-4b81-8a70-a3cbeb904204)
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F1.jpg?alt=media&token=fb1c1e9d-4d02-4f16-a6a2-09084769df8b">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F3.jpg?alt=media&token=0d75aae4-8ae0-4a12-b4c9-03c507874fee">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F8.jpg?alt=media&token=1b0a6787-a95f-442d-adb8-18e5188ed999">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F10.jpg?alt=media&token=8fe65810-2444-4297-804f-ed19f90c5dc7">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F1.jpg?alt=media&token=fb1c1e9d-4d02-4f16-a6a2-09084769df8b" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F3.jpg?alt=media&token=0d75aae4-8ae0-4a12-b4c9-03c507874fee" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F8.jpg?alt=media&token=1b0a6787-a95f-442d-adb8-18e5188ed999" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2F10.jpg?alt=media&token=8fe65810-2444-4297-804f-ed19f90c5dc7" height="400">
 
 # Sprint Review: Sprint 2
 
@@ -124,20 +124,20 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 *  Daily Scrum: İletişim akıcılığı sağlamak adına whatsapp üzerinden daily scrum yapılmıştır. [Daily Scrum Chats 3](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2FSPR%C4%B0NT%203%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=4bdac5f5-57c1-49c0-912d-663f0e552180)
 
  # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F1.jpg?alt=media&token=cbae09d6-589c-48f0-af6c-f17e478676ba">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F2.jpg?alt=media&token=dd6cb389-d995-465a-b614-33c0eddfdfb1">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F3.jpg?alt=media&token=a22d5b4b-8ecf-4f7f-ae98-89ee05ec375c">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F1.jpg?alt=media&token=cbae09d6-589c-48f0-af6c-f17e478676ba" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F2.jpg?alt=media&token=dd6cb389-d995-465a-b614-33c0eddfdfb1" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F3.jpg?alt=media&token=a22d5b4b-8ecf-4f7f-ae98-89ee05ec375c" height="400">
 
  # Uygulama Son Durum
 
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182253.jpg?alt=media&token=233753ca-2286-4c3a-a1c8-1b94a147ff34">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182306.jpg?alt=media&token=3f05fa83-0f10-48ba-9b53-8e2c0ff0aaeb">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182317.jpg?alt=media&token=79778f56-985d-439a-bbff-6a8c0ee59114">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182418.jpg?alt=media&token=7f07df50-944a-494a-ba80-dfbeed34d2c8">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_192235_Gmail.jpg?alt=media&token=d47f1933-4b3f-4f9c-b799-616a9989f0d6">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182253.jpg?alt=media&token=233753ca-2286-4c3a-a1c8-1b94a147ff34" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182306.jpg?alt=media&token=3f05fa83-0f10-48ba-9b53-8e2c0ff0aaeb" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182317.jpg?alt=media&token=79778f56-985d-439a-bbff-6a8c0ee59114" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182418.jpg?alt=media&token=7f07df50-944a-494a-ba80-dfbeed34d2c8" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_192235_Gmail.jpg?alt=media&token=d47f1933-4b3f-4f9c-b799-616a9989f0d6" height="400">
 
 [![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/video%2Ftw1.mp4?alt=media&token=91a8e3dd-4881-4f95-878f-180143b5067a)
 
