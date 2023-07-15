@@ -136,4 +136,4 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_192235_Gmail.jpg?alt=media&token=d47f1933-4b3f-4f9c-b799-616a9989f0d6">
 
-[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Ftaskmallow_video.mp4?alt=media&token=fb3d8069-dcaf-4052-8224-aad35176fc22)
+[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/video%2Ftw1.mp4?alt=media&token=91a8e3dd-4881-4f95-878f-180143b5067a)
