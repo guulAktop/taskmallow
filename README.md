@@ -124,9 +124,9 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 *  Daily Scrum: İletişim akıcılığı sağlamak adına whatsapp üzerinden daily scrum yapılmıştır. [Daily Scrum Chats 3](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2FSPR%C4%B0NT%203%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=4bdac5f5-57c1-49c0-912d-663f0e552180)
 
  # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F1.jpg?alt=media&token=cbae09d6-589c-48f0-af6c-f17e478676ba" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F2.jpg?alt=media&token=dd6cb389-d995-465a-b614-33c0eddfdfb1" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F3.jpg?alt=media&token=a22d5b4b-8ecf-4f7f-ae98-89ee05ec375c" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F1.jpg?alt=media&token=cbae09d6-589c-48f0-af6c-f17e478676ba" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F2.jpg?alt=media&token=dd6cb389-d995-465a-b614-33c0eddfdfb1" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F3.jpg?alt=media&token=a22d5b4b-8ecf-4f7f-ae98-89ee05ec375c" height="400" width="700">
 
  # Uygulama Son Durum
 
