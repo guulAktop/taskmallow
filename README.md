@@ -112,3 +112,10 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 
 * Sprint 2 retrospektifinde, belirlenen hedeflere ulaşmanın yanı sıra geliştirilmesi gereken alanları da tespit ettik. Task tahminlerini daha doğru yapmak için geçmiş verilere ve deneyimlere daha fazla odaklanmamız gerektiğini fark ettik. İletişimde bazı zayıflıklar olduğunu ve daha sık toplantılar yaparak, iletişimi güçlendirerek ve sorunları daha hızlı çözerek bu konuda gelişim sağlayabileceğimizi gördük. Teknik zorluklarla karşılaşmanın kaçınılmaz olduğunu fark ettik, ancak bu zorlukları daha hızlı çözme becerimizi geliştirerek ve daha etkili çözümler üreterek süreci iyileştirebileceğimizi anladık. Ayrıca, uygulamanın performansını ve kullanıcı deneyimini daha da geliştirmek için geri bildirimleri dikkate alarak iyileştirmeler yapabileceğimizi gördük. Bu retrospektifte belirlediğimiz geliştirme alanlarını, Sprint 3'te değerlendirerek daha iyi bir performans ve işbirliği sağlamayı hedefliyoruz.
 
+  # Sprint 3
+
+*  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine comment olarak eklenmiştir, bu commentlerden User Story lerin detaylarını inceleyebilirsiniz.
+*  Sprint içinde tamamlanması tahmin edilen puan: 100 puandır ve tamamlanmıştır.
+*  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanı 300 olarak belirlendi ve başarıyla 300 puana ulaşıldı.
+*  Daily Scrum: 
+
