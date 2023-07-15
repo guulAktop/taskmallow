@@ -126,7 +126,7 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_192235_Gmail.jpg?alt=media&token=d47f1933-4b3f-4f9c-b799-616a9989f0d6" height="400">
 
 # Sprint Review: Sprint 3
-Sprint boyunca hedeflediğimiz özellikleri başarıyla tamamladık ve projenin bir sonraki aşamasına geçmeye hazırız. Kullanıcıların ihtiyaçlarını karşılayacak şekilde geliştirdiğimiz özelliklerin testlerini başarıyla geçtik ve kullanıcı deneyimini artırmak için gerekli iyileştirmeleri yaptık.
+Sprint boyunca hedeflediğimiz özellikleri başarıyla tamamladık. Kullanıcıların ihtiyaçlarını karşılayacak şekilde geliştirdiğimiz özelliklerin testlerini başarıyla geçtik ve kullanıcı deneyimini artırmak için gerekli iyileştirmeleri yaptık.
 
 Bu sprintte gerçekleştirdiğimiz başarılarımızı aşağıda sıraladık:
 
@@ -139,6 +139,6 @@ Ekip İçi Mesajlaşma sayfası, kullanıcıların projeleriyle ilgili iletişim
 Bu sprintteki başarılarımızla birlikte, projenin genel hedeflerine ulaşma yolunda önemli bir adım attık.
 
 # Sprint Retrospective : Sprint 3
-Sprint boyunca gerçekleştirdiğimiz başarılar:
+
 Tüm hedeflerimize başarıyla ulaştık, planladığımız özellikleri tamamladık ve projenin amacına uygun bir şekilde geliştirdik. Harika bir işbirliği sergiledik, etkin iletişimle birlikte sorunları birlikte çözdük ve projenin başarılı bir şekilde tamamlanmasını sağladık. Özelliklerin kalitesine ve uygulamanın performansına büyük önem verdik. Kullanıcı geri bildirimlerini dikkate alarak iyileştirmeler yaparak proje kalitesini artırdık. Bu sprintte elde ettiğimiz başarılar, takımın çabaları ve özverisiyle mümkün oldu. Projeyi başarıyla tamamlamaktan gurur duyuyoruz.
 
