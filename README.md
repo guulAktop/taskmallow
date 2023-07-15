@@ -154,8 +154,5 @@ Bu sprintteki başarılarımızla birlikte, projenin genel hedeflerine ulaşma y
 # Sprint Retrospective : Sprint 3
 
 Sprint boyunca gerçekleştirdiğimiz başarılar:
+ Tüm hedeflerimize başarıyla ulaştık, planladığımız özellikleri tamamladık ve projenin amacına uygun bir şekilde geliştirdik. Harika bir işbirliği sergiledik, etkin iletişimle birlikte sorunları birlikte çözdük ve projenin başarılı bir şekilde tamamlanmasını sağladık. Özelliklerin kalitesine ve uygulamanın performansına büyük önem verdik. Kullanıcı geri bildirimlerini dikkate alarak iyileştirmeler yaparak proje kalitesini artırdık. Bu sprintte elde ettiğimiz başarılar, takımın çabaları ve özverisiyle mümkün oldu. Projeyi başarıyla tamamlamaktan gurur duyuyoruz.
 
-Hedeflere Ulaşma: Tüm hedeflerimize başarıyla ulaştık, planladığımız özellikleri tamamladık ve projenin amacına uygun bir şekilde geliştirdik.
-Takım İşbirliği: Harika bir işbirliği sergiledik, etkin iletişimle birlikte sorunları birlikte çözdük ve projenin başarılı bir şekilde tamamlanmasını sağladık.
-Kalite ve Performans: Özelliklerin kalitesine ve uygulamanın performansına büyük önem verdik. Kullanıcı geri bildirimlerini dikkate alarak iyileştirmeler yaparak proje kalitesini artırdık.
-Bu sprintte elde ettiğimiz başarılar, takımın çabaları ve özverisiyle mümkün oldu. Projeyi başarıyla tamamlamaktan gurur duyuyoruz.
