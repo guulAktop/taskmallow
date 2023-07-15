@@ -56,9 +56,13 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 
 # Jüriye Notlar
 ✅ Kullanıcı modülü (authentication) bulunmakta
+
 ✅ Kullanıcı giriş yapmadan da uygulamada bazı özellikleri kullanabiliyor
+
 ✅ Internet üzerinden API ile veya bir sunucu ile etkileşime geçiyor
+
 ✅ Kod içerisinde mimari yapı kullanımları ve düzeni mevcut (Bloc, MVVM vs.)
+
 ✅ Uygulama Google Play vb marketlerde yayınlamaya hazır
 
 # Sprint 1
