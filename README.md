@@ -62,6 +62,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400" width="700">
 
 # Uygulama Son Durum
+.
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F1.jpeg?alt=media&token=021be679-1221-4fd0-b158-645873ba6b15" height="400">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F5.jpeg?alt=media&token=fdb0bf47-0622-4e7a-831b-15bddbde003d" height="400">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F9.jpeg?alt=media&token=1017c002-1af1-4264-8358-64f7fb187ab4" height="400">
