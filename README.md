@@ -89,7 +89,7 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 *  Sprint içinde tamamlanması tahmin edilen puan: 100 puandır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanı 300 olarak belirlendi, Sprint 2 de 100 puanı tamamlama kararı alındı.
 *  Daily Scrum: Task'ları tamamlama sırası belirlenerek öncelikli olarak çalışıldı. Her bir task için tahmini tamamlama süresi belirlendi ve bu sürelere göre atanan task'ın bitmesi öngörüldü.Bu sebepten dolayı Discordda sürekli iletişim halinde kaldık.
-[Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
+[Daily Scrum Chats 2](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
  # Güncel Sprint Sonu Backlog
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe">
@@ -117,5 +117,23 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 *  Sprint Notları: User Story'ler miro'da product backlog bloğunun içerisine comment olarak eklenmiştir, bu commentlerden User Story lerin detaylarını inceleyebilirsiniz.
 *  Sprint içinde tamamlanması tahmin edilen puan: 100 puandır ve tamamlanmıştır.
 *  Puan tamamlama mantığı : Toplamda proje boyunca toplam sprint puanı 300 olarak belirlendi ve başarıyla 300 puana ulaşıldı.
-*  Daily Scrum: 
+*  Backlog düzeni ve Story seçimleri: Sprintlerde tahmini puan sınırlarını aşmamak için yapılan backlog düzenlemesi ve story seçimleri, projenin başarılı ilerlemesini sağlamak amacıyla gerçekleştirilmiştir. Her story'nin tahmini puanı, toplam puanın yarısından az olarak belirlenmiştir.
+*  Daily Scrum: İletişim akıcılığı sağlamak adına whatsapp üzerinden daily scrum yapılmıştır. [Daily Scrum Chats 3](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2FSPR%C4%B0NT%203%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=4bdac5f5-57c1-49c0-912d-663f0e552180)
 
+ # Güncel Sprint Sonu Backlog
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F1.jpg?alt=media&token=cbae09d6-589c-48f0-af6c-f17e478676ba">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F2.jpg?alt=media&token=dd6cb389-d995-465a-b614-33c0eddfdfb1">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F3.jpg?alt=media&token=a22d5b4b-8ecf-4f7f-ae98-89ee05ec375c">
+
+ # Uygulama Son Durum
+
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F4.jpg?alt=media&token=e48c5a49-7b3f-4fd9-96db-d5c505f4b4e9">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182253.jpg?alt=media&token=233753ca-2286-4c3a-a1c8-1b94a147ff34">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e
+">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182306.jpg?alt=media&token=3f05fa83-0f10-48ba-9b53-8e2c0ff0aaeb">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182317.jpg?alt=media&token=79778f56-985d-439a-bbff-6a8c0ee59114">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182418.jpg?alt=media&token=7f07df50-944a-494a-ba80-dfbeed34d2c8">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d">
+[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Ftaskmallow_video.mp4?alt=media&token=fb3d8069-dcaf-4052-8224-aad35176fc22)
