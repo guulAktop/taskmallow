@@ -17,8 +17,6 @@ TaskMallow, iş yönetimi ve inovasyonu bir araya getiren yenilikçi bir uygulam
 
 TaskMallow ile görevlerinizi kolayca oluşturabilir, atayabilir ve takip edebilirsiniz. Atanan görevlerin tamamlanma durumuna göre projelerinizin ilerlemesini takip edebilirsiniz. Öncelik seviyelerini belirleyebilir ve takım üyelerine görev atayarak işbirliğini kolaylaştırabilirsiniz.
 
-İnovasyon Laboratuvarı özelliği sayesinde yaratıcı fikirlerinizi paylaşabilir ve geri bildirim alabilirsiniz. Beyin fırtınası oturumlarına katılarak topluluk üyeleriyle birlikte yaratıcı çözümler üretebilirsiniz. İnovasyon projelerinizi oluşturabilir, ilerlemelerini izleyebilir ve dosyalarınızı paylaşabilirsiniz.
-
 TaskMallow'ın eşleşme özelliği sayesinde, projeleriniz için en uygun ekip arkadaşlarını hızla bulabilirsiniz. Yeteneklere ve önceliklere dayalı olarak, size en uygun projeleri veya projenize en uygun kullanıcıları otomatik olarak eşleştirir. Böylece verimliliği artırırken kaynakları etkili bir şekilde kullanabilirsiniz.
 
 Gerçek zamanlı bildirimlerle size hızlı ve anlık güncellemeler sunar. Proje ilerlemesi ve görev atamalarıyla ilgili bildirimleri kaçırmazsınız. Ayrıca, projelerinizi raporlar ve analizlerle görselleştirerek detaylı bir şekilde değerlendirebilirsiniz.
