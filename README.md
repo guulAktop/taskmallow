@@ -66,9 +66,9 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fdailyscrumchats.docx?alt=media&token=7f5c5925-80bf-4c39-8fd7-2cb47d66b2cc)
 
   # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d" height="400" width="800">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8" height="400" width="800">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400" width="700">
 
   # Uygulama Son Durum
 
@@ -95,9 +95,9 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 [Daily Scrum Chats 2](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
  # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe" height="400" width="800">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3" height="400" width="800">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3" height="400" width="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875" height="400" width="700">
 
  # Uygulama Son Durum
 
