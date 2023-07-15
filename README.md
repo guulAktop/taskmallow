@@ -130,6 +130,7 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 
  # Uygulama Son Durum
 
+[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/video%2Ftw1.mp4?alt=media&token=91a8e3dd-4881-4f95-878f-180143b5067a)
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0" height="400">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182253.jpg?alt=media&token=233753ca-2286-4c3a-a1c8-1b94a147ff34" height="400">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e" height="400">
@@ -139,7 +140,7 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d" height="400">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_192235_Gmail.jpg?alt=media&token=d47f1933-4b3f-4f9c-b799-616a9989f0d6" height="400">
 
-[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/video%2Ftw1.mp4?alt=media&token=91a8e3dd-4881-4f95-878f-180143b5067a)
+
 
 # Sprint Review: Sprint 3
 Sprint boyunca hedeflediğimiz özellikleri başarıyla tamamladık ve projenin bir sonraki aşamasına geçmeye hazırız. Kullanıcıların ihtiyaçlarını karşılayacak şekilde geliştirdiğimiz özelliklerin testlerini başarıyla geçtik ve kullanıcı deneyimini artırmak için gerekli iyileştirmeleri yaptık.
