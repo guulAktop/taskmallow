@@ -1,7 +1,7 @@
 
 # Takım İsmi 
 
-Flutter f-52
+Flutter F-52
 
 # Takım Üyeleri
 
@@ -127,13 +127,13 @@ Sprint 2 boyunca Backend yapısını oluşturma hedefimize ulaştık. Belirlenen
 
  # Uygulama Son Durum
 
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fbacklog_son%2F4.jpg?alt=media&token=e48c5a49-7b3f-4fd9-96db-d5c505f4b4e9">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182245.jpg?alt=media&token=7e4e9fe2-ea6e-4318-8d92-4fd67a69fdb0">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182253.jpg?alt=media&token=233753ca-2286-4c3a-a1c8-1b94a147ff34">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e
-">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182301.jpg?alt=media&token=1a6aa105-bf3c-46a5-910d-fea48cb8446e">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182306.jpg?alt=media&token=3f05fa83-0f10-48ba-9b53-8e2c0ff0aaeb">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182317.jpg?alt=media&token=79778f56-985d-439a-bbff-6a8c0ee59114">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182418.jpg?alt=media&token=7f07df50-944a-494a-ba80-dfbeed34d2c8">
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Flast_ss%2FScreenshot_20230715_182503.jpg?alt=media&token=8ef28d5a-b830-4366-93ec-3089e403e26d">
-[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Ftaskmallow_video.mp4?alt=media&token=fb3d8069-dcaf-4052-8224-aad35176fc22)
+
+[![Watch the video](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fplay.png?alt=media&token=42a7a322-8dca-447e-80d5-5a4494d7a77e)](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Ftaskmallow_video.mp4?alt=media&token=fb3d8069-dcaf-4052-8224-aad35176fc22)
