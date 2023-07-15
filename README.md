@@ -28,8 +28,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 # Ürün Özellikleri
 *  Görev Yönetimi: Projelerinizi kolayca yönetmek için görevleri oluşturabilir, atayabilir ve takip edebilirsiniz.
 *  İlerleme Takibi: Görevlerin ilerleme durumunu yüzde üzerinden takip ederek projelerinizin ilerlemesini görsel olarak izleyebilirsiniz.
-*  İnovasyon Laboratuvarı: Yaratıcı fikirlerinizi paylaşabilir, geri bildirim alabilir ve beyin fırtınası oturumlarına katılarak inovatif çözümler üretebilirsiniz.
-*  Dosya Paylaşımı: İnovasyon projelerinizde dosyalarınızı kolayca paylaşabilir ve işbirliğini güçlendirebilirsiniz.
+*  Proje İçi Mesajlaşma: Proje ekibinizle hem metinsel hemde görsel iletişimi sağlayabilirsiniz.
 *  Eşleşme Özelliği: Yeteneklerinize, önceliklere ve takvimlere dayalı olarak size en uygun görevleri otomatik olarak eşleştirir.
 *  Gerçek Zamanlı Bildirimler: Proje ilerlemesi, görev atamaları ve bildirimlerle ilgili anlık güncellemeler
 *  İşbirliği ve İletişim: Ekip üyeleri arasında etkili iletişimi teşvik eder, işbirliğini güçlendirir ve yaratıcı çözümlerin ortaya çıkmasını sağlar.
