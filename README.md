@@ -95,9 +95,9 @@ Frontend'de hedeflenen ilerlemeler sağlandı, görev oluşturma ve listeleme ta
 [Daily Scrum Chats 2](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2FSPR%C4%B0NT%20%202%20DA%C4%B0LY%20SCRUM%20CHATS.docx?alt=media&token=438986e3-a4c3-4548-8e4b-01df36147d1b)
 
  # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog1.jpg?alt=media&token=fbd60b64-e1b9-4ee7-9d8e-ef15128b29fe" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog2.jpg?alt=media&token=41597c74-b998-4442-a3e5-4d2b003396e3" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fsprint2%2Fbacklog3.jpg?alt=media&token=27c4f43b-246b-4a7f-bdda-04ee90a33875" height="400" width="800">
 
  # Uygulama Son Durum
 
