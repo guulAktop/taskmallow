@@ -66,9 +66,9 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fdailyscrumchats.docx?alt=media&token=7f5c5925-80bf-4c39-8fd7-2cb47d66b2cc)
 
   # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8" height="400" width="800">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400" width="800">
 
   # Uygulama Son Durum
 
