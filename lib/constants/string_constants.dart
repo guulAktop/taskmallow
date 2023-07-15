@@ -162,6 +162,9 @@ class AppKeys {
   static String yourTransactionHasBeenCanceled = 'your_transaction_has_been_canceled';
   static String showMore = 'show_more';
   static String showLess = 'show_less';
+  static String registerNow = 'register_now';
+  static String registerNowForAccess = 'register_now_for_access';
+  static String registerNowForThisProject = 'register_now_for_this_project';
 }
 
 class CategoryKeys {

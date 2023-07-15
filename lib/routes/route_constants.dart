@@ -26,3 +26,4 @@ const String profileScreenPageRoute = "profileScreenPageRoute";
 const String indicatorPageRoute = "indicatorPageRoute";
 const String onboardingPageRoute = "onboardingPageRoute";
 const String projectMessagingPageRoute = "projectMessagingPageRoute";
+const String noUserPageRoute = "noUserPageRoute";
