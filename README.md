@@ -66,17 +66,17 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 [Daily Scrum Chats](https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fdailyscrumchats.docx?alt=media&token=7f5c5925-80bf-4c39-8fd7-2cb47d66b2cc)
 
   # Güncel Sprint Sonu Backlog
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(9).png?alt=media&token=ff4508ae-4be2-47d1-998a-8f22fc20c68d" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(10).png?alt=media&token=7c3ed4ef-5140-43a1-8fde-d0957b4dfba8" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2Fimage%20(16).png?alt=media&token=a809904b-7b5e-42b2-acde-9bd0a7ca914d" height="400">
 
   # Uygulama Son Durum
 
 <img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F1.jpeg?alt=media&token=021be679-1221-4fd0-b158-645873ba6b15" height="400">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F5.jpeg?alt=media&token=fdb0bf47-0622-4e7a-831b-15bddbde003d">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F9.jpeg?alt=media&token=1017c002-1af1-4264-8358-64f7fb187ab4">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F10.jpeg?alt=media&token=2ab3a69d-aa70-40c8-8ff4-e49a4eab41cc">
-<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F13.jpeg?alt=media&token=39df7245-2190-4569-bfcc-aa39aabd7b91">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F5.jpeg?alt=media&token=fdb0bf47-0622-4e7a-831b-15bddbde003d" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F9.jpeg?alt=media&token=1017c002-1af1-4264-8358-64f7fb187ab4" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F10.jpeg?alt=media&token=2ab3a69d-aa70-40c8-8ff4-e49a4eab41cc" height="400">
+<img src="https://firebasestorage.googleapis.com/v0/b/taskmallow-app.appspot.com/o/readme%2F13.jpeg?alt=media&token=39df7245-2190-4569-bfcc-aa39aabd7b91" height="400">
 
   # Sprint Review: Sprint 1
 
