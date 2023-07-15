@@ -83,9 +83,11 @@ class _IndicatorPageState extends ConsumerState<IndicatorPage> {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           bool? onboardingPagesShown = await SharedPreferencesHelper.getBool("onboardingPagesShown");
           if (onboardingPagesShown != null && onboardingPagesShown) {
-            userRepository.userModel = null;
-            if (!mounted) return;
-            Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+            projectRepository.getLatestProjects().whenComplete(() {
+              userRepository.userModel = null;
+              if (!mounted) return;
+              Navigator.pushNamedAndRemoveUntil(context, noUserPageRoute, (route) => false);
+            });
           } else if (mounted) {
             Navigator.pushNamedAndRemoveUntil(context, onboardingPageRoute, (route) => false);
           }

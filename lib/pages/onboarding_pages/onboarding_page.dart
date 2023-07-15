@@ -80,7 +80,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                   onPressed: () async {
                     if (currentPageIndex == 2) {
-                      Navigator.pushNamedAndRemoveUntil(context, loginPageRoute, (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(context, indicatorPageRoute, (route) => false);
                       await SharedPreferencesHelper.setBool("onboardingPagesShown", true).onError((error, stackTrace) {
                         throw Exception([error]);
                       });

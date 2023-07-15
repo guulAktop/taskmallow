@@ -154,6 +154,9 @@
     "your_transaction_has_been_canceled":"İşlemin çok fazla yanlış girişim nedeniyle iptal edildi.",
     "show_more":"daha fazla göster",
     "show_less":"daha az göster",
+    "register_now":"Hemen Kaydol",
+    "register_now_for_access":"Eşleşme özelliği ile sana en uygun projelere anında ulaşmak ve daha fazlası için hemen kaydol.",
+    "register_now_for_this_project":"Bu projenin detaylarına erişmek ve daha fazlası için hemen kaydol.",
 
     "onboarding_title1": "Sınırların Ötesinde Fikirler İçin Bir Sahne!",
     "onboarding_title2": "İlerlemenin Sihirli Anını Yakalayın",
