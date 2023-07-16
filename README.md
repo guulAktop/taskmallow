@@ -46,7 +46,7 @@ Hemen TaskMallow'u deneyin ve iş yönetiminizdeki verimliliği artırın, yarat
 [Miro Backlog Board](https://miro.com/app/board/uXjVM-xeKA8=/?share_link_id=524341731710)
 
 # Jüriye Notlar
-✅ Ekstra Puanlar tablosundaki tüm kriterler yapılmıştır.
+✅ Ekstra Puanlar tablosundaki tüm kriterler yapılmıştır ve çok kısa da olsa miro backlog boardumuza göz gezdirmenizi istiyoruz..
 
 
 # Sprint 1
